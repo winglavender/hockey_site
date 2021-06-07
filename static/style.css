@@ -1,0 +1,38 @@
+body {
+  font-family: georgia, sans-serif;
+  margin: 2em;
+  letter-spacing: 1px;
+}
+input[type="submit"] {
+  border: 1px solid black;
+  font-family: georgia, sans-serif;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1.1em;
+  letter-spacing: 1px;
+}
+input[type="submit"]:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
+input[type=text] {
+  font-family: georgia, sans-serif;
+  padding:4px;
+}
+
+select {
+  font-family: georgia, sans-serif;
+  padding:4px;
+  border-radius:5px;
+}
+table {
+    border: 1px solid gray;
+    width: 100%;
+    margin: 10px;
+}
+tr.thead td, td.thead {
+    font-weight: bold;
+    background: rgba(0, 0, 0, .05);
+    text-align: center;
+    color: rgba(0, 0, 0, .55);
+}

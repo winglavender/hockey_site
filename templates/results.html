@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hockey Roster Query</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+  </head>
+  <body>
+
+  <h1>Teammates</h1>
+
+    <table>
+        {% for team in data %}
+        <tr class="thead">
+            <td>{{team.team}}</td>
+            <td>Player</td>
+            <td>Years</td>
+            <td>Total Seasons</td>
+        </tr>
+        {% for player in team.players %}
+          <tr>
+            <td></td>
+            <td><a href="{{player.link}}">{{player.player}}</a></td>
+            <td>{{player.seasons}}</td>
+            <td>{{player.num_seasons}}</td>
+         </tr>
+        {% endfor %}
+        {% endfor %}
+    </table>
+             
+
+  </body>
+</html>
