@@ -1,55 +1,40 @@
 import pandas as pd
 import sqlite3 as sql
 
-def merge_seasons(season_list):
-    seasons_unsorted = []
-    for season in season_list:
-        tmp = season.split("-")
-        seasons_unsorted.append((int(tmp[0]), int(tmp[1])))
-    seasons_sorted = sorted(seasons_unsorted)
-    seasons_merged = []
-    num_seasons = 0
-    for season in seasons_sorted:
-        if len(seasons_merged) == 0:
-            seasons_merged.append(season)
-            num_seasons += 1
-        else:
-            last_season = seasons_merged[-1]
-            if last_season[1] > season[0]: # duplicate season because of AHL-NHL stuff probably
-                continue
-            elif last_season[1] == season[0]:
-                new_last_season = (last_season[0], season[1])
-                seasons_merged[-1] = new_last_season
-                num_seasons += 1
-            else:
-                seasons_merged.append(season)
-                num_seasons += 1
-    for idx, season in enumerate(seasons_merged):
-        seasons_merged[idx] = str(season[0]) + "-" + str(season[1])
-    seasons_str = ", ".join(seasons_merged)
-    return seasons_str, num_seasons
+def compute_overlap_years_str(start_date1, end_date1, start_date2, end_date2):
+    start_year1 = pd.to_datetime(start_date1).year
+    start_year2 = pd.to_datetime(start_date2).year
+    end_year1 = pd.to_datetime(end_date1).year
+    end_year2 = pd.to_datetime(end_date2).year
+    start_year = max(start_year1, start_year2)
+    end_year = min(end_year1, end_year2)
+    overlap_str = f"({start_year}-{end_year})"
+#     if start_year == end_year:
+#         overlap_str = f"({start_year})"
+    return overlap_str
 
 def query_db(target):
-    conn = sql.connect('hockey_rosters.db')
-    teammates = pd.read_sql_query(f'select b.playername, b.season, b.team, b.link from skaters a inner join skaters b on a.season = b.season and a.team = b.team and a.link != b.link where a.playername="{target}"',conn)
-    #print(teammates)
-    teams = teammates.team.unique()
+    conn = sql.connect('hockey_rosters_v3.db')
+    # TODO change this to link, deal with multiple name possibilities
+    terms = pd.read_sql_query(f'select * from skaters where player=="{target}"',conn)
     output = []
-    for team in teams:
-        if team == "totals":
-            continue # todo fix this
-        print(team)
-        team_output = {'team': team, 'players': []}
-        #output_str += team + "<br>"
-        # todo sort by frequency/importance here
-        team_teammates = teammates.loc[teammates.team==team].link.unique()
-        for player_link in team_teammates:
-            player_name = teammates.loc[teammates.link==player_link].playername.iloc[0]
-            seasons = teammates.loc[teammates.link==player_link]
-            combined_seasons, num_seasons = merge_seasons(seasons['season'])
-            team_output['players'].append({'player': player_name, 'seasons': combined_seasons, 'num_seasons': num_seasons, 'link': player_link})
-            #print(f"\t{player_name}\t{combined_seasons}\t{num_seasons}\t{player_link}") 
-            #output_str += f"\t{player_name}\t{combined_seasons}\t{num_seasons}\t{player_link}<br>"
+    for index, term in terms.iterrows():
+        tenure = f"({pd.to_datetime(term.start_date).year}-{pd.to_datetime(term.end_date).year})"
+        team_output = {'team': term.team, 'tenure': tenure, 'players': []}
+        if term.team == "multiple":
+            continue # unresolved trade period
+        # get following teammates
+        teammates_a = pd.read_sql_query(f'select * from skaters where team=="{term.team}" and start_date >= "{term.start_date}" and start_date < "{term.end_date}" and link != "{term.link}"',conn)
+        # get preceding teammates
+        teammates_b = pd.read_sql_query(f'select * from skaters where team=="{term.team}" and "{term.start_date}" > start_date and "{term.start_date}" < end_date and link != "{term.link}"',conn)
+        teammates = pd.concat([teammates_a, teammates_b])
+        # TODO sort by frequency/importance here
+        for teammate in teammates.link.unique():
+            teammate_rows = teammates.loc[teammates.link==teammate]
+            output_strs = []
+            for index, teammate_term in teammate_rows.iterrows():
+                overlap_years_str = compute_overlap_years_str(term.start_date, term.end_date, teammate_term.start_date, teammate_term.end_date)
+                output_strs.append(overlap_years_str)
+            team_output['players'].append({'player': teammate_rows.iloc[0].player, 'seasons': ",".join(output_strs), 'link': teammate_rows.iloc[0].link})
         output.append(team_output)
-    print(output)
     return output

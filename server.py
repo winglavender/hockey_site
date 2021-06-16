@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from query_db_v2 import query_db
+from query_db import query_db
 
 app = Flask(__name__)
 
