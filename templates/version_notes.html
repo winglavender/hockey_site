@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Hockey Roster Queries</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+  </head>
+  <body>
+
+  <h1>
+     Version Notes 
+    </h1>
+
+    <h2>Version 0.2</h2>
+   
+    <h3>Notes</h3>
+    <ul>
+    <li>Contains skater data (goalies not included) from NHL players from 2017-2020</li>
+    </ul>
+    
+    <h3>Known Issues</h3>
+    <ul>
+        <li>Does not check for name uniqueness (searching "Sebastian Aho" will return the combined results of both Sebastian Ahos)</li>
+        <li>Trade information is incomplete. The exact trade dates are missing, so two players may erroneously appear as teammates or not if they were traded in the same year to/from the same team. Team information for players that were traded multiple times in one year is incomplete.</li>
+        <li>Skaters full names must be entered exactly as they appear on <a href="https://eliteprospects.com">EliteProspects</a>, including accents (for example, "Nicklas Bäckström" will return results but "Nicklas Backstrom" will not).</li>
+    </ul>
+
+    <a href="{{ url_for('home') }}">Return to main page</a>
+    </body>
+</html>
