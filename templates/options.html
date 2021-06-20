@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hockey Roster Query</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+  </head>
+  <body>
+
+  <h1>Options</h1>
+
+    <form method="post" action="/options_result">
+    <p>There are multiple players with the specified name. Please select one:</p>
+    {% for player in data %}
+    <input type="radio" id={{player.link}} name="playerid" value={{player.link}}>
+    <label for={{player.link}}>{{player.player}}, {{player.description}}</label><br>
+    {% endfor %}
+    <input type="submit" name="submit" value="Find teammates">
+    </form>
+
+    <a href="{{ url_for('home') }}">Return to main page</a>
+  </body>
+</html>

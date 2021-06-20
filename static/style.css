@@ -1,11 +1,11 @@
 body {
-  font-family: georgia, sans-serif;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
   margin: 2em;
   letter-spacing: 1px;
 }
 input[type="submit"] {
   border: 1px solid black;
-  font-family: georgia, sans-serif;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
   padding: 10px;
   border-radius: 10px;
   font-size: 1.1em;
@@ -16,12 +16,12 @@ input[type="submit"]:hover {
   cursor: pointer;
 }
 input[type=text] {
-  font-family: georgia, sans-serif;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
   padding:4px;
 }
 
 select {
-  font-family: georgia, sans-serif;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
   padding:4px;
   border-radius:5px;
 }

@@ -9,14 +9,12 @@ def compute_overlap_years_str(start_date1, end_date1, start_date2, end_date2):
     start_year = max(start_year1, start_year2)
     end_year = min(end_year1, end_year2)
     overlap_str = f"({start_year}-{end_year})"
-#     if start_year == end_year:
-#         overlap_str = f"({start_year})"
     return overlap_str
 
 def query_db(target):
     conn = sql.connect('hockey_rosters_v3.db')
     # TODO change this to link, deal with multiple name possibilities
-    terms = pd.read_sql_query(f'select * from skaters where player=="{target}"',conn)
+    terms = pd.read_sql_query(f'select * from skaters where link=="{target}"',conn)
     output = []
     for index, term in terms.iterrows():
         tenure = f"({pd.to_datetime(term.start_date).year}-{pd.to_datetime(term.end_date).year})"
@@ -38,3 +36,32 @@ def query_db(target):
             team_output['players'].append({'player': teammate_rows.iloc[0].player, 'seasons': ",".join(output_strs), 'link': teammate_rows.iloc[0].link})
         output.append(team_output)
     return output
+
+def player_to_description(player_row):
+    year1 = pd.to_datetime(player_row.start_date).year
+    year2 = pd.to_datetime(player_row.end_date).year
+    return f"most recently {player_row.team} ({year1}-{year2})"
+
+def format_multiple_options(links):
+    unique_players = {}
+    for index, row in links.iterrows():
+        if row.link not in unique_players:
+            unique_players[row.link] = {'player': row.player, 'link': row.link, 'start_date': row.start_date, 'end_date': row.end_date, 'description': player_to_description(row), 'team': row.team}
+        else:
+            other_start_date = unique_players[row.link]['start_date']
+            if row.start_date > other_start_date:
+                # new latest season, update player info
+                unique_players[row.link] = {'player': row.player, 'link': row.link, 'start_date': row.start_date, 'end_date': row.end_date, 'description': player_to_description(row), 'team': row.team}
+    return unique_players.values()
+
+def retrieve_link_db(name):
+    conn = sql.connect('hockey_rosters_v3.db')
+    links = pd.read_sql_query(f'select * from skaters where player=="{name}"', conn)
+    if len(links) == 1:
+        return links.iloc[0].link, 1
+    elif len(links) == 0:
+        return name, 0
+    else:
+        # format output
+        output = format_multiple_options(links)
+        return output, len(output)
