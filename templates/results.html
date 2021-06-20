@@ -14,12 +14,14 @@
     <table>
         <tr class="thead">
             <td>Player</td>
-            <td>Years</td>
+            <td>Seasons</td>
+            <td>Total Years</td>
         </tr>
         {% for player in team.players %}
           <tr>
             <td><a href="{{player.link}}">{{player.player}}</a></td>
             <td>{{player.seasons}}</td>
+            <td class="count">{{player.num_seasons}}</td>
          </tr>
         {% endfor %}
     </table>

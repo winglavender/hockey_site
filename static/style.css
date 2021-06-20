@@ -1,15 +1,15 @@
 body {
   font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
   margin: 2em;
-  letter-spacing: 1px;
+}
+h1 {
+    font-size:20px;
 }
 input[type="submit"] {
   border: 1px solid black;
   font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-  padding: 10px;
-  border-radius: 10px;
-  font-size: 1.1em;
-  letter-spacing: 1px;
+  padding: 5px;
+  border-radius: 5px;
 }
 input[type="submit"]:hover {
   background-color: #eee;
@@ -27,7 +27,7 @@ select {
 }
 table {
     border: 1px solid gray;
-    width: 100%;
+    table-layout: auto;
     margin: 10px;
 }
 tr.thead td, td.thead {
@@ -35,4 +35,7 @@ tr.thead td, td.thead {
     background: rgba(0, 0, 0, .05);
     text-align: center;
     color: rgba(0, 0, 0, .55);
+}
+td.count {
+    text-align: right;
 }
