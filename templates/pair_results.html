@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hockey Roster Query</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+  </head>
+  <body>
+
+  <h1>Teammates</h1>
+  <h3>Players: {{playername1}} and {{playername2}}</h3>
+
+    <p>They played together on:</p>
+
+    <table>
+        {% for term in data %}
+        <tr>
+            <td>{{term.team}} ({{term.league}})</td>
+            <td>({{term.year1}}-{{term.year2}})</td>
+        </tr>
+        {% endfor %}
+    </table>
+             
+    <a href="{{ url_for('home') }}">Return to main page</a>
+  </body>
+</html>

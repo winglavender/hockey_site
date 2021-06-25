@@ -15,13 +15,28 @@
     </h1>
 
     <div id="content">
-    <a href="{{ url_for('version_notes') }}">Version Notes</a><br><br>
+    <a href="{{ url_for('version_notes') }}">Version Notes</a>   <a href="{{ url_for('data') }}">Data</a><br><br>
 
     <form method="post" action="/form_result">
+    <fieldset>
+    <b>Show a player's teammates over their whole career</b><br><br>
         <label for="target">Player:</label>
             <input type="text" id="target" name="target" required><br><br>
-        <input type="submit" name="submit" value="Find teammates">
+        <input type="submit" name="submit" value="Submit">
+    </fieldset>
+    </form><br><br>
+
+    <form method="post" action="/pair_form_result">
+    <fieldset>
+    <b>Check whether two players have been teammates</b><br><br>
+        <label for="player1">Player 1:</label>
+            <input type="text" id="player1" name="player1" required><br><br>
+        <label for="player2">Player 2:</label>
+            <input type="text" id="player2" name="player2" required><br><br>
+        <input type="submit" name="submit" value="Submit">
+    </fieldset>
     </form>
+
     </div>
     </body>
 

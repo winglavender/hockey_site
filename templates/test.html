@@ -2,8 +2,10 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hockey Roster Query</title>
+
+    <title>Hockey Roster Queries</title>
     <link rel="stylesheet" type="text/css" href="../static/style.css">
+
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['timeline']});
@@ -19,12 +21,11 @@
         dataTable.addColumn({ type: 'date', id: 'Start' });
         dataTable.addColumn({ type: 'date', id: 'End' });
         var row_count = 1;
-        console.log(player_data)
-        console.log(player_data[0])
-        for (var player_count in player_data) {
-            var player = player_data[player_count]
-            console.log(player_data[player_count])
-            dataTable.addRow([ player[0], player[1], new Date(player[2], player[3], player[4]),  new Date(player[5], player[6], player[7]) ]);
+        console.log(player_data['teammates'])
+        console.log(player_data['teammates'][0])
+        for (var player_count in player_data['teammates']) {
+            console.log(player_data['teammates'][player_count])
+            dataTable.addRow([ player_data['teammates'][player_count][0], player_data['teammates'][player_count][1], new Date(player_data['teammates'][player_count][2], player_data['teammates'][player_count][3], player_data['teammates'][player_count][4]),  new Date(player_data['teammates'][player_count][5], player_data['teammates'][player_count][6], player_data['teammates'][player_count][7]) ]);
         }
         var options = {
             timeline: { barLabelStyle: {fontSize: 10}}
@@ -35,10 +36,12 @@
   </head>
   <body>
 
-  <h1>Teammates</h1>
-  <h3>Player: {{player}}</h3>
-    <div id="timeline" style="height: 600px;"></div>
-             
-    <a href="{{ url_for('home') }}">Return to main page</a>
-  </body>
+
+    <h1>
+      Teammate query
+    </h1>
+    
+
+    <div id="timeline" style="height: 1200px;"></div>
+    </body>
 </html>

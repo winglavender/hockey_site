@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hockey Roster Query</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+  </head>
+  <body>
+
+  <h1>Teammates</h1>
+  <h3>Players: {{playername1}} and {{playername2}}</h3>
+
+    <p>These players have not played on a team together, at least according to the data currently available on this site (<a href="{{ url_for('data') }}">more details</a>).</p>
+             
+    <a href="{{ url_for('home') }}">Return to main page</a>
+  </body>
+</html>
