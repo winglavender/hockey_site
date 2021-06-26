@@ -44,6 +44,8 @@ def pair_form_result():
         target2, num_results2 = retrieve_player_link(player2)
         if num_results1 == 1 and num_results2 == 1:
             # we have unique player ids for both
+            if target1 == target2:
+                return render_template('pair_same_player.html')
             data = query_pair_teammates(target1, target2)
             if len(data) == 0:
                 return render_template('no_pair_results.html', playername1=player1, playername2=player2)
@@ -64,7 +66,6 @@ def pair_form_result():
         else:
             # clarify both players
             return render_template('options_2.html', data1=target1, data2=target2)
-            print() 
     else:
         return render_template('error.html')
 
@@ -72,11 +73,12 @@ def pair_form_result():
 def options_result_1():
     if request.method == "POST":
         target = request.form['playerid']
-        print(target)
         if "player1_id" not in session:
             session["player1_id"] = target
         elif "player2_id" not in session:
             session["player2_id"] = target
+        if session["player1_id"] == session["player2_id"]:
+            return render_template("pair_same_player.html")
         data = query_pair_teammates(session["player1_id"], session["player2_id"])
         if len(data) == 0:
             return render_template('no_pair_results.html', playername1=session.get("player1"), playername2=session.get("player2"))
@@ -90,6 +92,8 @@ def options_result_2():
     if request.method == "POST":
         session["player1_id"] = request.form['playerid1']
         session["player2_id"] = request.form['playerid2']
+        if session["player1_id"] == session["player2_id"]:
+            return render_template("pair_same_player.html")
         data = query_pair_teammates(session["player1_id"], session["player2_id"])
         if len(data) == 0:
             return render_template('no_pair_results.html', playername1=session.get("player1"), playername2=session.get("player2"))
@@ -102,7 +106,6 @@ def options_result_2():
 def options_result():
     if request.method == "POST":
         target = request.form['playerid']
-        print(target)
         data = query_career_teammates(target)
         return render_template('results.html', data=data)
     else:

@@ -1,19 +1,30 @@
 import pandas as pd
 import sqlite3 as sql
 
-db_name = 'hockey_rosters_v6.db'
+db_name = 'hockey_rosters_v7.db'
 
-def compute_overlap_years_str(start_date1, end_date1, start_date2, end_date2):
-    start_year1 = pd.to_datetime(start_date1).year
-    start_year2 = pd.to_datetime(start_date2).year
-    end_year1 = pd.to_datetime(end_date1).year
-    end_year2 = pd.to_datetime(end_date2).year
-    start_year = max(start_year1, start_year2)
-    end_year = min(end_year1, end_year2)
-    overlap_str = f"({start_year}-{end_year})"
-    num_seasons = max(1, end_year-start_year)
-    if start_year <= end_year:
-        return (start_year, end_year), num_seasons
+def league_key_to_display(league_str):
+    leagues = {'nhl': 'NHL', 'og': 'Olympics', 'khl': 'KHL', 'ahl': 'AHL', 'wc': 'Worlds', 'ohl': 'OHL', 'whl': 'WHL', 'qmjhl': 'QMJHL', 'ushl': 'USHL', 'usdp': 'USDP', 'ncaa': 'NCAA', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', 'wcup': 'World Cup'}
+    return leagues[league_str]
+
+def team_key_to_display(league_str, team_str):
+    if league_str == 'og':
+        return f"{team_str} Olympics"
+    elif league_str == 'wc':
+        return f"{team_str} Worlds"
+    elif league_str == 'wcup':
+        return f"{team_str} World Cup"
+    else:
+        return team_str
+
+def compute_overlap_interval(start_date1, end_date1, start_date2, end_date2):
+    start_dates = pd.DataFrame([pd.to_datetime(start_date1), pd.to_datetime(start_date2)])
+    end_dates = pd.DataFrame([pd.to_datetime(end_date1), pd.to_datetime(end_date2)])
+    start_interval = start_dates.max().iloc[0]
+    end_interval = end_dates.min().iloc[0]
+    num_seasons = max(1, end_interval.year-start_interval.year)
+    if start_interval <= end_interval:
+        return (start_interval, end_interval), num_seasons
     else:
         return False, 0
 
@@ -52,17 +63,17 @@ def query_career_teammates(target):
         teammates_b = pd.read_sql_query(f'select * from skaters where league="{term.league}" and team=="{term.team}" and "{term.start_date}" > start_date and "{term.start_date}" < end_date and link != "{term.link}"',conn)
         teammates = pd.concat([teammates_a, teammates_b])
         for teammate_id in teammates.link.unique():
+            # all the overlapping time periods our target has with this teammate
             teammate_rows = teammates.loc[teammates.link==teammate_id]
-            total_seasons = 0
-            overlap_years_list = []
+            #overlap_years_list = []
             for index, teammate_term in teammate_rows.iterrows():
-                overlap_years, seasons_count = compute_overlap_years_str(term.start_date, term.end_date, teammate_term.start_date, teammate_term.end_date)
-                total_seasons += seasons_count
-                overlap_years_list.append(overlap_years)
-            overlap_year_ranges = compute_timeline_str(overlap_years_list)
-            first_overlap_year = overlap_year_ranges[0][0]
-            for overlap_range in overlap_year_ranges:
-                output.append((first_overlap_year, [teammate_rows.iloc[0].player, term.team, overlap_range[0], overlap_range[1], overlap_range[2], overlap_range[3], overlap_range[4], overlap_range[5]]))
+                overlap_term, seasons_count = compute_overlap_interval(term.start_date, term.end_date, teammate_term.start_date, teammate_term.end_date)
+                output.append((overlap_term[0].year, [teammate_rows.iloc[0].player, team_key_to_display(term.league, term.team), overlap_term[0].year, overlap_term[0].month-1, overlap_term[0].day, overlap_term[1].year, overlap_term[1].month-1, overlap_term[1].day]))
+                #overlap_years_list.append(overlap_years)
+            #overlap_year_ranges = compute_timeline_str(overlap_years_list)
+            #first_overlap_year = overlap_year_ranges[0][0]
+            #for overlap_range in overlap_year_ranges:
+            #    output.append((first_overlap_year, [teammate_rows.iloc[0].player, team_key_to_display(term.league, term.team), overlap_range[0], overlap_range[1], overlap_range[2], overlap_range[3], overlap_range[4], overlap_range[5]]))
     # sort all teammates by first overlap year
     output.sort()
     sorted_output = []
@@ -80,14 +91,14 @@ def query_pair_teammates(player1_id, player2_id):
         potential_overlaps = pd.concat([potential_overlaps_a, potential_overlaps_b])
         for index2, candidate in potential_overlaps.iterrows():
             # check for overlap
-            overlap_years, num_seasons = compute_overlap_years_str(term.start_date, term.end_date, candidate.start_date, candidate.end_date)
-            if overlap_years:
-                output.append((overlap_years[0], [term.team, term.league, overlap_years[0], overlap_years[1]]))
+            overlap_interval, num_seasons = compute_overlap_interval(term.start_date, term.end_date, candidate.start_date, candidate.end_date)
+            if overlap_interval:
+                output.append((overlap_interval[0].year, [term.team, term.league, overlap_interval[0].year, overlap_interval[1].year]))
     # sort terms by first year of overlap
     output.sort()
     sorted_output = []
     for year, data in output:
-        sorted_output.append({"team": data[0], "league": data[1], "year1": data[2], "year2": data[3]})
+        sorted_output.append({"team": data[0], "league": league_key_to_display(data[1]), "year1": data[2], "year2": data[3]})
     return sorted_output
 
 def player_to_description(player_row):
