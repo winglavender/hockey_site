@@ -1,7 +1,8 @@
 import pandas as pd
 import sqlite3 as sql
+import unicodedata
 
-db_name = 'hockey_rosters_v7.db'
+db_name = 'hockey_rosters_v8.db'
 
 def league_key_to_display(league_str):
     leagues = {'nhl': 'NHL', 'og': 'Olympics', 'khl': 'KHL', 'ahl': 'AHL', 'wc': 'Worlds', 'ohl': 'OHL', 'whl': 'WHL', 'qmjhl': 'QMJHL', 'ushl': 'USHL', 'usdp': 'USDP', 'ncaa': 'NCAA', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', 'wcup': 'World Cup'}
@@ -28,29 +29,6 @@ def compute_overlap_interval(start_date1, end_date1, start_date2, end_date2):
     else:
         return False, 0
 
-def compute_timeline_str(year_ranges):
-    year_ranges.sort()
-    year_ranges_condensed = []
-    for year_range in year_ranges:
-        if len(year_ranges_condensed) == 0:
-            year_ranges_condensed.append(year_range)
-        else:
-            last_range = year_ranges_condensed[-1]
-            if year_range[0] == last_range[1]:
-                new_range = (last_range[0], year_range[1])
-                year_ranges_condensed[-1] = new_range
-            else:
-                year_ranges_condensed.append(year_range)
-    # convert to string
-    year_ranges_list = []
-    for year_range in year_ranges_condensed:
-        year_ranges_list.append((year_range[0], 8, 1, year_range[1], 5, 30))
-        #year_ranges_list.append(f"{year_range[0]}-{year_range[1]}")
-    # todo fix exact dates here
-    return(year_ranges_list)
-    #return ", ".join(year_ranges_list)
-
-
 def query_career_teammates(target):
     # target is a player link (guaranteed unique for each name)
     conn = sql.connect(db_name)
@@ -69,11 +47,6 @@ def query_career_teammates(target):
             for index, teammate_term in teammate_rows.iterrows():
                 overlap_term, seasons_count = compute_overlap_interval(term.start_date, term.end_date, teammate_term.start_date, teammate_term.end_date)
                 output.append((overlap_term[0].year, [teammate_rows.iloc[0].player, team_key_to_display(term.league, term.team), overlap_term[0].year, overlap_term[0].month-1, overlap_term[0].day, overlap_term[1].year, overlap_term[1].month-1, overlap_term[1].day]))
-                #overlap_years_list.append(overlap_years)
-            #overlap_year_ranges = compute_timeline_str(overlap_years_list)
-            #first_overlap_year = overlap_year_ranges[0][0]
-            #for overlap_range in overlap_year_ranges:
-            #    output.append((first_overlap_year, [teammate_rows.iloc[0].player, team_key_to_display(term.league, term.team), overlap_range[0], overlap_range[1], overlap_range[2], overlap_range[3], overlap_range[4], overlap_range[5]]))
     # sort all teammates by first overlap year
     output.sort()
     sorted_output = []
@@ -106,6 +79,8 @@ def player_to_description(player_row):
     year2 = pd.to_datetime(player_row.end_date).year
     return f"most recently {player_row.team} ({year1}-{year2})"
 
+# for all multiple possible players for a given name input, 
+# list out all options, each with an attached description of the most recent NHL team they played for 
 def format_multiple_options(links):
     unique_players = {}
     for index, row in links.iterrows():
@@ -113,20 +88,37 @@ def format_multiple_options(links):
             unique_players[row.link] = {'player': row.player, 'link': row.link, 'start_date': row.start_date, 'end_date': row.end_date, 'description': player_to_description(row), 'team': row.team}
         else:
             other_start_date = unique_players[row.link]['start_date']
-            if row.start_date > other_start_date:
-                # new latest season, update player info
+            if row.start_date > other_start_date and row.league == 'nhl':
+                # new latest season (restrict to NHL only), update player info
                 unique_players[row.link] = {'player': row.player, 'link': row.link, 'start_date': row.start_date, 'end_date': row.end_date, 'description': player_to_description(row), 'team': row.team}
     return unique_players.values()
 
+def strip_accents(text):
+    try:
+        text = unicode(text, 'utf-8')
+    except NameError: # unicode is a default on python 3
+        pass
+    text = unicodedata.normalize('NFD', text)\
+           .encode('ascii', 'ignore')\
+           .decode("utf-8")
+    return str(text)
+
+
+# given an input name, return the player id (EliteProspects url)
+# if there are multiple possible players, return all possibilities, each with a description
 def retrieve_player_link(name):
     conn = sql.connect(db_name)
-    links = pd.read_sql_query(f'select * from skaters where player=="{name}"', conn)
-    unique_links = links.link.unique()
+    tgt_name = strip_accents(name.lower())
+    names = pd.read_sql_query(f'select * from names where norm_name=="{tgt_name}"', conn)
+    unique_links = set()
+    for index, name_row in names.iterrows():
+        links = pd.read_sql_query(f'select * from skaters where player=="{name_row.orig_name}"', conn)
+        unique_links.update(list(links.link.unique()))
     if len(unique_links) == 1:
-        return unique_links[0], 1
-    elif len(links) == 0:
-        return name, 0
+        return 1, (names.iloc[0].orig_name, list(unique_links)[0])
+    elif len(unique_links) == 0:
+        return 0, name
     else:
         # format output
         output = format_multiple_options(links)
-        return output, len(output)
+        return len(output), output

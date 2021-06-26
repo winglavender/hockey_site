@@ -13,13 +13,13 @@
     <p>There are multiple players with the specified names. Please select one:</p>
     <b>Player 1</b><br>
     {% for player1 in data1 %}
-    <input type="radio" id={{player1.link}} name="playerid1" value={{player1.link}} required>
-    <label for={{player1.link}}>{{player1.player}}, {{player1.description}}</label><br>
+    <input type="radio" id="p1#{{player1.link}}" name="playerid1" value="{{player1.player}}#{{player1.link}}" required>
+    <label for="p1#{{player1.link}}">{{player1.player}}, {{player1.description}}</label><br>
     {% endfor %}
     <b>Player 2</b><br>
     {% for player2 in data2 %}
-    <input type="radio" id={{player2.link}} name="playerid2" value={{player2.link}} required>
-    <label for={{player2.link}}>{{player2.player}}, {{player2.description}}</label><br>
+    <input type="radio" id="p2#{{player2.link}}" name="playerid2" value="{{player2.player}}#{{player2.link}}" required>
+    <label for="p2#{{player2.link}}">{{player2.player}}, {{player2.description}}</label><br>
     {% endfor %}
     <br>
     <input type="submit" name="submit" value="Submit">

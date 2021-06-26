@@ -20,15 +20,17 @@ def home():
 def form_result():
     if request.method == "POST":
         target = request.form['target']
-        output, num_results = retrieve_player_link(target)
+        num_results, output = retrieve_player_link(target)
         if num_results == 1:
             # output is unique player link
-            data = query_career_teammates(output) 
-            return render_template('results.html', data=data, player=target)
+            orig_name, player_id = output
+            data = query_career_teammates(player_id) 
+            return render_template('results.html', data=data, player=orig_name)
         elif num_results == 0:
             # output is player name searched
             return render_template('no_results.html', playername=output)
         else:
+            # output contains list of options for player
             return render_template('options.html', data=output)
     else:
         return render_template('error.html')
@@ -37,31 +39,39 @@ def form_result():
 def pair_form_result():
     if request.method == "POST":
         player1 = request.form['player1']
-        session["player1"] = player1
-        target1, num_results1 = retrieve_player_link(player1)
+        #session["player1"] = player1
+        num_results1, target1 = retrieve_player_link(player1)
         player2 = request.form['player2']
-        session["player2"] = player2
-        target2, num_results2 = retrieve_player_link(player2)
+        #session["player2"] = player2
+        num_results2, target2 = retrieve_player_link(player2)
         if num_results1 == 1 and num_results2 == 1:
             # we have unique player ids for both
-            if target1 == target2:
+            orig_name1, player_id1 = target1
+            orig_name2, player_id2 = target2
+            if player_id1 == player_id2:
                 return render_template('pair_same_player.html')
-            data = query_pair_teammates(target1, target2)
+            data = query_pair_teammates(player_id1, player_id2)
             if len(data) == 0:
-                return render_template('no_pair_results.html', playername1=player1, playername2=player2)
+                return render_template('no_pair_results.html', playername1=orig_name1, playername2=orig_name2)
             else:
-                return render_template('pair_results.html', data=data, playername1=player1, playername2=player2)
+                return render_template('pair_results.html', data=data, playername1=orig_name1, playername2=orig_name2)
         elif num_results1 == 0:
             return render_template('no_results.html', playername=target1)
         elif num_results2 == 0:
             return render_template('no_results.html', playername=target2)
         elif num_results1 > 1 and num_results2 == 1:
             # clarify player 1
-            session["player2_id"] = target2
+            session["player2"], session["player2_id"] = target2
+            session.pop("player1", None)
+            session.pop("player1_id", None)
+            #session["player2_id"] = target2
             return render_template('options_1.html', data=target1)
         elif num_results2 > 1 and num_results1 == 1:
             # clarify player 2
-            session["player2"] = player2
+            session["player1"], session["player1_id"] = target1
+            session.pop("player2", None)
+            session.pop("player2_id", None)
+            #session["player1_id"] = target1
             return render_template('options_1.html', data=target2)
         else:
             # clarify both players
@@ -73,10 +83,14 @@ def pair_form_result():
 def options_result_1():
     if request.method == "POST":
         target = request.form['playerid']
+        print(target)
+        tmp = target.split("#")
         if "player1_id" not in session:
-            session["player1_id"] = target
+            session["player1"] = tmp[0]
+            session["player1_id"] = tmp[1] 
         elif "player2_id" not in session:
-            session["player2_id"] = target
+            session["player2"] = tmp[0]
+            session["player2_id"] = tmp[1]
         if session["player1_id"] == session["player2_id"]:
             return render_template("pair_same_player.html")
         data = query_pair_teammates(session["player1_id"], session["player2_id"])
@@ -90,8 +104,12 @@ def options_result_1():
 @app.route("/options_result_2", methods=["GET", "POST"])
 def options_result_2():
     if request.method == "POST":
-        session["player1_id"] = request.form['playerid1']
-        session["player2_id"] = request.form['playerid2']
+        tmp1 = request.form['playerid1'].split("#")
+        tmp2 = request.form['playerid2'].split("#")
+        session["player1"] = tmp1[0]
+        session["player1_id"] = tmp1[1]
+        session["player2"] = tmp2[0]
+        session["player2_id"] = tmp2[1]
         if session["player1_id"] == session["player2_id"]:
             return render_template("pair_same_player.html")
         data = query_pair_teammates(session["player1_id"], session["player2_id"])
@@ -106,8 +124,9 @@ def options_result_2():
 def options_result():
     if request.method == "POST":
         target = request.form['playerid']
-        data = query_career_teammates(target)
-        return render_template('results.html', data=data)
+        tmp = target.split("#")
+        data = query_career_teammates(tmp[1])
+        return render_template('results.html', data=data, player=tmp[0])
     else:
         return render_template('error.html')
 

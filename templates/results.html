@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Hockey Roster Query</title>
     <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['timeline']});
@@ -27,9 +28,20 @@
             dataTable.addRow([ player[0], player[1], new Date(player[2], player[3], player[4]),  new Date(player[5], player[6], player[7]) ]);
         }
         var options = {
-            timeline: { barLabelStyle: {fontSize: 10}}
+            chartArea: {
+                left: 0,
+                top: 0,
+                height: "70%",
+                width: "70%"
+            }
         };
+        var chart = new google.visualization.Timeline(document.getElementById('timeline'));
         chart.draw(dataTable,options);
+        $(document).ready(function () {
+             $(window).resize(function(){
+         drawChart();
+         });
+       }); 
       }
     </script>
   </head>
@@ -37,7 +49,9 @@
 
   <h1>Teammates</h1>
   <h3>Player: {{player}}</h3>
-    <div id="timeline" style="height: 600px;"></div>
+  <div id="visualization_wrap">
+    <div id="timeline"></div>
+    </div>
              
     <a href="{{ url_for('home') }}">Return to main page</a>
   </body>

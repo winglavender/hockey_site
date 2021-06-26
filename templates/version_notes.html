@@ -12,17 +12,18 @@
      Version Notes 
     </h1>
 
-    <h2>Version 0.5</h2>
+    <h2>Version 0.6</h2>
    
     <h3>Notes</h3>
     <ul>
-    <li>Contains skater and goalie data from NHL and other leagues (see <a href="{{ url_for('notes') }}">more details</a>) from 2000-2021</li>
+    <li>Contains skater and goalie data from NHL and other leagues (see <a href="{{ url_for('data') }}">more details</a>) from 2000-2021</li>
+    <li>Can now handle names with arbitrary capitalization and without diacritics ("Nicklas Backstrom" and "nicklas backstrom" and "Nicklas Bäckström" all return the same result)</li>
     </ul>
     
     <h3>Known Issues</h3>
     <ul>
         <li>Trade information is incomplete. The exact trade dates are missing, so two players may erroneously appear as teammates or not if they were traded in the same year to/from the same team. Team information for players that were traded multiple times in one year is incomplete.</li>
-        <li>Skaters' full names must be entered exactly as they appear on <a href="https://eliteprospects.com">EliteProspects</a>, including accents (for example, "Nicklas Bäckström" will return results but "Nicklas Backstrom" will not).</li>
+        <li>Skaters' full names must be match the spelling used by <a href="https://eliteprospects.com">EliteProspects</a> (although diacritics and capitalization is options). So, for example, "Yevgeni Malkin" will return results but "Evgeni Malkin" will not).</li>
     </ul>
 
     <a href="{{ url_for('home') }}">Return to main page</a>
