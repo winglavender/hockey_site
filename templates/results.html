@@ -19,24 +19,13 @@
         dataTable.addColumn({ type: 'string', id: 'Summary' });
         dataTable.addColumn({ type: 'date', id: 'Start' });
         dataTable.addColumn({ type: 'date', id: 'End' });
-        var row_count = 1;
-        console.log(player_data)
-        console.log(player_data[0])
         for (var player_count in player_data) {
             var player = player_data[player_count]
             console.log(player_data[player_count])
             dataTable.addRow([ player[0], player[1], new Date(player[2], player[3], player[4]),  new Date(player[5], player[6], player[7]) ]);
         }
-        var options = {
-            chartArea: {
-                left: 0,
-                top: 0,
-                height: "70%",
-                width: "70%"
-            }
-        };
         var chart = new google.visualization.Timeline(document.getElementById('timeline'));
-        chart.draw(dataTable,options);
+        chart.draw(dataTable);
         $(document).ready(function () {
              $(window).resize(function(){
          drawChart();
@@ -49,10 +38,8 @@
 
   <h1>Teammates</h1>
   <h3>Player: {{player}}</h3>
-  <div id="visualization_wrap">
     <div id="timeline"></div>
-    </div>
              
-    <a href="{{ url_for('home') }}">Return to main page</a>
+    <!--<a href="{{ url_for('home') }}">Return to main page</a>-->
   </body>
 </html>
