@@ -7,10 +7,9 @@
   </head>
   <body>
 
-  <h1>Teammates</h1>
-  <h3>Players: {{playername1}} and {{playername2}}</h3>
+ <h3>No overlap found</h3>
 
-    <p>These players have not played on a team together, at least according to the data currently available on this site (<a href="{{ url_for('data') }}">more details</a>).</p>
+<p><b>{{playername1}}</b> and <b>{{playername2}}</b> have not played on a team together, at least according to the data currently available on this site (<a href="{{ url_for('data') }}">more details</a>).</p>
              
     <a href="{{ url_for('home') }}">Return to main page</a>
   </body>
