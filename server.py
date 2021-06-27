@@ -138,6 +138,10 @@ def version_notes():
 def data():
     return render_template("data.html")
 
+@app.route("/contact")
+def contact():
+    return render_template("contact.html")
+
 @app.route("/test")
 def test():
     data = []
