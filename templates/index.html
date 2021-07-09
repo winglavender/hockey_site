@@ -3,21 +3,23 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Hockey Roster Queries</title>
+    <title>Hockey Teammates</title>
     <link rel="stylesheet" type="text/css" href="../static/style.css">
 
   </head>
   <body>
 
 
-      <h3>Teammate query</h3>
+      <h3>Hockey Teammates</h3>
+
+      <p>An app to help you figure out which hockey players have been on a team together (NHL-focused, but includes data from some junior, pro, and tournament teams)</p>
 
     <div id="content">
     <a href="{{ url_for('version_notes') }}">Version Notes</a> | <a href="{{ url_for('data') }}">Data</a> | <a href="{{ url_for('contact') }}">Contact</a><br><br>
 
     <form method="post" action="/form_result">
     <fieldset>
-    <b>Show a player's teammates over their whole career</b><br><br>
+    <b>View a player's teammates over their whole career</b><br><br>
         <label for="target">Player:</label>
             <input type="text" id="target" name="target" required><br><br>
         <input type="submit" name="submit" value="Submit">

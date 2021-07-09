@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Hockey Roster Queries</title>
+    <title>Hockey Teammates</title>
     <link rel="stylesheet" type="text/css" href="../static/style.css">
   </head>
   <body>
@@ -12,18 +12,19 @@
      Version Notes 
     </h3>
 
-    <p><b>Version 0.6</b></p>
+    <p><b>Version 0.7</b></p>
    
     <p><b>Notes</b></p>
     <ul>
     <li>Contains skater and goalie data from NHL and other leagues (see <a href="{{ url_for('data') }}">more details</a>) from 2000-2021</li>
     <li>Can now handle names with arbitrary capitalization and without diacritics ("Nicklas Backstrom" and "nicklas backstrom" and "Nicklas Bäckström" all return the same result)</li>
+    <li>Updated duration of tournament teams to be more realistic</li>
     </ul>
     
     <p><b>Known Issues</b></p>
     <ul>
-        <li>Trade information is incomplete. The exact trade dates are missing, so two players may erroneously appear as teammates or not if they were traded in the same year to/from the same team. Team information for players that were traded multiple times in one year is incomplete.</li>
-        <li>Skaters' full names must be match the spelling used by <a href="https://eliteprospects.com">EliteProspects</a> (although diacritics and capitalization is options). So, for example, "Yevgeni Malkin" will return results but "Evgeni Malkin" will not).</li>
+        <li>Trade information is incomplete. Specifically, the exact trade dates are missing, so some players may incorrectly appear as teammates if they were traded on the same date between the same teams.</li>
+        <li>Skaters' full names must be match the spelling used by <a href="https://eliteprospects.com">EliteProspects</a> (although diacritics and capitalization are optional). So, for example, "Yevgeni Malkin" will return results but "Evgeni Malkin" will not).</li>
     </ul>
 
     <a href="{{ url_for('home') }}">Return to main page</a>

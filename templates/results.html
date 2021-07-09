@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hockey Roster Query</title>
+    <title>Hockey Teammates</title>
     <link rel="stylesheet" type="text/css" href="../static/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -17,12 +17,12 @@
 
         dataTable.addColumn({ type: 'string', id: 'Name' });
         dataTable.addColumn({ type: 'string', id: 'Summary' });
+        dataTable.addColumn({ type: 'string', role: 'tooltip' });
         dataTable.addColumn({ type: 'date', id: 'Start' });
         dataTable.addColumn({ type: 'date', id: 'End' });
         for (var player_count in player_data) {
             var player = player_data[player_count]
-            console.log(player_data[player_count])
-            dataTable.addRow([ player[0], player[1], new Date(player[2], player[3], player[4]),  new Date(player[5], player[6], player[7]) ]);
+            dataTable.addRow([ player[0], player[1], player[2], new Date(player[3], player[4], player[5]),  new Date(player[6], player[7], player[8]) ]);
         }
         var chart = new google.visualization.Timeline(document.getElementById('timeline'));
         chart.draw(dataTable);

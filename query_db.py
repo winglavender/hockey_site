@@ -3,9 +3,10 @@ import sqlite3 as sql
 import unicodedata
 
 db_name = 'hockey_rosters_v8.db'
+leagues = {'nhl': 'NHL', 'og': 'Olympics', 'khl': 'KHL', 'ahl': 'AHL', 'wc': 'Worlds', 'ohl': 'OHL', 'whl': 'WHL', 'qmjhl': 'QMJHL', 'ushl': 'USHL', 'usdp': 'USDP', 'ncaa': 'NCAA', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', 'wcup': 'World Cup'}
+tournament_leagues = set(['og', 'wc', 'wjc-20', 'wjc-18', 'whc-17', 'wcup'])
 
 def league_key_to_display(league_str):
-    leagues = {'nhl': 'NHL', 'og': 'Olympics', 'khl': 'KHL', 'ahl': 'AHL', 'wc': 'Worlds', 'ohl': 'OHL', 'whl': 'WHL', 'qmjhl': 'QMJHL', 'ushl': 'USHL', 'usdp': 'USDP', 'ncaa': 'NCAA', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', 'wcup': 'World Cup'}
     return leagues[league_str]
 
 def team_key_to_display(league_str, team_str):
@@ -17,6 +18,16 @@ def team_key_to_display(league_str, team_str):
         return f"{team_str} World Cup"
     else:
         return team_str
+
+def is_tournament(league_str):
+    if league_str in tournament_leagues:
+        return True
+    return False
+
+def convert_tournament_dates(start_date, end_date):
+    start_year = start_date.year
+    end_year = end_date.year
+    return (pd.to_datetime(f"{start_year}/12/15"), pd.to_datetime(f"{end_year}/1/15"))
 
 def compute_overlap_interval(start_date1, end_date1, start_date2, end_date2):
     start_dates = pd.DataFrame([pd.to_datetime(start_date1), pd.to_datetime(start_date2)])
@@ -40,13 +51,22 @@ def query_career_teammates(target):
         # get preceding teammates
         teammates_b = pd.read_sql_query(f'select * from skaters where league="{term.league}" and team=="{term.team}" and "{term.start_date}" > start_date and "{term.start_date}" < end_date and link != "{term.link}"',conn)
         teammates = pd.concat([teammates_a, teammates_b])
+        team_display_str = team_key_to_display(term.league, term.team)
         for teammate_id in teammates.link.unique():
             # all the overlapping time periods our target has with this teammate
             teammate_rows = teammates.loc[teammates.link==teammate_id]
             #overlap_years_list = []
             for index, teammate_term in teammate_rows.iterrows():
                 overlap_term, seasons_count = compute_overlap_interval(term.start_date, term.end_date, teammate_term.start_date, teammate_term.end_date)
-                output.append((overlap_term[0].year, [teammate_rows.iloc[0].player, team_key_to_display(term.league, term.team), overlap_term[0].year, overlap_term[0].month-1, overlap_term[0].day, overlap_term[1].year, overlap_term[1].month-1, overlap_term[1].day]))
+                tooltip_str = f"{teammate_term.player}<br>{team_display_str}<br>{overlap_term[0].year}-{overlap_term[1].year}"
+                if is_tournament(term.league):
+                    overlap_term = convert_tournament_dates(overlap_term[0], overlap_term[1])
+                else:
+                    if seasons_count == 1:
+                        tooltip_str += f" ({seasons_count} season)"
+                    else:
+                        tooltip_str += f" ({seasons_count} seasons)"
+                output.append((overlap_term[0].year, [teammate_rows.iloc[0].player, team_display_str, tooltip_str, overlap_term[0].year, overlap_term[0].month-1, overlap_term[0].day, overlap_term[1].year, overlap_term[1].month-1, overlap_term[1].day]))
     # sort all teammates by first overlap year
     output.sort()
     sorted_output = []
