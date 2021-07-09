@@ -2,7 +2,7 @@ import pandas as pd
 import sqlite3 as sql
 import unicodedata
 
-db_name = 'hockey_rosters_v8.db'
+db_name = 'hockey_rosters_v9.db'
 leagues = {'nhl': 'NHL', 'og': 'Olympics', 'khl': 'KHL', 'ahl': 'AHL', 'wc': 'Worlds', 'ohl': 'OHL', 'whl': 'WHL', 'qmjhl': 'QMJHL', 'ushl': 'USHL', 'usdp': 'USDP', 'ncaa': 'NCAA', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', 'wcup': 'World Cup'}
 tournament_leagues = set(['og', 'wc', 'wjc-20', 'wjc-18', 'whc-17', 'wcup'])
 
