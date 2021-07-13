@@ -19,7 +19,7 @@ def home():
 @app.route("/form_result", methods=["GET","POST"])
 def form_result():
     if request.method == "POST":
-        target = request.form['target']
+        target = request.form['target'].strip()
         num_results, output = retrieve_player_link(target)
         if num_results == 1:
             # output is unique player link
@@ -38,10 +38,10 @@ def form_result():
 @app.route("/pair_form_result", methods=["GET","POST"])
 def pair_form_result():
     if request.method == "POST":
-        player1 = request.form['player1']
+        player1 = request.form['player1'].strip()
         #session["player1"] = player1
         num_results1, target1 = retrieve_player_link(player1)
-        player2 = request.form['player2']
+        player2 = request.form['player2'].strip()
         #session["player2"] = player2
         num_results2, target2 = retrieve_player_link(player2)
         if num_results1 == 1 and num_results2 == 1:
