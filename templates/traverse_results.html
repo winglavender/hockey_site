@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hockey Teammates</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+  </head>
+  <body>
+
+  <h3>Connecting Players</h3>
+
+  {{data}}
+  <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have played on the same team:</p>
+
+    <table>
+        {% for term in data %}
+        <tr>
+            <td>{{term.team}} ({{term.league}})</td>
+            <td>({{term.year1}}-{{term.year2}})</td>
+        </tr>
+        {% endfor %}
+    </table>
+             
+    <a href="{{ url_for('home') }}">Return to main page</a>
+  </body>
+</html>

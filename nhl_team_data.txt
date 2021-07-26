@@ -1,4 +1,4 @@
-Montreal Canadiens,2000,2021
+Montréal Canadiens,2000,2021
 Chicago Blackhawks,2000,2021
 Boston Bruins,2000,2021
 Detroit Red Wings,2000,2021
@@ -16,10 +16,10 @@ Dallas Stars,2000,2021
 San Jose Sharks,2000,2021
 Anaheim Ducks,2000,2021
 Los Angeles Kings,2000,2021
-Las Vegas Golden Knights,2017,2021
+Vegas Golden Knights,2017,2021
 Minnesota Wild,2000,2021
 Columbus Blue Jackets,2000,2021
-St Louis Blues,2000,2021
+St. Louis Blues,2000,2021
 Ottawa Senators,2000,2021
 Calgary Flames,2000,2021
 Winnipeg Jets,2011,2021

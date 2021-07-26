@@ -128,7 +128,7 @@ class hockey_db():
                 sorted_output[relationship].append(data)
         end = time.time()
         print(f"elapsed time: {end-start}")
-        return sorted_output
+        return sorted_output, len(sorted_output["before"]) + len(sorted_output["after"]) + len(sorted_output["during"])
 
     def is_before_after_during_season(self, season, start_year, end_year):
         season_years = season.split("-")
@@ -158,12 +158,12 @@ class hockey_db():
         unique_players = {}
         for index, row in links.iterrows():
             if row.link not in unique_players:
-                unique_players[row.link] = {'player': row.player, 'link': row.link, 'start_date': row.start_date, 'end_date': row.end_date, 'description': player_to_description(row), 'team': row.team}
+                unique_players[row.link] = {'player': row.player, 'link': row.link, 'start_date': row.start_date, 'end_date': row.end_date, 'description': self.player_to_description(row), 'team': row.team}
             else:
                 other_start_date = unique_players[row.link]['start_date']
                 if row.start_date > other_start_date and row.league == 'nhl':
                     # new latest season (restrict to NHL only), update player info
-                    unique_players[row.link] = {'player': row.player, 'link': row.link, 'start_date': row.start_date, 'end_date': row.end_date, 'description': player_to_description(row), 'team': row.team}
+                    unique_players[row.link] = {'player': row.player, 'link': row.link, 'start_date': row.start_date, 'end_date': row.end_date, 'description': self.player_to_description(row), 'team': row.team}
         return unique_players.values()
 
     def strip_accents(self, text):
@@ -196,6 +196,22 @@ class hockey_db():
             return len(output), output
 
     def traverse_graph(self, player1_id, player2_id):
+        teammates1 = self.get_overlapping_player_terms(player1_id)
+        teammates1_dict = {}
+        for row in teammates1:
+            if row['id'] not in teammates1_dict:
+                teammates1_dict[row['id']] = []
+            teammates1_dict[row['id']].append(row)
+        teammates2 = self.get_overlapping_player_terms(player2_id)
+        overlapping_teammates = []
+        for row in teammates2:
+            if row['id'] in teammates1_dict:
+                overlapping_teammates.append(row)
+        # todo how to display results
+        # todo differentiate shared teammates that were on roster with 1 and 2 at the same time vs not
+        return overlapping_teammates
+
+    def traverse_graph2(self, player1_id, player2_id):
         visited = {} # use this to reconstruct path afterwards
         visited[player1_id] = None
         stack = [(player1_id,0)]
