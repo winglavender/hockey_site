@@ -1,6 +1,7 @@
 import pandas as pd
 import sqlite3 as sql
 import unicodedata
+import time
 
 class hockey_db():
 
@@ -11,7 +12,7 @@ class hockey_db():
         self.skaters.start_date = pd.to_datetime(self.skaters.start_date)
         self.skaters.end_date = pd.to_datetime(self.skaters.end_date)
         self.names = pd.read_sql_query('select * from names', conn)
-        self.league_strings = {'nhl': 'NHL', 'og': 'Olympics', 'khl': 'KHL', 'ahl': 'AHL', 'wc': 'Worlds', 'ohl': 'OHL', 'whl': 'WHL', 'qmjhl': 'QMJHL', 'ushl': 'USHL', 'usdp': 'USDP', 'ncaa': 'NCAA', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', 'wcup': 'World Cup'}
+        self.league_strings = {'nhl': 'NHL', 'og': 'Olympics', 'khl': 'KHL', 'ahl': 'AHL', 'wc': 'Worlds', 'ohl': 'OHL', 'whl': 'WHL', 'qmjhl': 'QMJHL', 'ushl': 'USHL', 'usdp': 'USDP', 'ncaa': 'NCAA', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', 'wcup': 'World Cup', 'shl': 'SHL', 'mhl': 'MHL', 'liiga': 'Liiga', 'u20-sm-liiga': 'U20 SM Liiga', 'u18-sm-sarja': 'U18 SM Sarja', 'j20-superelit': 'J20 SuperElit', 'j18-allsvenskan': 'J18 Allsvenskan'}
         self.tournament_leagues = set(['og', 'wc', 'wjc-20', 'wjc-18', 'whc-17', 'wcup'])
 
     def get_league_display_string(self, league_str):
@@ -75,15 +76,16 @@ class hockey_db():
                             tooltip_str += f" ({season_count} season)"
                         else:
                             tooltip_str += f" ({season_count} seasons)"
-                    output.append((overlap_term[0].year, [teammate_rows.iloc[0].player, term.league, term.team, team_display_str, overlap_term[0].year, overlap_term[0].month-1, overlap_term[0].day, overlap_term[1].year, overlap_term[1].month-1, overlap_term[1].day, tooltip_str]))
+                    output.append((overlap_term[0].year, [teammate_rows.iloc[0].player, term.league, term.team, team_display_str, overlap_term[0].year, overlap_term[0].month-1, overlap_term[0].day, overlap_term[1].year, overlap_term[1].month-1, overlap_term[1].day, tooltip_str, teammate_rows.iloc[0].link]))
         # sort all overlaps by first overlap year
         output.sort()
         sorted_output = []
         for year, data in output:
-            sorted_output.append({"player": data[0], "league": self.get_league_display_string(data[1]), "team": data[2], "team_display": data[3], "year1": data[4], "month1": data[5], "day1": data[6], "year2": data[7], "month2": data[8], "day2": data[9], "tooltip_str": data[10]})
+            sorted_output.append({"player": data[0], "league": self.get_league_display_string(data[1]), "team": data[2], "team_display": data[3], "year1": data[4], "month1": data[5], "day1": data[6], "year2": data[7], "month2": data[8], "day2": data[9], "tooltip_str": data[10], "id": data[11]})
         return sorted_output
     
     def query_roster(self, player_id, team, season):
+        start = time.time()
         output = []
         # set up season start/end timestamps
         years = season.split("-")
@@ -92,13 +94,23 @@ class hockey_db():
         # get all players from (team, year) roster
         teammates_a = self.skaters.loc[(self.skaters.league=="nhl") & (self.skaters.team==team) & (self.skaters.link!=player_id) & (self.skaters.start_date >= season_start) & (self.skaters.start_date<season_end)]
         teammates_b = self.skaters.loc[(self.skaters.league=="nhl") & (self.skaters.team==team) & (self.skaters.link!=player_id) & (season_start>self.skaters.start_date) & (season_start<self.skaters.end_date)]
-        teammates = pd.concat([teammates_a,teammates_b])
-        teammate_ids = teammates.link.unique()
+        potential_teammates = pd.concat([teammates_a,teammates_b])
+        potential_teammate_ids = potential_teammates.link.unique()
         output = {"before": [], "during": [], "after": []}
-        for potential_teammate_id in teammate_ids:
-            overlap = self.get_overlapping_player_terms(player_id, potential_teammate_id)
+        # get all teammates for target player
+        all_player_teammates = self.get_overlapping_player_terms(player_id)
+        # reformat
+        overlapping_teammates = {}
+        for row in all_player_teammates:
+            if row['id'] in potential_teammate_ids:
+                if row['id'] not in overlapping_teammates:
+                    overlapping_teammates[row['id']] = []
+                overlapping_teammates[row['id']].append(row)
+        for teammate_id in overlapping_teammates:
+            overlap = overlapping_teammates[teammate_id]
+            #overlap = self.get_overlapping_player_terms(player_id, potential_teammate_id)
             if len(overlap) > 0:
-                playername = self.get_player_name_from_id(potential_teammate_id)
+                playername = self.get_player_name_from_id(teammate_id)
                 formatted_data = {"before": [], "after": [], "during": []}
                 for term in overlap:
                     relationships = self.is_before_after_during_season(season, term['year1'], term['year2'])
@@ -114,6 +126,8 @@ class hockey_db():
             output[relationship].sort()
             for name, data in output[relationship]:
                 sorted_output[relationship].append(data)
+        end = time.time()
+        print(f"elapsed time: {end-start}")
         return sorted_output
 
     def is_before_after_during_season(self, season, start_year, end_year):
@@ -180,3 +194,32 @@ class hockey_db():
             # format output
             output = self.format_multiple_options(ids)
             return len(output), output
+
+    def traverse_graph(self, player1_id, player2_id):
+        visited = {} # use this to reconstruct path afterwards
+        visited[player1_id] = None
+        stack = [(player1_id,0)]
+        max_hops = 4
+        while len(stack) > 0:
+            current_id, current_level = stack.pop(0)
+            if current_id == player2_id:
+                return self.construct_path(visited, player1_id, player2_id)
+            if current_level >= max_hops:
+                return [] # no path found
+            else:
+                # get all connected nodes and add to stack
+                teammate_terms = self.get_overlapping_player_terms(current_id)
+                for term in teammate_terms:
+                    if term["id"] not in visited:
+                        stack.append((term["id"], current_level+1))
+                        visited[term["id"]] = current_id
+        return [] # no path found
+
+    def construct_path(self, visited, player1_id, player2_id):
+        current_node = player2_id
+        path = []
+        while (current_node != player1_id):
+            path.append(current_node)
+            current_node = visited[current_node]
+        path.reverse()
+        return path

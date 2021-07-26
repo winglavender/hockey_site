@@ -57,11 +57,10 @@ def pair_form_result():
     if request.method == "POST":
         db = hockey_db()
         player1 = request.form['player1'].strip()
-        #session["player1"] = player1
         num_results1, target1 = db.retrieve_player_link(player1)
         player2 = request.form['player2'].strip()
-        #session["player2"] = player2
         num_results2, target2 = db.retrieve_player_link(player2)
+        session["task"] = "pair"
         if num_results1 == 1 and num_results2 == 1:
             # we have unique player ids for both
             orig_name1, player_id1 = target1
@@ -124,6 +123,50 @@ def player_team_year_result():
     else:
         return render_template('error.html')
 
+@app.route("/graph_traverse_result", methods=["GET", "POST"])
+def graph_traverse_result():
+    if request.method == "POST":
+        db = hockey_db()
+        player1 = request.form['player1'].strip()
+        num_results1, target1 = db.retrieve_player_link(player1)
+        player2 = request.form['player2'].strip()
+        num_results2, target2 = db.retrieve_player_link(player2)
+        session["task"] = "traverse"
+        if num_results1 == 1 and num_results2 == 1:
+            # we have unique player ids for both
+            orig_name1, player_id1 = target1
+            orig_name2, player_id2 = target2
+            if player_id1 == player_id2:
+                return render_template('traverse_same_player.html')
+            data = db.traverse_graph(player_id1, player_id2)
+            if len(data) == 0:
+                return render_template('no_traverse_results.html', playername1=orig_name1, playername2=orig_name2)
+            else:
+                return render_template('traverse_results.html', data=data, playername1=orig_name1, playername2=orig_name2)
+        elif num_results1 == 0:
+            return render_template('no_results.html', playername=target1)
+        elif num_results2 == 0:
+            return render_template('no_results.html', playername=target2)
+        elif num_results1 > 1 and num_results2 == 1:
+            # clarify player 1
+            session["player2"], session["player2_id"] = target2
+            session.pop("player1", None)
+            session.pop("player1_id", None)
+            #session["player2_id"] = target2
+            return render_template('options_1.html', data=target1)
+        elif num_results2 > 1 and num_results1 == 1:
+            # clarify player 2
+            session["player1"], session["player1_id"] = target1
+            session.pop("player2", None)
+            session.pop("player2_id", None)
+            #session["player1_id"] = target1
+            return render_template('options_1.html', data=target2)
+        else:
+            # clarify both players
+            return render_template('options_2.html', data1=target1, data2=target2)
+    else:
+        return render_template('error.html')
+
 @app.route("/options_result_1", methods=["GET", "POST"])
 def options_result_1():
     if request.method == "POST":
@@ -136,13 +179,17 @@ def options_result_1():
             session["player2"] = tmp[0]
             session["player2_id"] = tmp[1]
         if session["player1_id"] == session["player2_id"]:
-            return render_template("pair_same_player.html")
+            return render_template(f"{session['task']}_same_player.html")
         db = hockey_db()
-        data = db.query_pair_teammates(session["player1_id"], session["player2_id"])
+        data = []
+        if session["task"] == "traverse":
+            data = db.traverse_graph(session["player1_id"], session["player2_id"])
+        elif session["task"] == "pair":
+            data = db.query_pair_teammates(session["player1_id"], session["player2_id"])
         if len(data) == 0:
-            return render_template('no_pair_results.html', playername1=session.get("player1"), playername2=session.get("player2"))
+            return render_template(f'no_{session["task"]}_results.html', playername1=session.get("player1"), playername2=session.get("player2"))
         else:
-            return render_template('pair_results.html', data=data, playername1=session.get("player1"), playername2=session.get("player2"))
+            return render_template(f'{session["task"]}_results.html', data=data, playername1=session.get("player1"), playername2=session.get("player2"))
     else:
         return render_template('error.html')
 
@@ -156,13 +203,17 @@ def options_result_2():
         session["player2"] = tmp2[0]
         session["player2_id"] = tmp2[1]
         if session["player1_id"] == session["player2_id"]:
-            return render_template("pair_same_player.html")
+            return render_template(f"{session['task']}_same_player.html")
         db = hockey_db()
-        data = db.query_pair_teammates(session["player1_id"], session["player2_id"])
+        data = []
+        if session["task"] == "traverse":
+            data = db.traverse_graph(session["player1_id"], session["player2_id"])
+        elif session["task"] == "pair":
+            data = db.query_pair_teammates(session["player1_id"], session["player2_id"])
         if len(data) == 0:
-            return render_template('no_pair_results.html', playername1=session.get("player1"), playername2=session.get("player2"))
+            return render_template(f'no_{session["task"]}_results.html', playername1=session.get("player1"), playername2=session.get("player2"))
         else:
-            return render_template('pair_results.html', data=data, playername1=session.get("player1"), playername2=session.get("player2"))
+            return render_template('{session["task"]}_results.html', data=data, playername1=session.get("player1"), playername2=session.get("player2"))
     else:
         return render_template('error.html')
 
@@ -188,27 +239,6 @@ def data():
 @app.route("/contact")
 def contact():
     return render_template("contact.html")
-
-@app.route("/test")
-def test():
-    data = []
-    with open('data_cmd.txt') as in_file:
-        for line in in_file:
-            tmp = line.strip().split("\t")
-            playername = tmp[0]
-            ranges = tmp[1].split(",")
-            for range_str in ranges:
-               # range_str = tmp[1].split(",")[0]
-                new_str = range_str[1:-1]
-                tmp1 = new_str.split("-")
-                year1 = int(tmp1[0])
-                month1 = 8 
-                day1 = 1
-                year2 = int(tmp1[1])
-                month2 = 5 
-                day2 = 30
-                data.append((playername,f'Edmonton Oilers', year1, month1, day1, year2, month2, day2)) 
-    return render_template("test.html",data=data)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80)
