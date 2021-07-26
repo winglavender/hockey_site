@@ -5,24 +5,29 @@
 
     <title>Hockey Teammates</title>
     <link rel="stylesheet" type="text/css" href="../static/style.css">
-
+    <script>
+function reset_options() {
+    document.getElementById('team').selectedIndex=-1;
+    document.getElementById('season').selectedIndex = -1;
+    return true;
+}
+</script>
   </head>
-  <body>
+  <body onbeforeunload='reset_options()'>
 
 
       <h3>Hockey Teammates</h3>
-
-      <p>An app to help you figure out which hockey players have been on a team together (focused on NHL players from 2000-2021 with additional data from international tournaments and some other pro and junior hockey leagues; see <a href="{{ url_for('version_notes') }}">the version notes</a> for more details). </p>
+      <p>An app to help you figure out which hockey players have been on a team together (focused on NHL players from 2000-2021 with additional data from international tournaments and some other pro and junior hockey leagues; see <a href="{{ url_for('details') }}">more details</a>). </p>
 
     <div id="content">
-    <a href="{{ url_for('version_notes') }}">Version Notes</a> | <a href="{{ url_for('data') }}">Data</a> | <a href="{{ url_for('contact') }}">Contact</a><br><br>
+    <a href="{{ url_for('details') }}">Details</a> | <a href="{{ url_for('data') }}">Data</a> | <a href="{{ url_for('contact') }}">Contact</a><br><br>
 
     <form method="post" action="/form_result">
     <fieldset>
     <b>View a player's teammates over their whole career</b><br><br>
         <label for="target">Player:</label>
-            <input type="text" id="target" name="target" required><br><br>
-        <input type="submit" name="submit" value="Submit"><br><br>
+            <input type="text" id="target" name="target" required>&nbsp;&nbsp;
+            <input type="submit" name="submit" value="Submit"><br><br>
     Note: results may not display well on mobile devices; try rotating your phone to landscape mode, or use a computer for best results.<br>
     </fieldset>
     </form><br><br>
@@ -31,15 +36,56 @@
     <fieldset>
     <b>Check whether two players have been teammates</b><br><br>
         <label for="player1">Player 1:</label>
-            <input type="text" id="player1" name="player1" required><br><br>
+            <input type="text" id="player1" name="player1" required>&nbsp;&nbsp;
         <label for="player2">Player 2:</label>
-            <input type="text" id="player2" name="player2" required><br><br>
+            <input type="text" id="player2" name="player2" required>&nbsp;&nbsp;
         <input type="submit" name="submit" value="Submit">
+    </fieldset>
+    </form><br><br>
+
+    <form method="post" action="/player_team_year_result">
+    <fieldset>
+    <b>Check for overlapping players on another team's roster</b><br><br>
+        <label for="player">Player:</label>
+            <input type="text" id="player" name="player" required>&nbsp;&nbsp;
+        <label for="team">Team:</label>
+            <select name="team" id="team">
+                {% for team in nhl_team_data.team_order %}
+                <option value="{{team}}">{{team}}</option>
+                {% endfor %}
+            </select>&nbsp;&nbsp;
+        <label for="season">Season:</label>
+            <select name="season" id="season">
+                {% for season in nhl_team_data.team1_seasons %}
+                <option value="{{season}}">{{season}}</option>
+                {% endfor %}
+            </select>&nbsp;&nbsp;
+       <input type="submit" name="submit" value="Submit" id="submit3">
     </fieldset>
     </form>
 
     </div>
     </body>
 
-<!--    <a href="{{ url_for('test') }}">Test</a>-->
+    <script type="text/javascript">
+        var seasons = {};
+        var team_data = {{nhl_team_data|tojson}};
+        console.log(team_data);
+        for (var team_name in team_data["team_seasons"]) {
+            seasons[team_name] = [];
+            for (var team_season_id in team_data["team_seasons"][team_name]) {
+                var team_season = team_data["team_seasons"][team_name][team_season_id];
+                seasons[team_name].push({value: team_season, desc: team_season});
+            }
+        }
+        console.log(seasons);
+        const season = document.querySelector('[name=season]');
+        document.querySelector('[name=team]').addEventListener('change', function(e) {
+            season.innerHTML = seasons[this.value].reduce((acc, elem) => `${acc}<option value="${elem.value}">${elem.desc}</option>`, "");
+        });
+        document.querySelector('[name=team]').addEventListener('backbutton', function(e) {
+            season.innerHTML = seasons[this.value].reduce((acc, elem) => `${acc}<option value="${elem.value}">${elem.desc}</option>`, "");
+        });
+    </script>
+
 </html>

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session
-from query_db import query_career_teammates, retrieve_player_link, query_pair_teammates
+from query_db import hockey_db #query_career_teammates, retrieve_player_link, query_pair_teammates, query_player_team_year
 import os
 
 app = Flask(__name__)
@@ -12,19 +12,36 @@ if local:
 else:
     app.config.update(SECRET_KEY = os.getenv("SECRET_KEY"))
 
+# populate NHL team data
+nhl_team_data = {'team_order': [], 'team_seasons': {}}
+with open('nhl_team_data.txt','r') as in_file:
+    for line in in_file:
+        tokens = line.strip().split(",")
+        start_year = int(tokens[1])
+        end_year = int(tokens[2])
+        seasons = []
+        for i in range(end_year,start_year,-1):
+            seasons.append(f"{i-1}-{i}")
+        nhl_team_data['team_order'].append(tokens[0])
+        nhl_team_data['team_seasons'][tokens[0]] = seasons
+nhl_team_data['team_order'].sort()
+nhl_team_data['team1_seasons'] = nhl_team_data['team_seasons'][nhl_team_data['team_order'][0]]
+
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template("index.html",nhl_team_data=nhl_team_data)
 
 @app.route("/form_result", methods=["GET","POST"])
 def form_result():
     if request.method == "POST":
         target = request.form['target'].strip()
-        num_results, output = retrieve_player_link(target)
+        db = hockey_db()
+        num_results, output = db.retrieve_player_link(target)
         if num_results == 1:
             # output is unique player link
             orig_name, player_id = output
-            data = query_career_teammates(player_id) 
+            #data = query_career_teammates(player_id) 
+            data = db.get_overlapping_player_terms(player_id)
             return render_template('results.html', data=data, player=orig_name)
         elif num_results == 0:
             # output is player name searched
@@ -38,19 +55,21 @@ def form_result():
 @app.route("/pair_form_result", methods=["GET","POST"])
 def pair_form_result():
     if request.method == "POST":
+        db = hockey_db()
         player1 = request.form['player1'].strip()
         #session["player1"] = player1
-        num_results1, target1 = retrieve_player_link(player1)
+        num_results1, target1 = db.retrieve_player_link(player1)
         player2 = request.form['player2'].strip()
         #session["player2"] = player2
-        num_results2, target2 = retrieve_player_link(player2)
+        num_results2, target2 = db.retrieve_player_link(player2)
         if num_results1 == 1 and num_results2 == 1:
             # we have unique player ids for both
             orig_name1, player_id1 = target1
             orig_name2, player_id2 = target2
             if player_id1 == player_id2:
                 return render_template('pair_same_player.html')
-            data = query_pair_teammates(player_id1, player_id2)
+            #data = query_pair_teammates(player_id1, player_id2)
+            data = db.get_overlapping_player_terms(player_id1, player_id2)
             if len(data) == 0:
                 return render_template('no_pair_results.html', playername1=orig_name1, playername2=orig_name2)
             else:
@@ -79,11 +98,36 @@ def pair_form_result():
     else:
         return render_template('error.html')
 
+@app.route("/player_team_year_result", methods=["GET", "POST"])
+def player_team_year_result():
+    if request.method == "POST":
+        player = request.form['player'].strip()
+        team = request.form['team']
+        season = request.form['season']
+        db = hockey_db()
+        num_results, target = db.retrieve_player_link(player)
+        if num_results == 1:
+            # we have a unique player id
+            orig_name, player_id = target
+            #data = query_player_team_year(player_id, team, season)
+            data = db.query_roster(player_id, team, season)
+            if len(data) == 0:
+                return render_template('no_player_team_year_results.html', playername=orig_name,team=team, season=season)
+            else:
+                return render_template('player_team_year_results.html', playername=orig_name, team=team, season=season, data=data)
+        elif num_results == 0:
+            return render_template('no_results.html', playername=target)
+        elif num_results > 1:
+            # clarify player id
+            #todo 
+            return render_template('error.html')
+    else:
+        return render_template('error.html')
+
 @app.route("/options_result_1", methods=["GET", "POST"])
 def options_result_1():
     if request.method == "POST":
         target = request.form['playerid']
-        print(target)
         tmp = target.split("#")
         if "player1_id" not in session:
             session["player1"] = tmp[0]
@@ -93,7 +137,8 @@ def options_result_1():
             session["player2_id"] = tmp[1]
         if session["player1_id"] == session["player2_id"]:
             return render_template("pair_same_player.html")
-        data = query_pair_teammates(session["player1_id"], session["player2_id"])
+        db = hockey_db()
+        data = db.query_pair_teammates(session["player1_id"], session["player2_id"])
         if len(data) == 0:
             return render_template('no_pair_results.html', playername1=session.get("player1"), playername2=session.get("player2"))
         else:
@@ -112,7 +157,8 @@ def options_result_2():
         session["player2_id"] = tmp2[1]
         if session["player1_id"] == session["player2_id"]:
             return render_template("pair_same_player.html")
-        data = query_pair_teammates(session["player1_id"], session["player2_id"])
+        db = hockey_db()
+        data = db.query_pair_teammates(session["player1_id"], session["player2_id"])
         if len(data) == 0:
             return render_template('no_pair_results.html', playername1=session.get("player1"), playername2=session.get("player2"))
         else:
@@ -125,14 +171,15 @@ def options_result():
     if request.method == "POST":
         target = request.form['playerid']
         tmp = target.split("#")
-        data = query_career_teammates(tmp[1])
+        db = hockey_db()
+        data = db.query_career_teammates(tmp[1])
         return render_template('results.html', data=data, player=tmp[0])
     else:
         return render_template('error.html')
 
-@app.route("/version_notes")
-def version_notes():
-    return render_template("version_notes.html")
+@app.route("/details")
+def details():
+    return render_template("details.html")
 
 @app.route("/data")
 def data():
@@ -164,4 +211,4 @@ def test():
     return render_template("test.html",data=data)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0', port=80)

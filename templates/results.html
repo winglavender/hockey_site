@@ -22,7 +22,7 @@
         dataTable.addColumn({ type: 'date', id: 'End' });
         for (var player_count in player_data) {
             var player = player_data[player_count]
-            dataTable.addRow([ player[0], player[1], player[2], new Date(player[3], player[4], player[5]),  new Date(player[6], player[7], player[8]) ]);
+            dataTable.addRow([player["player"], player["team_display"], player["tooltip_str"], new Date(player["year1"], player["month1"]-1, player["day1"]), new Date(player["year2"], player["month2"]-1, player["day2"])]);
         }
         var chart = new google.visualization.Timeline(document.getElementById('timeline'));
         chart.draw(dataTable);

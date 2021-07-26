@@ -32,6 +32,9 @@ table {
     table-layout: auto;
     margin: 10px;
 }
+td {
+    padding: 0 15px;
+}
 tr.thead td, td.thead {
     font-weight: bold;
     background: rgba(0, 0, 0, .05);
