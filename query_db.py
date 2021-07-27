@@ -203,39 +203,42 @@ class hockey_db():
                 teammates1_dict[row['id']] = []
             teammates1_dict[row['id']].append(row)
         teammates2 = self.get_overlapping_player_terms(player2_id)
-        overlapping_teammates = []
+        overlapping_teammates = {}
         for row in teammates2:
             if row['id'] in teammates1_dict:
-                overlapping_teammates.append(row)
-        # todo how to display results
-        # todo differentiate shared teammates that were on roster with 1 and 2 at the same time vs not
-        return overlapping_teammates
+                if row['id'] not in overlapping_teammates:
+                    overlapping_teammates[row['id']] = []
+                overlapping_teammates[row['id']].append(row)
+        # format results
+        output = []
+        for player_id in overlapping_teammates:
+            player_name = self.get_player_name_from_id(player_id)
+            output.append((player_name, self.condense_terms_into_table_rows(teammates1_dict[player_id], overlapping_teammates[player_id])))
+        output.sort()
+        sorted_output = []
+        for player_name, data in output:
+            for row in data:
+                sorted_output.append(row)
+        return sorted_output
 
-    def traverse_graph2(self, player1_id, player2_id):
-        visited = {} # use this to reconstruct path afterwards
-        visited[player1_id] = None
-        stack = [(player1_id,0)]
-        max_hops = 4
-        while len(stack) > 0:
-            current_id, current_level = stack.pop(0)
-            if current_id == player2_id:
-                return self.construct_path(visited, player1_id, player2_id)
-            if current_level >= max_hops:
-                return [] # no path found
+    def condense_terms_into_table_rows(self, rows1, rows2):
+        player = rows1[0]["player"]
+        out_list = []
+        max_rows = max(len(rows1), len(rows2))
+        cells = []
+        for i in range(max_rows):
+            row = []
+            if i == 0:
+                row.append(player)
             else:
-                # get all connected nodes and add to stack
-                teammate_terms = self.get_overlapping_player_terms(current_id)
-                for term in teammate_terms:
-                    if term["id"] not in visited:
-                        stack.append((term["id"], current_level+1))
-                        visited[term["id"]] = current_id
-        return [] # no path found
-
-    def construct_path(self, visited, player1_id, player2_id):
-        current_node = player2_id
-        path = []
-        while (current_node != player1_id):
-            path.append(current_node)
-            current_node = visited[current_node]
-        path.reverse()
-        return path
+                row.append("")
+            if i < len(rows1):
+                row.append(f'{rows1[i]["team"]} ({rows1[i]["league"]}, {rows1[i]["year1"]}-{rows1[i]["year2"]})')
+            else:
+                row.append('')
+            if i < len(rows2):
+                row.append(f'{rows2[i]["team"]} ({rows2[i]["league"]}, {rows2[i]["year1"]}-{rows2[i]["year2"]})')
+            else:
+                row.append('')
+            cells.append(row)
+        return cells

@@ -40,8 +40,8 @@ def form_result():
         db = hockey_db()
         num_results, output = db.retrieve_player_link(target)
         session["task"] = "career"
-        session["player2"] = ""
-        session["player2_id"] = ""
+        #session["player2"] = ""
+        #session["player2_id"] = ""
         if num_results == 1:
             # output is unique player link
             orig_name, player_id = output
@@ -52,6 +52,7 @@ def form_result():
             return render_template('no_results.html', playername=output)
         else:
             # output contains list of options for player
+            session["player_to_clarify"] = "player1"
             return render_template('options_1.html', data=output)
     else:
         return render_template('error.html')
@@ -84,14 +85,16 @@ def pair_form_result():
         elif num_results1 > 1 and num_results2 == 1:
             # clarify player 1
             session["player2"], session["player2_id"] = target2
-            session.pop("player1", None)
-            session.pop("player1_id", None)
+            session["player_to_clarify"] = "player1"
+            #session.pop("player1", None)
+            #session.pop("player1_id", None)
             return render_template('options_1.html', data=target1)
         elif num_results2 > 1 and num_results1 == 1:
             # clarify player 2
             session["player1"], session["player1_id"] = target1
-            session.pop("player2", None)
-            session.pop("player2_id", None)
+            session["player_to_clarify"] = "player2"
+            #session.pop("player2", None)
+            #session.pop("player2_id", None)
             return render_template('options_1.html', data=target2)
         else:
             # clarify both players
@@ -110,8 +113,8 @@ def player_team_year_result():
         session["task"] = "roster"
         session["team"] = team
         session["season"] = season
-        session["player2"] = ""
-        session["player2_id"] = ""
+        #session["player2"] = ""
+        #session["player2_id"] = ""
         num_results, target = db.retrieve_player_link(player)
         if num_results == 1:
             # we have a unique player id
@@ -126,6 +129,7 @@ def player_team_year_result():
             return render_template('no_results.html', playername=target)
         elif num_results > 1:
             # clarify player id
+            session["player_to_clarify"] = "player1"
             return render_template('options_1.html', data=target)
     else:
         return render_template('error.html')
@@ -147,10 +151,13 @@ def graph_traverse_result():
             if player_id1 == player_id2:
                 return render_template('traverse_same_player.html')
             data = db.traverse_graph(player_id1, player_id2)
+            team_data = db.get_overlapping_player_terms(player_id1, player_id2)
             if len(data) == 0:
                 return render_template('no_traverse_results.html', playername1=orig_name1, playername2=orig_name2)
-            else:
+            elif len(team_data) == 0:
                 return render_template('traverse_results.html', data=data, playername1=orig_name1, playername2=orig_name2)
+            else:
+                return render_template('traverse_results_same_team.html', data=data, team_data=team_data, playername1=orig_name1, playername2=orig_name2)
         elif num_results1 == 0:
             return render_template('no_results.html', playername=target1)
         elif num_results2 == 0:
@@ -158,14 +165,16 @@ def graph_traverse_result():
         elif num_results1 > 1 and num_results2 == 1:
             # clarify player 1
             session["player2"], session["player2_id"] = target2
-            session.pop("player1", None)
-            session.pop("player1_id", None)
+            session["player_to_clarify"] = "player1"
+            #session.pop("player1", None)
+            #session.pop("player1_id", None)
             return render_template('options_1.html', data=target1)
         elif num_results2 > 1 and num_results1 == 1:
             # clarify player 2
             session["player1"], session["player1_id"] = target1
-            session.pop("player2", None)
-            session.pop("player2_id", None)
+            session["player_to_clarify"] = "player2"
+            #session.pop("player2", None)
+            #session.pop("player2_id", None)
             return render_template('options_1.html', data=target2)
         else:
             # clarify both players
@@ -179,37 +188,42 @@ def options_result_1():
         print(session)
         target = request.form['playerid']
         tmp = target.split("#")
-        if "player1_id" not in session:
+        #if "player1_id" not in session:
+        if session["player_to_clarify"] == "player1":
             session["player1"] = tmp[0]
             session["player1_id"] = tmp[1] 
-        elif "player2_id" not in session:
+        elif session["player_to_clarify"] == "player2":
             session["player2"] = tmp[0]
             session["player2_id"] = tmp[1]
-        if session["player1_id"] == session["player2_id"]:
+        if "player2_id" in session and session["player1_id"] == session["player2_id"]:
             return render_template(f"{session['task']}_same_player.html")
         db = hockey_db()
         data = []
         if session["task"] == "career":
             data = db.get_overlapping_player_terms(session["player1_id"])
-            session["player2"] = "" # dummy
+            print(session)
+            return render_template(f'career_results.html', data=data, playername1=session.get("player1"))
         elif session["task"] == "traverse":
             data = db.traverse_graph(session["player1_id"], session["player2_id"])
-            len_data = len(data)
+            team_data = db.get_overlapping_player_terms(session["player1_id"], session["player2_id"])
+            if len(data) == 0:
+                return render_template('no_traverse_results.html', playername1=session["player1"], playername2=session["player2"])
+            elif len(team_data) == 0:
+                return render_template('traverse_results.html', data=data, playername1=session["player1"], playername2=session["player2"])
+            else:
+                return render_template('traverse_results_same_team.html', data=data, team_data=team_data, playername1=session["player1"], playername2=session["player2"])
         elif session["task"] == "pair":
             data = db.get_overlapping_player_terms(session["player1_id"], session["player2_id"])
-            len_data = len(data)
+            if len(data) == 0:
+                return render_template(f'no_pair_results.html', playername1=session.get("player1"), playername2=session.get("player2"))
+            else:
+                return render_template(f'pair_results.html', data=data, playername1=session.get("player1"), playername2=session.get("player2"))
         elif session["task"] == "roster":
             data, len_data = db.query_roster(session["player1_id"], session["team"], session["season"])
-        if len_data == 0 and session["task"] != "career":
-            if session["task"] == "roster":
+            if len_data == 0:
                 return render_template('no_roster_results.html', playername=session.get("player1"),team=session.get("team"), season=session.get("season"))
             else:
-                return render_template(f'no_{session["task"]}_results.html', playername1=session.get("player1"), playername2=session.get("player2"))
-        else:
-            if session["task"] == "roster":
                 return render_template('roster_results.html', playername=session.get("player1"), team=session.get("team"), season=session.get("season"), data=data)
-            else:
-                return render_template(f'{session["task"]}_results.html', data=data, playername1=session.get("player1"), playername2=session.get("player2"))
     else:
         return render_template('error.html')
 
@@ -228,12 +242,19 @@ def options_result_2():
         data = []
         if session["task"] == "traverse":
             data = db.traverse_graph(session["player1_id"], session["player2_id"])
+            team_data = db.get_overlapping_player_terms(session["player1_id"], session["player2_id"])
+            if len(data) == 0:
+                return render_template('no_traverse_results.html', playername1=session["player1"], playername2=session["player2"])
+            elif len(team_data) == 0:
+                return render_template('traverse_results.html', data=data, playername1=session["player1"], playername2=session["player2"])
+            else:
+                return render_template('traverse_results_same_team.html', data=data, team_data=team_data, playername1=session["player1"], playername2=session["player2"])
         elif session["task"] == "pair":
             data = db.get_overlapping_player_terms(session["player1_id"], session["player2_id"])
-        if len(data) == 0:
-            return render_template(f'no_{session["task"]}_results.html', playername1=session.get("player1"), playername2=session.get("player2"))
-        else:
-            return render_template('{session["task"]}_results.html', data=data, playername1=session.get("player1"), playername2=session.get("player2"))
+            if len(data) == 0:
+                return render_template(f'no_pair_results.html', playername1=session.get("player1"), playername2=session.get("player2"))
+            else:
+                return render_template(f'pair_results.html', data=data, playername1=session.get("player1"), playername2=session.get("player2"))
     else:
         return render_template('error.html')
 
