@@ -46,7 +46,7 @@ def form_result():
             # output is unique player link
             orig_name, player_id = output
             data = db.get_overlapping_player_terms(player_id)
-            return render_template('career_results.html', data=data, player=orig_name)
+            return render_template('career_results.html', data=data, playername1=orig_name)
         elif num_results == 0:
             # output is player name searched
             return render_template('no_results.html', playername=output)
