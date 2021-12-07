@@ -6,16 +6,18 @@ import time
 class hockey_db():
 
     def __init__(self):
-        db_name = 'hockey_rosters_v9.db'
+        db_name = 'hockey_rosters_20211130_formatted.db'
         conn = sql.connect(db_name)
         self.skaters = pd.read_sql_query('select * from skaters', conn)
         self.skaters.start_date = pd.to_datetime(self.skaters.start_date)
         self.skaters.end_date = pd.to_datetime(self.skaters.end_date)
         self.names = pd.read_sql_query('select * from names', conn)
-        self.league_strings = {'nhl': 'NHL', 'og': 'Olympics', 'khl': 'KHL', 'ahl': 'AHL', 'wc': 'Worlds', 'ohl': 'OHL', 'whl': 'WHL', 'qmjhl': 'QMJHL', 'ushl': 'USHL', 'usdp': 'USDP', 'ncaa': 'NCAA', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', 'wcup': 'World Cup', 'shl': 'SHL', 'mhl': 'MHL', 'liiga': 'Liiga', 'u20-sm-liiga': 'U20 SM Liiga', 'u18-sm-sarja': 'U18 SM Sarja', 'j20-superelit': 'J20 SuperElit', 'j18-allsvenskan': 'J18 Allsvenskan'}
+        self.league_strings = {'nhl': 'NHL', 'og': 'Olympics', 'khl': 'KHL', 'ahl': 'AHL', 'wc': 'Worlds', 'ohl': 'OHL', 'whl': 'WHL', 'qmjhl': 'QMJHL', 'ushl': 'USHL', 'usdp': 'USDP', 'ncaa': 'NCAA', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', 'wcup': 'World Cup', 'shl': 'SHL', 'mhl': 'MHL', 'liiga': 'Liiga', 'u20-sm-liiga': 'U20 SM Liiga', 'u18-sm-sarja': 'U18 SM Sarja', 'j20-superelit': 'J20 SuperElit', 'j18-allsvenskan': 'J18 Allsvenskan', 'russia': 'Russia', 'russia3': 'Russia3', 'ushs-prep': 'USHS Prep'}
         self.tournament_leagues = set(['og', 'wc', 'wjc-20', 'wjc-18', 'whc-17', 'wcup'])
 
     def get_league_display_string(self, league_str):
+        if league_str not in self.league_strings:
+            return league_str
         return self.league_strings[league_str]
 
     def get_team_display_string(self, league_str, team_str):
@@ -25,6 +27,12 @@ class hockey_db():
             return f"{team_str} Worlds"
         elif league_str == 'wcup':
             return f"{team_str} World Cup"
+        elif league_str == 'wjc-20':
+            return f"{team_str} World Juniors"
+        elif league_str == 'wjc-18':
+            return f"{team_str} Worlds"
+        elif league_str == 'whc-17':
+            return f"{team_str}"
         else:
             return team_str
 
@@ -39,6 +47,7 @@ class hockey_db():
         return (pd.to_datetime(f"{start_year}/12/15"), pd.to_datetime(f"{end_year}/1/15"))
 
     def compute_overlap_interval(self, start_date1, end_date1, start_date2, end_date2):
+        #print(start_date1, end_date1, start_date2, end_date2)
         start_dates = pd.DataFrame([pd.to_datetime(start_date1), pd.to_datetime(start_date2)])
         end_dates = pd.DataFrame([pd.to_datetime(end_date1), pd.to_datetime(end_date2)])
         start_interval = start_dates.max().iloc[0]
@@ -56,6 +65,7 @@ class hockey_db():
         output = []
         player_rows = self.get_terms_from_player_id(player1_id)
         for index, term in player_rows.iterrows():
+            print(term)
             if player2_id: # only return overlaps involving this specific second target player
                 overlaps_a = self.skaters.loc[(self.skaters.league==term.league) & (self.skaters.team==term.team) & (self.skaters.link==player2_id) & (self.skaters.start_date>=term.start_date) & (self.skaters.start_date<term.end_date)]
                 overlaps_b = self.skaters.loc[(self.skaters.league==term.league) & (self.skaters.team==term.team) & (self.skaters.link==player2_id) & (term.start_date>self.skaters.start_date) & (term.start_date<self.skaters.end_date)]
@@ -76,11 +86,11 @@ class hockey_db():
                             tooltip_str += f" ({season_count} season)"
                         else:
                             tooltip_str += f" ({season_count} seasons)"
-                    output.append((overlap_term[0].year, [teammate_rows.iloc[0].player, term.league, term.team, team_display_str, overlap_term[0].year, overlap_term[0].month-1, overlap_term[0].day, overlap_term[1].year, overlap_term[1].month-1, overlap_term[1].day, tooltip_str, teammate_rows.iloc[0].link]))
+                    output.append((overlap_term[0].year, overlap_term[0].month, overlap_term[0].day, [teammate_rows.iloc[0].player, term.league, term.team, team_display_str, overlap_term[0].year, overlap_term[0].month, overlap_term[0].day, overlap_term[1].year, overlap_term[1].month, overlap_term[1].day, tooltip_str, teammate_rows.iloc[0].link]))
         # sort all overlaps by first overlap year
         output.sort()
         sorted_output = []
-        for year, data in output:
+        for year, month, day, data in output:
             sorted_output.append({"player": data[0], "league": self.get_league_display_string(data[1]), "team": data[2], "team_display": data[3], "year1": data[4], "month1": data[5], "day1": data[6], "year2": data[7], "month2": data[8], "day2": data[9], "tooltip_str": data[10], "id": data[11]})
         return sorted_output
     

@@ -1,31 +1,32 @@
-Montréal Canadiens,2000,2021
-Chicago Blackhawks,2000,2021
-Boston Bruins,2000,2021
-Detroit Red Wings,2000,2021
-Toronto Maple Leafs,2000,2021
-New York Rangers,2000,2021
-New York Islanders,2000,2021
-New Jersey Devils,2000,2021
-Philadelphia Flyers,2000,2021
-Pittsburgh Penguins,2000,2021
-Carolina Hurricanes,2000,2021
-Nashville Predators,2000,2021
-Florida Panthers,2000,2021
-Tampa Bay Lightning,2000,2021
-Dallas Stars,2000,2021
-San Jose Sharks,2000,2021
-Anaheim Ducks,2000,2021
-Los Angeles Kings,2000,2021
-Vegas Golden Knights,2017,2021
-Minnesota Wild,2000,2021
-Columbus Blue Jackets,2000,2021
-St. Louis Blues,2000,2021
-Ottawa Senators,2000,2021
-Calgary Flames,2000,2021
-Winnipeg Jets,2011,2021
-Edmonton Oilers,2000,2021
-Vancouver Canucks,2000,2021
-Arizona Coyotes,2014,2021
-Colorado Avalanche,2000,2021
-Buffalo Sabres,2000,2021
-Washington Capitals,2000,2021
+Montréal Canadiens,2000,2022
+Chicago Blackhawks,2000,2022
+Boston Bruins,2000,2022
+Detroit Red Wings,2000,2022
+Toronto Maple Leafs,2000,2022
+New York Rangers,2000,2022
+New York Islanders,2000,2022
+New Jersey Devils,2000,2022
+Philadelphia Flyers,2000,2022
+Pittsburgh Penguins,2000,2022
+Carolina Hurricanes,2000,2022
+Nashville Predators,2000,2022
+Florida Panthers,2000,2022
+Tampa Bay Lightning,2000,2022
+Dallas Stars,2000,2022
+San Jose Sharks,2000,2022
+Anaheim Ducks,2000,2022
+Los Angeles Kings,2000,2022
+Vegas Golden Knights,2017,2022
+Minnesota Wild,2000,2022
+Columbus Blue Jackets,2000,2022
+St. Louis Blues,2000,2022
+Ottawa Senators,2000,2022
+Calgary Flames,2000,2022
+Winnipeg Jets,2011,2022
+Edmonton Oilers,2000,2022
+Vancouver Canucks,2000,2022
+Arizona Coyotes,2014,2022
+Colorado Avalanche,2000,2022
+Buffalo Sabres,2000,2022
+Washington Capitals,2000,2022
+Seattle Kraken,2021,2022

@@ -12,13 +12,12 @@
   Details
     </h3>
 
-    <p><b>Version 0.9</b></p>
+    <p><b>Version 1.0</b></p>
 
     <ul>
-    <li>New features: added two new queries, 1) comparing a specific player to all the players on a specific NHL roster (for a particular season) to see if they have been teammates at some point, 2) comparing two players' teammates history to see what teammates they have in common.</li>
-    <li>The app focuses on NHL players from 2000-2021. In addition, it contains roster data from the AHL, international tournament teams (Worlds, World Juniors, Olympics), as well as a selection of pro and junior leagues in Canada, the United States, Sweden, Russia, and Finland. See <a href="{{ url_for('data') }}">the full list of included leagues</a>).</li>
+    <li>New features: now includes (mostly accurate) NHL trade dates. Please let me know if you notice any issues!</li>
+    <li>The app focuses on NHL players from 2000-2022. In addition, it contains roster data from the AHL, international tournament teams (Worlds, World Juniors, Olympics), as well as a selection of pro and junior leagues in Canada, the United States, Sweden, Russia, and Finland. See <a href="{{ url_for('data') }}">the full list of included leagues</a>).</li>
     <li>To search for a player, you must use their full name and the exact spelling used by <a href="https://eliteprospects.com">EliteProspects</a>. For example, "Yevgeni Malkin" will return results but "Evgeni Malkin" will not. However, capitalization and diacritics are optional ("Nicklas Backstrom" and "nicklas backstrom" and "Nicklas Bäckström" all return the same result).</li>
-    <li>Exact trade dates aren't available, so some players may incorrectly appear as teammates if they were traded to/from the same team in the same season.</li>
     </ul>
 
     <p>The code is available <a href="https://github.com/winglavender/hockey_teammates">on Github</a>.</p>
