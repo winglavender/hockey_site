@@ -2,6 +2,7 @@ import pandas as pd
 import sqlite3 as sql
 import unicodedata
 import time
+import re
 
 class hockey_db():
 
@@ -184,6 +185,8 @@ class hockey_db():
         text = unicodedata.normalize('NFD', text)\
                .encode('ascii', 'ignore')\
                .decode("utf-8")
+        text = text.replace("-"," ") # handle hyphenated names
+        text = re.sub(r'[^\w\s]', '', text) # remove punctuation (e.g. "J.T. Brown")
         return str(text)
 
 
