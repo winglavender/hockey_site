@@ -14,7 +14,8 @@ class hockey_db():
         self.skaters.end_date = pd.to_datetime(self.skaters.end_date)
         self.names = pd.read_sql_query('select * from names', conn)
         self.league_strings = {'nhl': 'NHL', 'og': 'Olympics', 'khl': 'KHL', 'ahl': 'AHL', 'wc': 'Worlds', 'ohl': 'OHL', 'whl': 'WHL', 'qmjhl': 'QMJHL', 'ushl': 'USHL', 'usdp': 'USDP', 'ncaa': 'NCAA', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', 'wcup': 'World Cup', 'shl': 'SHL', 'mhl': 'MHL', 'liiga': 'Liiga', 'u20-sm-liiga': 'U20 SM Liiga', 'u18-sm-sarja': 'U18 SM Sarja', 'j20-superelit': 'J20 SuperElit', 'j18-allsvenskan': 'J18 Allsvenskan', 'russia': 'Russia', 'russia3': 'Russia3', 'ushs-prep': 'USHS Prep'}
-        self.tournament_leagues = set(['og', 'wc', 'wjc-20', 'wjc-18', 'whc-17', 'wcup'])
+        #self.tournament_leagues = set(['og', 'wc', 'wjc-20', 'wjc-18', 'whc-17', 'wcup'])
+        self.tournament_leagues = {'og': (2,1), 'wjc-20': (1,1), 'wc': (5,1), 'wjc-18': (4,1), 'whc-17': (11,0), 'wcup': (9,0)} # first value is month and second value is 0 if the first year in a season should be used, 1 if the second year in the season should be used
 
     def get_league_display_string(self, league_str):
         if league_str not in self.league_strings:
@@ -42,10 +43,13 @@ class hockey_db():
             return True
         return False
 
-    def convert_tournament_dates(self, start_date, end_date):
-        start_year = start_date.year
-        end_year = end_date.year
-        return (pd.to_datetime(f"{start_year}/12/15"), pd.to_datetime(f"{end_year}/1/15"))
+    def convert_tournament_dates(self, tournament, start_date, end_date):
+        season_years = (start_date.year, end_date.year)
+        tourney_month, tourney_year = self.tournament_leagues[tournament]
+        return (pd.to_datetime(f"{season_years[tourney_year]}/{tourney_month}/1"), pd.to_datetime(f"{season_years[tourney_year]}/{tourney_month}/30"))
+        #start_year = start_date.year
+        #end_year = end_date.year
+        #return (pd.to_datetime(f"{start_year}/12/15"), pd.to_datetime(f"{end_year}/1/15"))
 
     def compute_overlap_interval(self, start_date1, end_date1, start_date2, end_date2):
         #print(start_date1, end_date1, start_date2, end_date2)
@@ -66,7 +70,7 @@ class hockey_db():
         output = []
         player_rows = self.get_terms_from_player_id(player1_id)
         for index, term in player_rows.iterrows():
-            print(term)
+            #print(term)
             if player2_id: # only return overlaps involving this specific second target player
                 overlaps_a = self.skaters.loc[(self.skaters.league==term.league) & (self.skaters.team==term.team) & (self.skaters.link==player2_id) & (self.skaters.start_date>=term.start_date) & (self.skaters.start_date<term.end_date)]
                 overlaps_b = self.skaters.loc[(self.skaters.league==term.league) & (self.skaters.team==term.team) & (self.skaters.link==player2_id) & (term.start_date>self.skaters.start_date) & (term.start_date<self.skaters.end_date)]
@@ -81,7 +85,7 @@ class hockey_db():
                     overlap_term, season_count = self.compute_overlap_interval(term.start_date, term.end_date, teammate_term.start_date, teammate_term.end_date)
                     tooltip_str = f"{teammate_term.player}<br>{team_display_str}<br>{overlap_term[0].year}-{overlap_term[1].year}"
                     if self.is_tournament(term.league):
-                        overlap_term = self.convert_tournament_dates(overlap_term[0], overlap_term[1])
+                        overlap_term = self.convert_tournament_dates(term.league, overlap_term[0], overlap_term[1])
                     else:
                         if season_count == 1:
                             tooltip_str += f" ({season_count} season)"
