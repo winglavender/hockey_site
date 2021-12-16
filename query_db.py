@@ -46,7 +46,7 @@ class hockey_db():
     def convert_tournament_dates(self, tournament, start_date, end_date):
         season_years = (start_date.year, end_date.year)
         tourney_month, tourney_year = self.tournament_leagues[tournament]
-        return (pd.to_datetime(f"{season_years[tourney_year]}/{tourney_month}/1"), pd.to_datetime(f"{season_years[tourney_year]}/{tourney_month}/30"))
+        return (pd.to_datetime(f"{season_years[tourney_year]}/{tourney_month}/1"), pd.to_datetime(f"{season_years[tourney_year]}/{tourney_month}/28"))
         #start_year = start_date.year
         #end_year = end_date.year
         #return (pd.to_datetime(f"{start_year}/12/15"), pd.to_datetime(f"{end_year}/1/15"))
