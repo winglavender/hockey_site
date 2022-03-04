@@ -12,6 +12,7 @@ function reset_options() {
     return true;
 }
 </script>
+
   </head>
   <body onbeforeunload='reset_options()'>
 
@@ -73,9 +74,37 @@ function reset_options() {
             <input type="text" id="player2" name="player2" required>&nbsp;&nbsp;
         <input type="submit" name="submit" value="Submit">
     </fieldset>
-    </form>
+    </form><br><br>
+
+    <form method="post" action="/roster_pair_result">
+    <fieldset>
+    <b>Check the overlap between two NHL rosters</b><br><br>
+        <label for="team1">Team:</label>
+            <select name="team1" id="team1">
+                {% for team in nhl_team_data.team_order %}
+                <option value="{{team}}">{{team}}</option>
+                {% endfor %}
+            </select>&nbsp;&nbsp;
+        <label for="team2">Team:</label>
+            <select name="team2" id="team2">
+                {% for team in nhl_team_data.team_order %}
+                <option value="{{team}}">{{team}}</option>
+                {% endfor %}
+            </select>&nbsp;&nbsp;
+        <label for="season">Season:</label>
+            <select name="season" id="season">
+                {% for season in nhl_team_data.team1_seasons %}
+                <option value="{{season}}">{{season}}</option>
+                {% endfor %}
+            </select>&nbsp;&nbsp;
+       <input type="submit" name="submit" value="Submit" id="submit"><br><br>
+       Note: may take 15-20 seconds to compute results.
+    </fieldset>
+    </form><br><br>
+
 
     </div>
+
     </body>
 
     <script type="text/javascript">
@@ -98,5 +127,6 @@ function reset_options() {
             season.innerHTML = seasons[this.value].reduce((acc, elem) => `${acc}<option value="${elem.value}">${elem.desc}</option>`, "");
         });
     </script>
+
 
 </html>

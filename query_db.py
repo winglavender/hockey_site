@@ -7,7 +7,7 @@ import re
 class hockey_db():
 
     def __init__(self):
-        db_name = 'hockey_rosters_20211130_formatted.db'
+        db_name = 'hockey_rosters_20220208_formatted.db'
         conn = sql.connect(db_name)
         self.skaters = pd.read_sql_query('select * from skaters', conn)
         self.skaters.start_date = pd.to_datetime(self.skaters.start_date)
@@ -16,6 +16,20 @@ class hockey_db():
         self.league_strings = {'nhl': 'NHL', 'og': 'Olympics', 'khl': 'KHL', 'ahl': 'AHL', 'wc': 'Worlds', 'ohl': 'OHL', 'whl': 'WHL', 'qmjhl': 'QMJHL', 'ushl': 'USHL', 'usdp': 'USDP', 'ncaa': 'NCAA', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', 'wcup': 'World Cup', 'shl': 'SHL', 'mhl': 'MHL', 'liiga': 'Liiga', 'u20-sm-liiga': 'U20 SM Liiga', 'u18-sm-sarja': 'U18 SM Sarja', 'j20-superelit': 'J20 SuperElit', 'j18-allsvenskan': 'J18 Allsvenskan', 'russia': 'Russia', 'russia3': 'Russia3', 'ushs-prep': 'USHS Prep'}
         #self.tournament_leagues = set(['og', 'wc', 'wjc-20', 'wjc-18', 'whc-17', 'wcup'])
         self.tournament_leagues = {'og': (2,1), 'wjc-20': (1,1), 'wc': (5,1), 'wjc-18': (4,1), 'whc-17': (11,0), 'wcup': (9,0)} # first value is month and second value is 0 if the first year in a season should be used, 1 if the second year in the season should be used
+
+    def categorize_league_list(self, league_list):
+        contains_nhl = False
+        contains_non_national = False
+        national_set = set(['World Juniors','Worlds','Olympics','WC-U18','WHC-17','World Cup'])
+        for league in league_list:
+            if league == 'NHL':
+                return 'blue' # NHL
+            elif league not in national_set:
+                contains_non_national = True
+        if contains_non_national:
+            return 'green' # other
+        else:
+            return 'red' # national teams only
 
     def get_league_display_string(self, league_str):
         if league_str not in self.league_strings:
@@ -98,18 +112,118 @@ class hockey_db():
         for year, month, day, data in output:
             sorted_output.append({"player": data[0], "league": self.get_league_display_string(data[1]), "team": data[2], "team_display": data[3], "year1": data[4], "month1": data[5], "day1": data[6], "year2": data[7], "month2": data[8], "day2": data[9], "tooltip_str": data[10], "id": data[11]})
         return sorted_output
+
+    def get_players_from_roster(self, team, season):
+        # set up season start/end timestamps
+        years = season.split("-")
+        season_start = pd.to_datetime(f"{years[0]}/9/1")
+        season_end = pd.to_datetime(f"{years[1]}/6/30")
+        # get players
+        teammates_a = self.skaters.loc[(self.skaters.league=="nhl") & (self.skaters.team==team) & (self.skaters.start_date >= season_start) & (self.skaters.start_date<season_end)]
+        teammates_b = self.skaters.loc[(self.skaters.league=="nhl") & (self.skaters.team==team) & (season_start>self.skaters.start_date) & (season_start<self.skaters.end_date)]
+        potential_teammates = pd.concat([teammates_a,teammates_b])
+        return potential_teammates
+
+    def query_roster_pair(self, team1, team2, season):
+        start = time.time()
+        # get players from team1
+        players1 = self.get_players_from_roster(team1, season)
+        print(players1)
+        ids1 = players1.link.unique()
+        # get players from team2
+        players2 = self.get_players_from_roster(team2, season)
+        print(players2)
+        ids2 = players2.link.unique()
+        # all pairs of players, get names
+        team1_players_list = []
+        player_id_to_name = {}
+        for player1 in ids1:
+            playername = self.get_player_name_from_id(player1)
+            team1_players_list.append(playername)
+            player_id_to_name[player1] = playername
+        team2_players_list = []
+        for player2 in ids2:
+            playername = self.get_player_name_from_id(player2)
+            team2_players_list.append(playername)
+            player_id_to_name[player2] = playername
+        # even out length
+        if len(team1_players_list) < len(team2_players_list):
+            while len(team1_players_list) < len(team2_players_list):
+                team1_players_list.append("zzzplaceholder")
+        if len(team2_players_list) < len(team1_players_list):
+            while len(team2_players_list) < len(team1_players_list):
+                team2_players_list.append("zzzplaceholder")
+        # alphabetize
+        team1_players_list.sort(reverse=True)
+        team1_players_index = {}
+        for idx, playername in enumerate(team1_players_list):
+            team1_players_index[playername] = idx
+        team2_players_list.sort(reverse=True)
+        team2_players_index = {}
+        for idx, playername in enumerate(team2_players_list):
+            team2_players_index[playername] = idx
+        # turn placeholder strings into empty strings (now that indices are set)
+        for idx, playername in enumerate(team1_players_list):
+            if playername == "zzzplaceholder":
+                team1_players_list[idx] = ""
+        for idx, playername in enumerate(team2_players_list):
+            if playername == "zzzplaceholder":
+                team2_players_list[idx] = ""
+        # find links
+        connections = []
+        for player1 in ids1:
+            print(player1)
+            playername1 = player_id_to_name[player1]
+            player_data = {} 
+            potential_overlap = self.get_overlapping_player_terms(player1)
+            for row in potential_overlap:
+                if row['id'] in ids2:
+                    playername2 = player_id_to_name[row['id']]
+                    relationships = self.is_before_after_during_season(season, row['year1'], row['year2'])
+                    if 'before' not in relationships and 'during' not in relationships:
+                        continue # ignore terms that only occur AFTER the current season
+                    data = f"{row['team']} ({row['league']}, {row['year1']}-{row['year2']})"
+                    if playername2 not in player_data:
+                        player_data[playername2] = []
+                    player_data[playername2].append((data, row['league']))
+                    #output.append((self.get_player_name_from_id(player1), self.get_player_name_from_id(row['id']), row))
+            output_tmp = []
+            for playername2 in player_data:
+                # create a link
+                data_strs = []
+                data_leagues = []
+                for data_str, league in player_data[playername2]:
+                    data_strs.append(data_str)
+                    data_leagues.append(league)
+                idx1 = team1_players_index[playername1]
+                idx2 = team2_players_index[playername2]
+                relationship_type = self.categorize_league_list(data_leagues)
+                #link_str = ", ".join(player_data[playername2])
+                link_str = ", ".join(data_strs)
+                out_str = f"{playername1} ({link_str})--{playername2} ({link_str})" 
+                connections.append((idx1, idx2, out_str, relationship_type))
+                #output_tmp.append({"name": playername2, "data": ", ".join(player_data[playername2])}) 
+            #output.append({'playername1':playername1,'data': output_tmp})
+        # format output
+        output = {'team1_players': team1_players_list, 'team2_players': team2_players_list, 'links': connections}
+        end = time.time()
+        print(f"elapsed time: {end-start}")
+        #output = {'team1_players': ['', 'Warren Foegele','Leon Draisaitl','Evan Bouchard','Derek Ryan','Connor McDavid'], 'team2_players': ['Noah Hanifin', 'Milan Lucic', 'Matthew Tkachuk', 'Elias Lindholm', 'Chris Tanev', 'Dude'], 'links': [(5, 4, 'McDavid--Tanev'), (5, 0, 'McDavid--Hanifin'), (4, 4, 'Ryan--Tanev'), (4, 3, 'Ryan--Lindholm'), (4, 2, 'Ryan--Tkachuk'), (4, 1, 'Ryan--Lucic'), (4, 0, 'Ryan--Hanifin'), (3, 2, 'Bouchard--Tkachuk'), (3, 1, 'Bouchard--Lucic'), (2, 1, 'Draisaitl--Lucic'), (1, 3, 'Foegele--Lindholm'), (1, 0, 'Foegele-Hanifin')]}
+        return output
+            
     
     def query_roster(self, player_id, team, season):
         start = time.time()
         output = []
         # set up season start/end timestamps
-        years = season.split("-")
-        season_start = pd.to_datetime(f"{years[0]}/9/1")
-        season_end = pd.to_datetime(f"{years[1]}/6/30")
+        #years = season.split("-")
+        #season_start = pd.to_datetime(f"{years[0]}/9/1")
+        #season_end = pd.to_datetime(f"{years[1]}/6/30")
         # get all players from (team, year) roster
-        teammates_a = self.skaters.loc[(self.skaters.league=="nhl") & (self.skaters.team==team) & (self.skaters.link!=player_id) & (self.skaters.start_date >= season_start) & (self.skaters.start_date<season_end)]
-        teammates_b = self.skaters.loc[(self.skaters.league=="nhl") & (self.skaters.team==team) & (self.skaters.link!=player_id) & (season_start>self.skaters.start_date) & (season_start<self.skaters.end_date)]
-        potential_teammates = pd.concat([teammates_a,teammates_b])
+        potential_teammates = self.get_players_from_roster(team, season)
+        #teammates_a = self.skaters.loc[(self.skaters.league=="nhl") & (self.skaters.team==team) & (self.skaters.link!=player_id) & (self.skaters.start_date >= season_start) & (self.skaters.start_date<season_end)]
+        #teammates_b = self.skaters.loc[(self.skaters.league=="nhl") & (self.skaters.team==team) & (self.skaters.link!=player_id) & (season_start>self.skaters.start_date) & (season_start<self.skaters.end_date)]
+        #potential_teammates = pd.concat([teammates_a,teammates_b])
         potential_teammate_ids = potential_teammates.link.unique()
         output = {"before": [], "during": [], "after": []}
         # get all teammates for target player
@@ -145,6 +259,7 @@ class hockey_db():
         print(f"elapsed time: {end-start}")
         return sorted_output, len(sorted_output["before"]) + len(sorted_output["after"]) + len(sorted_output["during"])
 
+    # returns list of terms to specify whether the period START_YEAR to END_YEAR happens BEFORE/DURING/AFTER the specified season
     def is_before_after_during_season(self, season, start_year, end_year):
         season_years = season.split("-")
         season_start_year = int(season_years[0])

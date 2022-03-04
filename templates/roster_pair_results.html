@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hockey Teammates</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+  </head>
+  <body>
+
+  <h3>Roster Overlaps</h3>
+  <p><b>{{team1}}</b> and <b>{{team2}}</b> overlaps for the {{season}} rosters:</p>
+
+  <p>(blue=includes NHL team, red=national teams only, green=other)</p>
+
+    <canvas id="canvas" width="800" height="450"></canvas><br><br>
+
+    <a href="{{ url_for('home') }}">Return to main page</a>
+  </body>
+  <script>
+  window.chartColors = {
+  red: 'rgb(255, 99, 132)',
+  orange: 'rgb(255, 159, 64)',
+  yellow: 'rgb(255, 205, 86)',
+  green: 'rgb(75, 192, 192)',
+  blue: 'rgb(54, 162, 235)',
+  purple: 'rgb(153, 102, 255)',
+  grey: 'rgb(231,233,237)'
+  };
+  var player_data = {{data|tojson}};
+  var datasets_arr = [];
+  for (var link_idx in player_data.links) {
+    var link = player_data.links[link_idx];
+    console.log(link);
+    datasets_arr.push({
+      label: link[2],
+      backgroundColor: window.chartColors[link[3]],
+      borderColor: window.chartColors[link[3]],
+      data: [link[0], link[1]],
+      fill: false
+    });
+  }
+
+  var config = {
+    type: 'line',
+    data: {
+      datasets: datasets_arr
+    },
+    options: {
+    responsive: true,
+    title:{
+      display:false,
+    },
+    legend:{ display:false,},
+    tooltips: {
+      mode: 'point',
+      intersect: true,
+      callbacks: {
+                    label: function(tooltipItem, data) {
+                      //console.log(tooltipItem);
+                      label = tooltipItem.index;
+                      //console.log(label);
+                      const lineLabel = data.datasets[tooltipItem.datasetIndex].label;
+                      //console.log(lineLabel);
+                      const labelArray = lineLabel.split("--");
+                      if (label == 1) {
+                        return labelArray[0];//"test string 1";
+                      }
+                      else {
+                        return labelArray[1];//"test string 0";
+                      }
+                    }
+                },
+        itemSort: function(a, b) {
+           return b.datasetIndex - a.datasetIndex
+        },
+      displayColors: false,
+    },
+    hover: {
+      mode: 'nearest',
+      intersect: true
+    },
+    scaleShowValues: true,
+    scales: {
+      xAxes: [{
+        display: false,
+        scaleLabel: {
+          display: false,
+        }
+      }],
+      yAxes: [{
+        gridLines: {display:false, drawBorder: false},
+        id: 'A',
+        type: 'linear',
+        position: 'left',
+        ticks: {
+          // For a category axis, the val is the index so the lookup via getLabelForValue is needed
+          display: true,
+          autoSkip: false,
+          stepSize: 1,
+          max: player_data['team1_players'].length-1,
+          min: 0,
+          callback: function(val, index) {
+            playernames = player_data['team1_players'];
+            return playernames[val];
+          }
+        }
+      }, {
+        gridLines:{display:false, drawBorder: false},
+        id: 'B',
+        type: 'linear',
+        position: 'right',
+        ticks: {
+          display: true,
+          autoSkip: false,
+          stepSize: 1,
+          max: player_data['team2_players'].length-1,
+          min: 0,
+          callback: function(val, index) {
+            playernames = player_data['team2_players'];
+            return playernames[val];
+          }
+        }
+      }]
+    }
+  }
+};
+
+var ctx = document.getElementById("canvas").getContext("2d");
+var myLine = new Chart(ctx, config);
+
+
+  </script>
+</html>

@@ -134,6 +134,29 @@ def player_team_year_result():
     else:
         return render_template('error.html')
 
+@app.route("/roster_pair_result", methods=["GET", "POST"])
+def roster_pair_result():
+    if request.method == "POST":
+        session.clear()
+        team1 = request.form['team1']
+        team2 = request.form['team2']
+        season = request.form['season']
+        db = hockey_db()
+        session["task"] = "roster"
+        session["team1"] = team1
+        session["team2"] = team2
+        session["season"] = season
+        #num_results, target = db.retrieve_player_link(player)
+        data = db.query_roster_pair(team1, team2, season)
+        # len_data
+        return render_template('roster_pair_results.html', team1=team1, team2=team2, season=season, data=data)
+    #    if len_data == 0:
+     #       return render_template('no_roster_results.html', playername=orig_name,team=team, season=season)
+      #  else:
+       #     return render_template('roster_results.html', playername=orig_name, team=team, season=season, data=data)
+    else:
+        return render_template('error.html')
+
 @app.route("/graph_traverse_result", methods=["GET", "POST"])
 def graph_traverse_result():
     if request.method == "POST":
