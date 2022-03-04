@@ -66,7 +66,6 @@ class hockey_db():
         #return (pd.to_datetime(f"{start_year}/12/15"), pd.to_datetime(f"{end_year}/1/15"))
 
     def compute_overlap_interval(self, start_date1, end_date1, start_date2, end_date2):
-        #print(start_date1, end_date1, start_date2, end_date2)
         start_dates = pd.DataFrame([pd.to_datetime(start_date1), pd.to_datetime(start_date2)])
         end_dates = pd.DataFrame([pd.to_datetime(end_date1), pd.to_datetime(end_date2)])
         start_interval = start_dates.max().iloc[0]
@@ -84,7 +83,6 @@ class hockey_db():
         output = []
         player_rows = self.get_terms_from_player_id(player1_id)
         for index, term in player_rows.iterrows():
-            #print(term)
             if player2_id: # only return overlaps involving this specific second target player
                 overlaps_a = self.skaters.loc[(self.skaters.league==term.league) & (self.skaters.team==term.team) & (self.skaters.link==player2_id) & (self.skaters.start_date>=term.start_date) & (self.skaters.start_date<term.end_date)]
                 overlaps_b = self.skaters.loc[(self.skaters.league==term.league) & (self.skaters.team==term.team) & (self.skaters.link==player2_id) & (term.start_date>self.skaters.start_date) & (term.start_date<self.skaters.end_date)]
@@ -128,11 +126,9 @@ class hockey_db():
         start = time.time()
         # get players from team1
         players1 = self.get_players_from_roster(team1, season)
-        print(players1)
         ids1 = players1.link.unique()
         # get players from team2
         players2 = self.get_players_from_roster(team2, season)
-        print(players2)
         ids2 = players2.link.unique()
         # all pairs of players, get names
         team1_players_list = []
@@ -172,14 +168,13 @@ class hockey_db():
         # find links
         connections = []
         for player1 in ids1:
-            print(player1)
             playername1 = player_id_to_name[player1]
             player_data = {} 
             potential_overlap = self.get_overlapping_player_terms(player1)
             for row in potential_overlap:
                 if row['id'] in ids2:
                     playername2 = player_id_to_name[row['id']]
-                    relationships = self.is_before_after_during_season(season, row['year1'], row['year2'])
+                    relationships = self.is_before_after_during_season(season, row['year1'], row['month1'], row['day1'], row['year2'], row['month2'], row['day2'])
                     if 'before' not in relationships and 'during' not in relationships:
                         continue # ignore terms that only occur AFTER the current season
                     data = f"{row['team']} ({row['league']}, {row['year1']}-{row['year2']})"
@@ -242,7 +237,7 @@ class hockey_db():
                 playername = self.get_player_name_from_id(teammate_id)
                 formatted_data = {"before": [], "after": [], "during": []}
                 for term in overlap:
-                    relationships = self.is_before_after_during_season(season, term['year1'], term['year2'])
+                    relationships = self.is_before_after_during_season(season, term['year1'], term['month1'], term['day1'], term['year2'], term['month2'], term['day2'])
                     for relationship in relationships:
                         formatted_data[relationship].append(f"{term['team']} ({term['league']}, {term['year1']}-{term['year2']})")
                 for relationship in formatted_data:
@@ -260,16 +255,24 @@ class hockey_db():
         return sorted_output, len(sorted_output["before"]) + len(sorted_output["after"]) + len(sorted_output["during"])
 
     # returns list of terms to specify whether the period START_YEAR to END_YEAR happens BEFORE/DURING/AFTER the specified season
-    def is_before_after_during_season(self, season, start_year, end_year):
+    def is_before_after_during_season(self, season, year1, month1, day1, year2, month2, day2):
+        start_date = pd.to_datetime(f"{year1}/{month1}/{day1}")
+        end_date = pd.to_datetime(f"{year2}/{month2}/{day2}")
         season_years = season.split("-")
         season_start_year = int(season_years[0])
         season_end_year = int(season_years[1])
+        season_start = pd.to_datetime(f"{season_start_year}/9/1")
+        season_end = pd.to_datetime(f"{season_end_year}/6/30")
+        last_season_end = pd.to_datetime(f"{season_start_year}/6/30")
+        next_season_start = pd.to_datetime(f"{season_end_year}/9/1")
         relationship = []
-        if start_year < season_start_year:
+        if start_date < last_season_end:
             relationship.append("before")
-        if end_year > season_end_year:
+        if end_date > next_season_start: 
             relationship.append("after")
-        if start_year <= season_start_year and end_year >= season_end_year:
+        if start_date <= season_start and end_date >= season_start:
+            relationship.append("during")
+        if start_date <= season_end and end_date >= season_end:
             relationship.append("during")
         return relationship
 
