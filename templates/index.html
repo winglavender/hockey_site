@@ -21,7 +21,9 @@ function reset_options() {
       <p>An app to help you figure out which hockey players have been on a team together (focused on NHL players from 2000-2022 with additional data from international tournaments and some other pro and junior hockey leagues). </p>
 
     <div id="content">
-    <a href="{{ url_for('details') }}">Details</a> | <a href="{{ url_for('data') }}">Data</a> | <a href="{{ url_for('contact') }}">Contact</a><br><br>
+    <a href="{{ url_for('details') }}">Details</a> | <a href="{{ url_for('data') }}">Data</a> | <a href="{{ url_for('contact') }}">Contact</a><br>
+
+    <p><small>Roster data last updated: 2022-04-06</small></p>
 
     <form method="post" action="/form_result">
     <fieldset>
