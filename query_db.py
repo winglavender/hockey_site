@@ -7,7 +7,7 @@ import re
 class hockey_db():
 
     def __init__(self):
-        db_name = 'hockey_rosters_20220505_formatted.db'
+        db_name = 'hockey_rosters_20220607_formatted.db'
         conn = sql.connect(db_name)
         self.skaters = pd.read_sql_query('select * from skaters', conn)
         self.skaters.start_date = pd.to_datetime(self.skaters.start_date)
