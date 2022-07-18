@@ -8,6 +8,36 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['timeline']});
+      google.charts.setOnLoadCallback(drawChart2);
+      function drawChart2() {
+        var container = document.getElementById('timeline2');
+        var chart = new google.visualization.Timeline(container);
+        var dataTable = new google.visualization.DataTable();
+        var player_data = {{career_data|tojson}}
+        var name = {{display_name|tojson}}
+
+        dataTable.addColumn({ type: 'string', id: 'Name' });
+        dataTable.addColumn({ type: 'string', id: 'Summary' });
+        dataTable.addColumn({ type: 'string', role: 'tooltip' });
+        dataTable.addColumn({ type: 'string', id: 'style', role: 'style' });
+        dataTable.addColumn({ type: 'date', id: 'Start' });
+        dataTable.addColumn({ type: 'date', id: 'End' });
+        for (var player_count in player_data) {
+            var player = player_data[player_count];
+            dataTable.addRow([name, player["team_display"], player["tooltip_str"], player["color"], new Date(player["year1"], player["month1"]-1, player["day1"]), new Date(player["year2"], player["month2"]-1, player["day2"])]);
+        }
+        var chart = new google.visualization.Timeline(document.getElementById('timeline2'));
+        var options = {
+            timeline: { rowLabelStyle: {color:'#ffffff'}, },
+            alternatingRowStyle: false
+        };
+        chart.draw(dataTable,options);
+        $(document).ready(function () {
+             $(window).resize(function(){
+         drawChart();
+         });
+       }); 
+      }
       google.charts.setOnLoadCallback(drawChart);
       function drawChart() {
         var container = document.getElementById('timeline');
@@ -37,7 +67,8 @@
   <body>
 
   <h3>{{playername1}}</h3>
-    <div id="timeline"></div>
+    <div id="timeline2"></div>
+    <div id="timeline" style="height: 65%;"></div>
              
     <!--<a href="{{ url_for('home') }}">Return to main page</a>-->
   </body>

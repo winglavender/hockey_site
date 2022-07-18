@@ -23,11 +23,11 @@ function reset_options() {
     <div id="content">
     <a href="{{ url_for('details') }}">Details</a> | <a href="{{ url_for('data') }}">Data</a> | <a href="{{ url_for('contact') }}">Contact</a><br>
 
-    <p><small>Roster data last updated: 2022-06-07</small></p>
+    <p><small>Roster data last updated: 2022-05-07</small></p>
 
     <form method="post" action="/form_result">
     <fieldset>
-    <b>View a player's teammates over their whole career</b><br><br>
+    <b>View a player's career: which teams they played for and who were their teammates</b><br><br>
         <label for="target">Player:</label>
             <input type="text" id="target" name="target" required>&nbsp;&nbsp;
             <input type="submit" name="submit" value="Submit"><br><br>
