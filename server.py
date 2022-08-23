@@ -14,7 +14,7 @@ else:
 
 # populate NHL team data
 nhl_team_data = {'team_order': [], 'team_seasons': {}}
-with open('data/nhl_team_data.txt','r') as in_file:
+with open('nhl_team_data.txt','r') as in_file:
     line_count = 1
     for line in in_file:
         if line_count == 1:

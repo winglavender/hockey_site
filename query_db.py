@@ -13,7 +13,7 @@ import numpy as np
 class hockey_db():
 
     def __init__(self):
-        db_name = 'data/hockey_rosters_20220804_formatted.db'
+        db_name = 'hockey_rosters_20220804_formatted.db'
         self.latest_date = pd.to_datetime('2022-06-26')
         conn = sql.connect(db_name)
         self.skaters = pd.read_sql_query('select * from skaters', conn)

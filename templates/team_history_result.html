@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hockey Teammates</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['timeline']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var container = document.getElementById('timeline');
+        var chart = new google.visualization.Timeline(container);
+        var dataTable = new google.visualization.DataTable();
+        var player_data = {{data|tojson}}
+
+        dataTable.addColumn({ type: 'string', id: 'Name' });
+        dataTable.addColumn({ type: 'string', id: 'Summary' });
+        dataTable.addColumn({ type: 'string', role: 'tooltip' });
+        dataTable.addColumn({ type: 'date', id: 'Start' });
+        dataTable.addColumn({ type: 'date', id: 'End' });
+        for (var player_count in player_data) {
+            var player = player_data[player_count]
+            dataTable.addRow([player["player"], player["team_display"], player["tooltip_str"], new Date(player["year1"], player["month1"]-1, player["day1"]), new Date(player["year2"], player["month2"]-1, player["day2"])]);
+        }
+        var chart = new google.visualization.Timeline(document.getElementById('timeline'));
+        chart.draw(dataTable);
+        $(document).ready(function () {
+             $(window).resize(function(){
+         drawChart();
+         });
+       }); 
+      }
+    </script>
+  </head>
+  <body>
+
+  <h3>{{team}} {{season}}</h3>
+    <div id="timeline" style="height: 85%;"></div>
+             
+    <!--<a href="{{ url_for('home') }}">Return to main page</a>-->
+  </body>
+</html>
