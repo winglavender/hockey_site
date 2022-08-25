@@ -23,7 +23,7 @@ class DBBuilder:
         # get today's date
         self.today_str = self.today.strftime("%Y%m%d")
 
-    def read_from_db(self, db_filename):
+    def format_nhl_players(self, db_filename):
         self.ahl_affiliates = {
             'Anaheim Ducks': 'San Diego Gulls',
             'Arizona Coyotes': 'Tucson Roadrunners',
@@ -58,12 +58,15 @@ class DBBuilder:
             'Washington Capitals': 'Hershey Bears',
             'Winnipeg Jets': 'Manitoba Moose'
         }
-        conn = sql.connect(db_filename)
-        skaters = pd.read_sql_query('select * from skaters', conn)
-        goalies = pd.read_sql_query('select * from goalies', conn)
-        self.transfers = pd.read_sql_query('select * from transfers', conn)
+        skaters, goalies, transfers, postseasons = self.read_from_raw_db(db_filename)
+        #conn = sql.connect(db_filename)
+        #skaters = pd.read_sql_query('select * from skaters', conn)
+        #goalies = pd.read_sql_query('select * from goalies', conn)
+        #self.transfers = pd.read_sql_query('select * from transfers', conn)
+        self.transfers = transfers
         self.transfers.date = pd.to_datetime(self.transfers.date)
-        self.postseasons = pd.read_sql_query('select * from postseasons', conn)
+        #self.postseasons = pd.read_sql_query('select * from postseasons', conn)
+        self.postseasons = postseasons
         # drop unused columns and join all players in one table
         skaters_temp = skaters.copy()
         skaters_temp = skaters_temp.drop(columns=["gp", "g", "a", "tp", "ppg", "pim", "+/-", "position"])
@@ -75,6 +78,18 @@ class DBBuilder:
         nhl_ids = players.loc[players.league=="nhl"].link.unique()
         self.nhl_players = players.loc[players.link.isin(nhl_ids)]
         self.nhl_players.reset_index(drop=True, inplace=True)
+
+    def read_from_raw_db(self, db_filename):
+        conn = sql.connect(db_filename)
+        skaters = pd.read_sql_query('select * from skaters', conn)
+        skaters = skaters.drop(['level_0','index'], axis=1, errors='ignore')
+        goalies = pd.read_sql_query('select * from goalies', conn)
+        goalies = goalies.drop(['level_0','index'], axis=1, errors='ignore')
+        transfers = pd.read_sql_query('select * from transfers', conn)
+        transfers = transfers.drop(['level_0','index'], axis=1, errors='ignore')
+        postseasons = pd.read_sql_query('select * from postseasons', conn)
+        postseasons = postseasons.drop(['level_0','index'], axis=1, errors='ignore')
+        return skaters, goalies, transfers, postseasons
 
     def id_adjacent_team_rows(self, team_rows):
         # identify lists of adjacent seasons
@@ -135,7 +150,7 @@ class DBBuilder:
             for team in league_rows.team.unique():
                 team_rows = rows.loc[(rows.team == team) & (rows.league == league)]
                 # check for tournament special cases: no merging, each row becomes its own row in the timeline
-                if league in ["wc", "wjc-20", "wjc-18", "og", "wcup", "whc-17"]:
+                if league in ["wc", "wjc-20", "wjc-18", "og", "wcup", "whc-17", "nhl-asg"]:
                     seasons = team_rows['season'].tolist()
                     for season_idx, season in enumerate(seasons):
                         player_timeline.append([player, team, league, self.season_calc.season_dates[season][0],
@@ -263,8 +278,11 @@ class DBBuilder:
         for year in range(start_year, end_year):
             years.append(f"{year}-{year+1}")
 
+        # get ASG data
+        asg_data = scraper.get_asg()
         # get skaters
         skaters = scraper.get_skaters(leagues, years)
+        skaters = pd.concat([skaters, asg_data], axis=0, ignore_index=True) # add ASG data to skaters table
         skaters.to_sql('skaters', conn) # save all skater info
         # get goalies
         goalies = scraper.get_goalies(leagues, years)
@@ -274,10 +292,33 @@ class DBBuilder:
         transfers = scraper.get_transfers("nhl", self.earliest_transfer_date)
         transfers.to_sql('transfers', conn)
 
+
         # scrape NHL postseasons and save to raw db
         postseasons = scraper.get_postseasons()
         postseasons.to_sql('postseasons', conn)
         return db_filename
+
+    def is_valid_season(self, proposed_season):
+        proposed_year1 = int(proposed_season.split("-")[0])
+        if proposed_year1 < self.scrape_start_year:
+            return False
+        return True
+
+    def add_asg(self, db_filename):
+        # read raw db
+        skaters, goalies, transfers, postseasons = self.read_from_raw_db(db_filename)
+        skaters = skaters[skaters.team.str.contains("All Star Game")==False] # don't duplicate ASG data
+        new_db_filename = db_filename.replace(".db", "_plusASG.db")
+        # get ASG data
+        asg_data = scraper.get_asg()
+        asg_data = asg_data[asg_data['season'].apply(self.is_valid_season)]
+        skaters = pd.concat([skaters, asg_data], axis=0, ignore_index=True) # add ASG data to skaters table
+        skaters = skaters.drop(['level_0','index'], axis=1, errors='ignore')
+        new_conn = sql.connect(new_db_filename)
+        skaters.to_sql('skaters', new_conn) # save all skater info
+        goalies.to_sql('goalies', new_conn) # save all goalie info
+        transfers.to_sql('transfers',new_conn)
+        postseasons.to_sql('postseasons',new_conn)
 
     # on a ~monthly basis, scrape new transfers and any updates to postseason
     def scrape_transfer_updates(self, db_filename):
@@ -359,8 +400,9 @@ class DBBuilder:
         # save output to new db
         conn_out = sql.connect(out_db_filename)
         processed_players.to_sql('skaters', conn_out)
+        pd.set_option('display.max_columns', None)
         names.to_sql('names', conn_out)
-        db_builder.postseasons.to_sql('postseasons', conn_out)
+        self.postseasons.to_sql('postseasons', conn_out)
 
     def dump_duplicate_names(self, db_filename):
         out_filename = db_filename.replace(".db", "_dup_names.txt")
@@ -409,18 +451,25 @@ if __name__ == "__main__":
     if function == "scrape_full":  # run whenever new guys are introduced, probably once a year at the beginning of the season, runs a full scrape from scratch
         db_filename = db_builder.full_update()
     elif function == "dump_duplicate_names": # run after a new full scrape, because new guys means possible new overlapping names
-        db_builder.read_from_db(db_filename)
+        db_builder.format_nhl_players(db_filename)
+        #db_builder.read_from_db(db_filename)
         db_builder.dump_duplicate_names(db_filename)
     elif function == "process": # run after full_scrape and dump_duplicate_names and after manually adding disambiguating name strings
-        db_builder.read_from_db(db_filename)
+        db_builder.format_nhl_players(db_filename)
+        #db_builder.read_from_db(db_filename)
         db_builder.process_db(db_filename)#'data/hockey_rosters_20220804_raw.db')
     elif function == "scrape_updates":  # run weekly/monthly to get new trades/transfers (will not grab new guys)
         db_builder.scrape_transfer_updates(db_filename)
         db_builder.process_db(db_filename)
+    elif function == "add_asg":
+        #db_builder.read_from_db(db_filename)
+        db_builder.add_asg(db_filename)
     elif function == "test_player_process":
         player_name = sys.argv[3]
-        db_builder.read_from_db(db_filename)
+        db_builder.format_nhl_players(db_filename)
         db_builder.process_player(player_name)
+    elif function == "test_scraper":
+        players = scraper.get_asg()
     else:
         print("Specify a valid function to run (full/partial).")
     end = time.time()
