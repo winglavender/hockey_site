@@ -21,7 +21,7 @@ class hockey_db():
         self.skaters.start_date = pd.to_datetime(self.skaters.start_date)
         self.skaters.end_date = pd.to_datetime(self.skaters.end_date)
         self.names = pd.read_sql_query('select * from names', conn)
-        self.league_strings = {'nhl': 'NHL', 'og': 'Olympics', 'khl': 'KHL', 'ahl': 'AHL', 'wc': 'Worlds', 'ohl': 'OHL', 'whl': 'WHL', 'qmjhl': 'QMJHL', 'ushl': 'USHL', 'usdp': 'USDP', 'ncaa': 'NCAA', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', 'wcup': 'World Cup', 'shl': 'SHL', 'elitserien': 'Elitserien', 'mhl': 'MHL', 'liiga': 'Liiga', 'u20-sm-liiga': 'U20 SM Liiga', 'u18-sm-sarja': 'U18 SM Sarja', 'j20-superelit': 'J20 SuperElit', 'j18-allsvenskan': 'J18 Allsvenskan', 'russia': 'Russia', 'russia3': 'Russia3', 'ushs-prep': 'USHS Prep', 'nhl-asg': 'NHL All Star Game'}
+        self.league_strings = {'nhl': 'NHL', 'og': 'Olympics', 'khl': 'KHL', 'ahl': 'AHL', 'wc': 'Worlds', 'ohl': 'OHL', 'whl': 'WHL', 'qmjhl': 'QMJHL', 'ushl': 'USHL', 'usdp': 'USDP', 'ncaa': 'NCAA', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', 'wcup': 'World Cup', 'shl': 'SHL', 'elitserien': 'Elitserien', 'mhl': 'MHL', 'liiga': 'Liiga', 'u20-sm-liiga': 'U20 SM Liiga', 'u18-sm-sarja': 'U18 SM Sarja', 'j20-superelit': 'J20 SuperElit', 'j18-allsvenskan': 'J18 Allsvenskan', 'russia': 'Russia', 'russia3': 'Russia3', 'ushs-prep': 'USHS Prep', 'nhl-asg': 'NHL'}
         self.tournament_leagues = {'og': (2,1), 'wjc-20': (1,1), 'wc': (6,1), 'wjc-18': (4,1), 'whc-17': (11,0), 'wcup': (9,0), 'nhl-asg': (2,1)} # first value is month and second value is 0 if the first year in a season should be used, 1 if the second year in the season should be used
         # for font-accurate string comparisons
         afm_filename = os.path.join(mpl.get_data_path(), 'fonts', 'afm', 'ptmr8a.afm')
@@ -73,6 +73,12 @@ class hockey_db():
 
     def convert_tournament_dates(self, tournament, start_date, end_date):
         season_years = (start_date.year, end_date.year)
+        season_years_str = f"{start_date.year}-{end_date.year}"
+        # catch delayed season start exceptions
+        if season_years_str == "2013-2013":
+            season_years = (2012,2013)
+        elif season_years_str == "2021-2021":
+            season_years = (2020, 2021)
         tourney_month, tourney_year = self.tournament_leagues[tournament]
         return (pd.to_datetime(f"{season_years[tourney_year]}/{tourney_month}/1"), pd.to_datetime(f"{season_years[tourney_year]}/{tourney_month}/28"))
 
@@ -121,9 +127,16 @@ class hockey_db():
         playoff_queries = []
         #for index, term in player_rows.iterrows():
         for term in player_rows:
+            is_tourney = self.is_tournament(term.league)
             team_display_str = self.get_team_display_string(term.league, term.team)
-            tooltip_str = f"{team_display_str}<br>{term.start_date.year}-{term.end_date.year}"
-            if self.is_tournament(term.league):
+            years_str = f"{term.start_date.year}-{term.end_date.year}"
+            if is_tourney and years_str in ["2013-2013","2021-2021"]:
+                if years_str == "2013-2013":
+                    years_str = "2012-2013"
+                elif years_str == "2021-2021":
+                    years_str = "2020-2021"
+            tooltip_str = f"{team_display_str}<br>{years_str}"
+            if is_tourney:
                 term_dates = self.convert_tournament_dates(term.league, term.start_date, term.end_date)
                 team_display_str = ""
                 color = "80b4f2" # tournament color
@@ -136,7 +149,6 @@ class hockey_db():
                 possible_first_season = f"{term.start_date.year-1}-{term.start_date.year}"
                 first_season_dates = self.season_calc.get_season_dates(possible_first_season)
                 playoffs_end_date = first_season_dates[1]
-                #if term.start_date < pd.to_datetime(f"{term.start_date.year}/4/30") and term.end_date >= pd.to_datetime(f"{term.end_date.year}/6/30"): # TODO dummy dates
                 if term.start_date < playoffs_end_date and term.end_date >= playoffs_end_date: # check whether the player was on the team during playoffs in the first possible season of their tenure (approximation)
                     playoff_queries.append((term.team, possible_first_season))
                 if term.start_date.year != term.end_date.year: # check following seasons 
@@ -145,9 +157,9 @@ class hockey_db():
                     possible_last_season = f"{term.end_date.year-1}-{term.end_date.year}"
                     last_season_dates = self.season_calc.get_season_dates(possible_last_season)
                     playoffs_end_date = last_season_dates[1]
-                    #if term.end_date >= pd.to_datetime(f"{term.end_date.year}/6/30"): # check whether the player was on the team during playoffs in the last possible season
                     if term.start_date < playoffs_end_date and term.end_date >= playoffs_end_date: # check whether the player was on the team during playoffs in the last possible season
                         playoff_queries.append((term.team, f"{term.end_date.year-1}-{term.end_date.year}"))
+        print(output)
         # get playoff runs
         for team, playoff_year in playoff_queries:
             team_str = self.strip_accents(team)
@@ -189,7 +201,14 @@ class hockey_db():
                     if not is_tourney and not is_valid_overlap:
                         # skip invalid overlap intervals
                         continue
-                    tooltip_str = f"{teammate_term.player}<br>{team_display_str}<br>{overlap_term[0].year}-{overlap_term[1].year}"
+                    years_str = f"{overlap_term[0].year}-{overlap_term[1].year}" # this ensures tournament still has (year1-year2) even though the term is only across a single year
+                    # fix tournament dates in years where the season started late
+                    if is_tourney and years_str in ["2013-2013","2021-2021"]:
+                        if years_str == "2013-2013":
+                            years_str = "2012-2013"
+                        elif years_str == "2021-2021":
+                            years_str = "2020-2021"
+                    tooltip_str = f"{teammate_term.player}<br>{team_display_str}<br>{years_str}"#{overlap_term[0].year}-{overlap_term[1].year}"
                     if is_tourney:
                         overlap_term = self.convert_tournament_dates(term.league, overlap_term[0], overlap_term[1])
                     else:
@@ -197,13 +216,13 @@ class hockey_db():
                             tooltip_str += f" ({season_count} season)"
                         else:
                             tooltip_str += f" ({season_count} seasons)"
-                    output.append((overlap_term[0].year, overlap_term[0].month, overlap_term[0].day, [teammate_rows.iloc[0].player, term.league, term.team, team_display_str, overlap_term[0].year, overlap_term[0].month, overlap_term[0].day, overlap_term[1].year, overlap_term[1].month, overlap_term[1].day, tooltip_str, teammate_rows.iloc[0].link]))
+                    output.append((overlap_term[0].year, overlap_term[0].month, overlap_term[0].day, [teammate_rows.iloc[0].player, term.league, term.team, team_display_str, overlap_term[0].year, overlap_term[0].month, overlap_term[0].day, overlap_term[1].year, overlap_term[1].month, overlap_term[1].day, tooltip_str, teammate_rows.iloc[0].link, years_str]))
         # sort all overlaps by first overlap year
         output.sort()
         sorted_output = []
         longest_name = ""
         for year, month, day, data in output:
-            sorted_output.append({"player": data[0], "league": self.get_league_display_string(data[1]), "team": data[2], "team_display": data[3], "year1": data[4], "month1": data[5], "day1": data[6], "year2": data[7], "month2": data[8], "day2": data[9], "tooltip_str": data[10], "id": data[11]})
+            sorted_output.append({"player": data[0], "league": self.get_league_display_string(data[1]), "team": data[2], "team_display": data[3], "year1": data[4], "month1": data[5], "day1": data[6], "year2": data[7], "month2": data[8], "day2": data[9], "tooltip_str": data[10], "id": data[11], "years_str": data[12]})
             if self.get_string_width(self.strip_accents(data[0])) > self.get_string_width(self.strip_accents(longest_name)):
                 longest_name = data[0]
         return sorted_output, longest_name
@@ -469,11 +488,11 @@ class hockey_db():
             else:
                 row.append("")
             if i < len(rows1):
-                row.append(f'{rows1[i]["team"]} ({rows1[i]["league"]}, {rows1[i]["year1"]}-{rows1[i]["year2"]})')
+                row.append(f'{rows1[i]["team"]} ({rows1[i]["league"]}, {rows1[i]["years_str"]})')
             else:
                 row.append('')
             if i < len(rows2):
-                row.append(f'{rows2[i]["team"]} ({rows2[i]["league"]}, {rows2[i]["year1"]}-{rows2[i]["year2"]})')
+                row.append(f'{rows2[i]["team"]} ({rows2[i]["league"]}, {rows2[i]["years_str"]})')
             else:
                 row.append('')
             cells.append(row)

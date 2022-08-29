@@ -263,7 +263,7 @@ class DBBuilder:
         return pd_rows
 
     def full_update(self):
-        db_filename = f"data/hockey_rosters_{self.today_str}_raw.db"
+        db_filename = f"hockey_rosters_{self.today_str}_raw.db"
         if exists(db_filename):
             print(f"Error: file {db_filename} already exists.")
             return
@@ -324,7 +324,7 @@ class DBBuilder:
     def scrape_transfer_updates(self, db_filename):
         season = self.season_calc.get_latest_season()
         # check in and out db file existence
-        out_db_filename = f"data/hockey_rosters_{self.today_str}_raw.db"
+        out_db_filename = f"hockey_rosters_{self.today_str}_raw.db"
         if exists(out_db_filename):
             print(f"Error: file {out_db_filename} already exists.")
             return
