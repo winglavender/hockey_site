@@ -21,7 +21,7 @@ class hockey_db():
         self.skaters.start_date = pd.to_datetime(self.skaters.start_date)
         self.skaters.end_date = pd.to_datetime(self.skaters.end_date)
         self.names = pd.read_sql_query('select * from names', conn)
-        self.league_strings = {'nhl': 'NHL', 'og': 'Olympics', 'khl': 'KHL', 'ahl': 'AHL', 'wc': 'Worlds', 'ohl': 'OHL', 'whl': 'WHL', 'qmjhl': 'QMJHL', 'ushl': 'USHL', 'usdp': 'USDP', 'ncaa': 'NCAA', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', 'wcup': 'World Cup', 'shl': 'SHL', 'elitserien': 'Elitserien', 'mhl': 'MHL', 'liiga': 'Liiga', 'u20-sm-liiga': 'U20 SM Liiga', 'u18-sm-sarja': 'U18 SM Sarja', 'j20-superelit': 'J20 SuperElit', 'j18-allsvenskan': 'J18 Allsvenskan', 'russia': 'Russia', 'russia3': 'Russia3', 'ushs-prep': 'USHS Prep', 'nhl-asg': 'NHL'}
+        self.league_strings = {'nhl': 'NHL', 'og': 'Olympics', 'khl': 'KHL', 'ahl': 'AHL', 'wc': 'Worlds', 'ohl': 'OHL', 'whl': 'WHL', 'qmjhl': 'QMJHL', 'ushl': 'USHL', 'usdp': 'USDP', 'ncaa': 'NCAA', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', 'wcup': 'World Cup', 'shl': 'SHL', 'elitserien': 'Elitserien', 'mhl': 'MHL', 'liiga': 'Liiga', 'u20-sm-liiga': 'U20 SM Liiga', 'u18-sm-sarja': 'U18 SM Sarja', 'j20-superelit': 'J20 SuperElit', 'j18-allsvenskan': 'J18 Allsvenskan', 'russia': 'Russia', 'russia3': 'Russia3', 'ushs-prep': 'USHS Prep', 'nhl-asg': 'NHL ASG'}
         self.tournament_leagues = {'og': (2,1), 'wjc-20': (1,1), 'wc': (6,1), 'wjc-18': (4,1), 'whc-17': (11,0), 'wcup': (9,0), 'nhl-asg': (2,1)} # first value is month and second value is 0 if the first year in a season should be used, 1 if the second year in the season should be used
         # for font-accurate string comparisons
         afm_filename = os.path.join(mpl.get_data_path(), 'fonts', 'afm', 'ptmr8a.afm')
@@ -35,6 +35,8 @@ class hockey_db():
     def categorize_league_list(self, league_list):
         contains_non_national = False
         national_set = {'World Juniors', 'Worlds', 'Olympics', 'WC-U18', 'WHC-17', 'World Cup'}
+        if len(league_list) == 1 and league_list[0] == "NHL ASG":
+            return 'yellow'
         for league in league_list:
             if league == 'NHL':
                 return 'blue' # NHL
@@ -298,7 +300,7 @@ class hockey_db():
                     relationships = self.is_before_after_during_season(season, row['year1'], row['month1'], row['day1'], row['year2'], row['month2'], row['day2'])
                     if 'before' not in relationships and 'during' not in relationships:
                         continue # ignore terms that only occur AFTER the current season
-                    data = f"{row['team']} ({row['league']}, {row['year1']}-{row['year2']})"
+                    data = f"{row['team']} ({row['league']}, {row['years_str']})"#{row['year1']}-{row['year2']})"
                     player2_key = (playername2, row['id'])
                     if player2_key not in player_data:
                         player_data[player2_key] = []
@@ -378,7 +380,8 @@ class hockey_db():
                 for term in overlap:
                     relationships = self.is_before_after_during_season(season, term['year1'], term['month1'], term['day1'], term['year2'], term['month2'], term['day2'])
                     for relationship in relationships:
-                        formatted_data[relationship].append(f"{term['team']} ({term['league']}, {term['year1']}-{term['year2']})")
+                        #formatted_data[relationship].append(f"{term['team']} ({term['league']}, {term['year1']}-{term['year2']})")
+                        formatted_data[relationship].append(f"{term['team']} ({term['league']}, {term['years_str']})")
                 for relationship in formatted_data:
                     if len(formatted_data[relationship]) > 0:
                         player_data = {"playername": playername, "data": ", ".join(formatted_data[relationship])}
