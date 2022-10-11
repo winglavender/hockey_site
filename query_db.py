@@ -12,7 +12,8 @@ import numpy as np
 
 class hockey_db():
 
-    def __init__(self):
+    def __init__(self, name_db):
+        self.name_db = name_db
         db_name = 'hockey_rosters_20220824_formatted.db'
         self.latest_date = pd.to_datetime('2022-06-26')
         conn = sql.connect(db_name)
@@ -20,7 +21,7 @@ class hockey_db():
         self.postseasons = pd.read_sql_query('select * from postseasons', conn)
         self.skaters.start_date = pd.to_datetime(self.skaters.start_date)
         self.skaters.end_date = pd.to_datetime(self.skaters.end_date)
-        self.names = pd.read_sql_query('select * from names', conn)
+        # self.names = pd.read_sql_query('select * from names', conn)
         self.league_strings = {'nhl': 'NHL', 'og': 'Olympics', 'khl': 'KHL', 'ahl': 'AHL', 'wc': 'Worlds', 'ohl': 'OHL', 'whl': 'WHL', 'qmjhl': 'QMJHL', 'ushl': 'USHL', 'usdp': 'USDP', 'ncaa': 'NCAA', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', 'wcup': 'World Cup', 'shl': 'SHL', 'elitserien': 'Elitserien', 'mhl': 'MHL', 'liiga': 'Liiga', 'u20-sm-liiga': 'U20 SM Liiga', 'u18-sm-sarja': 'U18 SM Sarja', 'j20-superelit': 'J20 SuperElit', 'j18-allsvenskan': 'J18 Allsvenskan', 'russia': 'Russia', 'russia3': 'Russia3', 'ushs-prep': 'USHS Prep', 'nhl-asg': 'NHL ASG'}
         self.tournament_leagues = {'og': (2,1), 'wjc-20': (1,1), 'wc': (6,1), 'wjc-18': (4,1), 'whc-17': (11,0), 'wcup': (9,0), 'nhl-asg': (2,1)} # first value is month and second value is 0 if the first year in a season should be used, 1 if the second year in the season should be used
         # for font-accurate string comparisons
@@ -111,6 +112,8 @@ class hockey_db():
         rows = self.skaters.loc[self.skaters.link==player_id]
         filtered_rows = []
         for index, row in rows.iterrows():
+            if row.team == 'USNTDP Juniors':
+                continue # USHL is weird and this team encompasses both U17 and U18 teams so it's redundant/too coarse
             if row.start_date > latest_date: # term starts after our latest date
                 continue
             if row.end_date > latest_date:
@@ -161,7 +164,7 @@ class hockey_db():
                     playoffs_end_date = last_season_dates[1]
                     if term.start_date < playoffs_end_date and term.end_date >= playoffs_end_date: # check whether the player was on the team during playoffs in the last possible season
                         playoff_queries.append((term.team, f"{term.end_date.year-1}-{term.end_date.year}"))
-        print(output)
+        # print(output)
         # get playoff runs
         for team, playoff_year in playoff_queries:
             team_str = self.strip_accents(team)
@@ -196,6 +199,7 @@ class hockey_db():
             overlaps = pd.concat([overlaps_a, overlaps_b])
             team_display_str = self.get_team_display_string(term.league, term.team)
             for teammate_id in overlaps.link.unique():
+                teammate_name = self.get_player_name_from_id(teammate_id)
                 teammate_rows = overlaps.loc[overlaps.link==teammate_id] # get all overlapping terms for this teammate (same as overlaps if player2_id was specified)
                 for index, teammate_term in teammate_rows.iterrows():
                     overlap_term, season_count, is_valid_overlap = self.compute_overlap_interval(term.start_date, term.end_date, teammate_term.start_date, teammate_term.end_date)
@@ -210,7 +214,7 @@ class hockey_db():
                             years_str = "2012-2013"
                         elif years_str == "2021-2021":
                             years_str = "2020-2021"
-                    tooltip_str = f"{teammate_term.player}<br>{team_display_str}<br>{years_str}"#{overlap_term[0].year}-{overlap_term[1].year}"
+                    tooltip_str = f"{teammate_name}<br>{team_display_str}<br>{years_str}"#{overlap_term[0].year}-{overlap_term[1].year}"
                     if is_tourney:
                         overlap_term = self.convert_tournament_dates(term.league, overlap_term[0], overlap_term[1])
                     else:
@@ -218,7 +222,7 @@ class hockey_db():
                             tooltip_str += f" ({season_count} season)"
                         else:
                             tooltip_str += f" ({season_count} seasons)"
-                    output.append((overlap_term[0].year, overlap_term[0].month, overlap_term[0].day, [teammate_rows.iloc[0].player, term.league, term.team, team_display_str, overlap_term[0].year, overlap_term[0].month, overlap_term[0].day, overlap_term[1].year, overlap_term[1].month, overlap_term[1].day, tooltip_str, teammate_rows.iloc[0].link, years_str]))
+                    output.append((overlap_term[0].year, overlap_term[0].month, overlap_term[0].day, [teammate_name, term.league, term.team, team_display_str, overlap_term[0].year, overlap_term[0].month, overlap_term[0].day, overlap_term[1].year, overlap_term[1].month, overlap_term[1].day, tooltip_str, teammate_rows.iloc[0].link, years_str]))
         # sort all overlaps by first overlap year
         output.sort()
         sorted_output = []
@@ -296,7 +300,7 @@ class hockey_db():
             potential_overlap, _ = self.get_overlapping_player_terms(player1)
             for row in potential_overlap:
                 if row['id'] in ids2:
-                    playername2 = row['player']
+                    playername2 = player_id_to_name[row['id']] #row['player']
                     relationships = self.is_before_after_during_season(season, row['year1'], row['month1'], row['day1'], row['year2'], row['month2'], row['day2'])
                     if 'before' not in relationships and 'during' not in relationships:
                         continue # ignore terms that only occur AFTER the current season
@@ -418,8 +422,9 @@ class hockey_db():
         return relationship
 
     def get_player_name_from_id(self, player_id):
-        terms = self.get_terms_from_player_id(player_id)
-        return terms[0].player # player_id is unique, it doesn't matter which row we use for the name
+        return self.name_db.get_name(player_id, "ep")
+        # terms = self.get_terms_from_player_id(player_id)
+        # return terms[0].player # player_id is unique, it doesn't matter which row we use for the name
 
     def player_to_description(self, player_row):
         year1 = pd.to_datetime(player_row.start_date).year
@@ -441,18 +446,19 @@ class hockey_db():
     # given an input name, return the player id (EliteProspects url)
     # if there are multiple possible players, return all possibilities, each with a description
     def retrieve_player_link(self, name):
-        tgt_name = self.strip_accents(name.lower())
-        names = self.names.loc[self.names.norm_name==tgt_name]
-        players = []
-        for index, name_row in names.iterrows():
-            ids = self.skaters.loc[self.skaters.player==name_row.orig_name] # may return multiple rows (multiple tenures) but should all belong to the same person
-            players.append({'player': name_row.orig_name, 'link': ids.iloc[0].link})
-        if len(players) == 1:
-            return 1, (players[0]['player'], players[0]['link'])
-        elif len(players) == 0:
-            return 0, name
-        else:
-            return len(players), players
+        return self.name_db.get_possible_links(name, "ep")
+        # tgt_name = self.strip_accents(name.lower())
+        # names = self.names.loc[self.names.norm_name==tgt_name]
+        # players = []
+        # for index, name_row in names.iterrows():
+        #     ids = self.skaters.loc[self.skaters.player==name_row.orig_name] # may return multiple rows (multiple tenures) but should all belong to the same person
+        #     players.append({'player': name_row.orig_name, 'link': ids.iloc[0].link})
+        # if len(players) == 1:
+        #     return 1, (players[0]['player'], players[0]['link'])
+        # elif len(players) == 0:
+        #     return 0, name
+        # else:
+        #     return len(players), players
 
     def traverse_graph(self, player1_id, player2_id):
         teammates1, _ = self.get_overlapping_player_terms(player1_id)

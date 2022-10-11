@@ -1,54 +1,87 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Hockey Teammates</title>
-    <link rel="stylesheet" type="text/css" href="../static/style.css">
-    <script>
+<html lang="en">
+<head>
+  <title>Hockey Teammates</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      <script>
 function reset_options() {
     document.getElementById('team').selectedIndex=-1;
     document.getElementById('season').selectedIndex = -1;
     return true;
 }
 </script>
+</head>
+<body onbeforeunload='reset_options()'>
 
-  </head>
-  <body onbeforeunload='reset_options()'>
+<div class="container">
+  <h2>Hockey Teammates</h2>
+
+<!--  <a href="{{ url_for('details') }}">Details</a> | <a href="{{ url_for('data') }}">Data</a> | <a href="{{ url_for('contact') }}">Contact</a><br>-->
+<!--  <p><small>Roster data last updated: 2022-06-26</small></p>-->
+
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+    <li><a data-toggle="tab" href="#one-player-tab">One Player</a></li>
+    <li><a data-toggle="tab" href="#two-players-tab">Two Players</a></li>
+    <li><a data-toggle="tab" href="#team-tab">Team</a></li>
+      <li><a data-toggle="tab" href="#details-tab">Details</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="home" class="tab-pane fade in active">
+        <br>
+      <p>View relationships between hockey players, as both teammates and opponents.</p>
+      <p>Focused on NHL players from 2000-2022 with additional data from international tournaments and some other pro and junior hockey leagues.</p>
 
 
-      <h3>Hockey Teammates</h3>
-      <p>A website to help you figure out which hockey players have been on a team together (focused on NHL players from 2000-2022 with additional data from international tournaments and some other pro and junior hockey leagues). </p>
+        <h4>One Player</h4>
+       <p>View an individual player's teammates:</p>
+        <ul>
+            <li>over their entire career</li>
+            <li>on a particular roster</li>
+        </ul>
 
-    <div id="content">
-    <a href="{{ url_for('details') }}">Details</a> | <a href="{{ url_for('data') }}">Data</a> | <a href="{{ url_for('contact') }}">Contact</a><br>
+      <h4>Two Players</h4>
+      <p>View the relationship between two players:</p>
+        <ul>
+            <li>whether they have been teammates</li>
+            <li>the teammates they have in common</li>
+            <li>the games they have played against each other or as teammates</li>
+        </ul>
 
-    <p><small>Roster data last updated: 2022-06-26</small></p>
+      <h4>Team</h4>
+      <p>View relationships over an entire NHL team</p>
 
-    <form method="post" action="/form_result">
+        <ul>
+            <li>the team history of each player on the roster</li>
+            <li>the teammate relationships between two rosters</li>
+        </ul>
+    </div>
+
+    <div id="one-player-tab" class="tab-pane fade">
+      <h3>One Player</h3>
+      <p>View an individual player's teammates</p><br>
+
+      <h4>Career View</h4>
+      <form method="post" action="/form_result">
     <fieldset>
-    <b>View a player's career: which teams they played for and who were their teammates</b><br><br>
+    <p>View a player's career: which teams they played for and who were their teammates</p>
         <label for="target">Player:</label>
             <input type="text" id="target" name="target" required>&nbsp;&nbsp;
-            <input type="submit" name="submit" value="Submit"><br><br>
-    Note: results may not display well on mobile devices; try rotating your phone to landscape mode, or use a computer for best results.<br>
+            <input type="submit" name="submit" value="Submit">
+        <p><small>Note: results may not display well on mobile devices; try rotating your phone to landscape mode, or use a computer for best results.</small></p>
     </fieldset>
-    </form><br><br>
+    </form><br>
 
-    <form method="post" action="/pair_form_result">
+      <h4>Roster View</h4>
+       <form method="post" action="/player_team_year_result">
     <fieldset>
-    <b>Check whether two players have been teammates</b><br><br>
-        <label for="player1">Player 1:</label>
-            <input type="text" id="player1" name="player1" required>&nbsp;&nbsp;
-        <label for="player2">Player 2:</label>
-            <input type="text" id="player2" name="player2" required>&nbsp;&nbsp;
-        <input type="submit" name="submit" value="Submit">
-    </fieldset>
-    </form><br><br>
-
-    <form method="post" action="/player_team_year_result">
-    <fieldset>
-    <b>Check whether a player has been teammates with anyone on a specific NHL roster</b><br><br>
+    <p>View a player's relationships with a specific NHL roster</p>
         <label for="player">Player:</label>
             <input type="text" id="player" name="player" required>&nbsp;&nbsp;
         <label for="team">Team:</label>
@@ -65,11 +98,60 @@ function reset_options() {
             </select>&nbsp;&nbsp;
        <input type="submit" name="submit" value="Submit" id="submit3">
     </fieldset>
-    </form><br><br>
+    </form><br>
+    </div>
 
-    <form method="post" action="/team_year_result">
+
+    <div id="two-players-tab" class="tab-pane fade">
+      <h3>Two Players</h3>
+      <p>View the relationship between two players</p><br>
+
+        <h4>Teammate History</h4>
+      <form method="post" action="/pair_form_result">
     <fieldset>
-    <b>View the NHL history for a particular roster</b><br><br>
+    <p>Check whether the players have been teammates</p>
+        <label for="player1">Player 1:</label>
+            <input type="text" id="player1" name="player1" required>&nbsp;&nbsp;
+        <label for="player2">Player 2:</label>
+            <input type="text" id="player2" name="player2" required>&nbsp;&nbsp;
+        <input type="submit" name="submit" value="Submit">
+    </fieldset>
+    </form><br>
+
+        <h4>Shared Teammates</h4>
+       <form method="post" action="/graph_traverse_result">
+    <fieldset>
+    <p>View teammates that the players have in common</p>
+        <label for="player1">Player 1:</label>
+            <input type="text" id="player1" name="player1" required>&nbsp;&nbsp;
+        <label for="player2">Player 2:</label>
+            <input type="text" id="player2" name="player2" required>&nbsp;&nbsp;
+        <input type="submit" name="submit" value="Submit">
+    </fieldset>
+    </form><br>
+
+        <h4>Shared Games Played</h4>
+       <form method="post" action="/game_result">
+    <fieldset>
+    <p>View shared games played (both as opponents and as teammates)</p>
+        <label for="player1">Player 1:</label>
+            <input type="text" id="player1" name="player1" required>&nbsp;&nbsp;
+        <label for="player2">Player 2:</label>
+            <input type="text" id="player2" name="player2" required>&nbsp;&nbsp;
+        <input type="submit" name="submit" value="Submit">
+    </fieldset>
+    </form><br>
+    </div>
+
+
+    <div id="team-tab" class="tab-pane fade">
+      <h3>Team</h3>
+      <p>View relationships over an entire team</p><br>
+
+        <h4>Roster History</h4>
+       <form method="post" action="/team_year_result">
+    <fieldset>
+    <p>View the NHL team history for each player on a particular roster</p>
         <label for="team_hist">Team:</label>
             <select name="team_hist" id="team_hist">
                 {% for team in nhl_team_data.team_order %}
@@ -84,22 +166,12 @@ function reset_options() {
             </select>&nbsp;&nbsp;
        <input type="submit" name="submit" value="Submit" id="submit4">
     </fieldset>
-    </form><br><br>
+    </form><br>
 
-    <form method="post" action="/graph_traverse_result">
+        <h4>Roster Comparison</h4>
+      <form method="post" action="/roster_pair_result">
     <fieldset>
-    <b>Find teammates that two players have in common</b><br><br>
-        <label for="player1">Player 1:</label>
-            <input type="text" id="player1" name="player1" required>&nbsp;&nbsp;
-        <label for="player2">Player 2:</label>
-            <input type="text" id="player2" name="player2" required>&nbsp;&nbsp;
-        <input type="submit" name="submit" value="Submit">
-    </fieldset>
-    </form><br><br>
-
-    <form method="post" action="/roster_pair_result">
-    <fieldset>
-    <b>Check the overlap between two NHL rosters</b><br><br>
+    <p>View the previous teammate relationships between two NHL rosters</p>
         <label for="team1">Team:</label>
             <select name="team1" id="team1">
                 {% for team in nhl_team_data.team_order %}
@@ -123,16 +195,76 @@ function reset_options() {
                 {% endfor %}
             </select>&nbsp;&nbsp;
        <input type="submit" name="submit" value="Submit" id="submit"><br><br>
-       Note: may take 15-20 seconds to compute results.
+        <p><small>Note: may take 15-20 seconds to compute results.</small></p>
     </fieldset>
-    </form><br><br>
-
-
+    </form><br>
     </div>
 
-    </body>
+    <div id="details-tab" class="tab-pane fade">
 
-    <script type="text/javascript">
+        <h3>Details</h3>
+
+        <p>To search for a player, you must use their full name and the exact spelling used by either <a href="https://eliteprospects.com">EliteProspects</a> or <a href="https://www.nhl.com/">nhl.com</a>. For example, both "Yevgeni Malkin" and "Evgeni Malkin" will return results. In addition, capitalization and diacritics are optional: "Nicklas Backstrom" and "nicklas backstrom" and "Nicklas Bäckström" all return the same result.</p>
+
+        <p>Not all teams and rosters are available, so some information may be missing for some players. In general, the site uses data from 2000-2022 for the following leagues:</p>
+    <table>
+        <tr>
+            <td>NHL</td>
+        </tr>
+        <tr>
+            <td>Worlds, WJC-20, WJC-18</td>
+        </tr>
+        <tr>
+            <td>Olympics</td>
+        </tr>
+        <tr>
+            <td>AHL</td>
+        </tr>
+        <tr>
+            <td>OHL, WHL, QMJHL</td>
+        </tr>
+        <tr>
+            <td>NCAA, USDP, USHL</td>
+        </tr>
+        <tr>
+            <td>KHL</td>
+        </tr>
+        <tr>
+            <td>MHL</td>
+        <tr>
+            <td>WHC-17</td>
+        </tr>
+        <tr>
+            <td>World Cup</td>
+        </tr>
+        <tr>
+            <td>SHL</td>
+        </tr>
+        <tr>
+            <td>J20 SuperElit, J18 Allsvenskan</td>
+        </tr>
+        <tr>
+            <td>Liiga</td>
+        </tr>
+        <tr>
+            <td>U20 SM-liiga, U18 SM-sarja</td>
+        </tr>
+    </table>
+
+        <h4>Last Updated</h4>
+
+        <p>Roster data is up-to-date through: 2022-06-26.</p>
+
+        <h4>Contact</h4>
+
+        <p>You can <a href="mailto:winglavender@gmail.com">email me</a> with questions, comments, issues, or requests for additional data or features.</p>
+
+    </div>
+      </div>
+</div>
+
+</body>
+ <script type="text/javascript">
         var seasons = {};
         var team_data = {{nhl_team_data|tojson}};
         console.log(team_data);
@@ -154,7 +286,7 @@ function reset_options() {
         document.querySelector('[name=team_hist]').addEventListener('backbutton', function(e) {
             season_hist.innerHTML = seasons[this.value].reduce((acc, elem) => `${acc}<option value="${elem}">${elem}</option>`, "");
         });
-        
+
         const season_pair = document.querySelector('[name=season_pair]');
         var team1_select = document.getElementById('team1');
         var team1 = team1_select.options[team1_select.selectedIndex].value;
@@ -177,6 +309,4 @@ function reset_options() {
         });
 
     </script>
-
-
 </html>

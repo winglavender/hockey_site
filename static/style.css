@@ -2,14 +2,15 @@ html {
   height: 100%;
 }
 body {
-  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-family:sans-serif;
   width: 95%;
   min-height: 95%;
   margin: 2%;
+  font-size: 0.875em;
 }
 input[type="submit"] {
   border: 1px solid black;
-  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-family: sans-serif;
   padding: 5px;
   border-radius: 5px;
 }
@@ -18,12 +19,12 @@ input[type="submit"]:hover {
   cursor: pointer;
 }
 input[type=text] {
-  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-family: sans-serif;
   padding:4px;
 }
 
 select {
-  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-family: sans-serif;
   padding:4px;
   border-radius:5px;
 }
@@ -43,6 +44,10 @@ tr.thead td, td.thead {
 }
 td.count {
     text-align: right;
+}
+
+label {
+    font-weight: normal !important;
 }
 
 #timeline {

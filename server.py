@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, session
-from query_db import hockey_db 
+from query_name_db import name_db
+from query_db import hockey_db
+from query_game_roster_db import game_roster_db
 import os
 
 app = Flask(__name__)
@@ -55,18 +57,21 @@ def form_result():
     if request.method == "POST":
         session.clear()
         target = request.form['target'].strip()
-        db = hockey_db()
-        num_results, output = db.retrieve_player_link(target)
+        names_db = name_db()
+        db = hockey_db(names_db)
+        output = db.retrieve_player_link(target)
         session["task"] = "career"
-        if num_results == 1:
+        # if num_results == 1:
+        if len(output) == 1:
             # output is unique player link
-            orig_name, player_id = output
-            data, longest_name = db.get_overlapping_player_terms(player_id)
-            career_data = db.get_player_career(player_id)
-            return render_template('career_results.html', data=data, career_data=career_data, playername1=orig_name, display_name=longest_name)
-        elif num_results == 0:
+            # orig_name, player_id = output[0]
+            data, longest_name = db.get_overlapping_player_terms(output[0]['link'])
+            career_data = db.get_player_career(output[0]['link'])
+            return render_template('career_results.html', data=data, career_data=career_data, playername1=output[0]['player'], display_name=longest_name)
+        # elif num_results == 0:
+        elif len(output) == 0:
             # output is player name searched
-            return render_template('no_results.html', playername=output)
+            return render_template('no_results.html', playername=target)
         else:
             # output contains list of options for player
             session["player_to_clarify"] = "player1"
@@ -78,42 +83,86 @@ def form_result():
 def pair_form_result():
     if request.method == "POST":
         session.clear()
-        db = hockey_db()
+        names_db = name_db()
+        db = hockey_db(names_db)
         player1 = request.form['player1'].strip()
-        num_results1, target1 = db.retrieve_player_link(player1)
+        # num_results1, target1\
+        output1 = db.retrieve_player_link(player1)
         player2 = request.form['player2'].strip()
-        num_results2, target2 = db.retrieve_player_link(player2)
+        # num_results2, target2\
+        output2 = db.retrieve_player_link(player2)
         session["task"] = "pair"
-        if num_results1 == 1 and num_results2 == 1:
+        # if num_results1 == 1 and num_results2 == 1:
+        if len(output1) == 1 and len(output2) == 1:
             # we have unique player ids for both
-            orig_name1, player_id1 = target1
-            orig_name2, player_id2 = target2
-            if player_id1 == player_id2:
+            # orig_name1, player_id1 = target1
+            # orig_name2, player_id2 = target2
+            if output1[0]['link'] == output2[0]['link']:
                 return render_template('pair_same_player.html')
-            data, _ = db.get_overlapping_player_terms(player_id1, player_id2)
+            data, _ = db.get_overlapping_player_terms(output1[0]['link'], output2[0]['link'])
             if len(data) == 0:
-                return render_template('no_pair_results.html', playername1=orig_name1, playername2=orig_name2)
+                return render_template('no_pair_results.html', playername1=output1[0]['player'], playername2=output2[0]['player'])
             else:
-                return render_template('pair_results.html', data=data, playername1=orig_name1, playername2=orig_name2)
-        elif num_results1 == 0:
-            return render_template('no_results.html', playername=target1)
-        elif num_results2 == 0:
-            return render_template('no_results.html', playername=target2)
-        elif num_results1 > 1 and num_results2 == 1:
+                return render_template('pair_results.html', data=data, playername1=output1[0]['player'], playername2=output2[0]['player'])
+        elif len(output1) == 0:
+            return render_template('no_results.html', playername=player1)
+        elif len(output2) == 0:
+            return render_template('no_results.html', playername=player2)
+        elif len(output1) > 1 and len(output2) == 1:
             # clarify player 1
-            session["player2"], session["player2_id"] = target2
+            session["player2"], session["player2_id"] = (output2[0]['player'], output2[0]['link']) #target2
             session["player_to_clarify"] = "player1"
-            return render_template('options_1.html', data=target1)
-        elif num_results2 > 1 and num_results1 == 1:
+            return render_template('options_1.html', data=output1)
+        elif len(output2) > 1 and len(output1) == 1:
             # clarify player 2
-            session["player1"], session["player1_id"] = target1
+            session["player1"], session["player1_id"] = (output1[0]['player'], output1[0]['link']) #target1
             session["player_to_clarify"] = "player2"
-            return render_template('options_1.html', data=target2)
+            return render_template('options_1.html', data=output2)
         else:
             # clarify both players
-            return render_template('options_2.html', data1=target1, data2=target2)
+            return render_template('options_2.html', data1=output1, data2=output2)
     else:
         return render_template('error.html')
+
+# compare game rosters for two players to get games in common (teammates/opponents)
+@app.route("/game_result", methods=["GET","POST"])
+def game_result():
+    if request.method == "POST":
+        session.clear()
+        session["task"] = "games"
+        names_db = name_db()
+        db = game_roster_db(names_db)
+        player1 = request.form['player1'].strip()
+        output1 = db.get_player_id(player1)
+        player2 = request.form['player2'].strip()
+        output2 = db.get_player_id(player2)
+        if len(output1) == 1 and len(output2) == 1:
+            # we have unique player ids for both
+            if output1[0]['link'] == output2[0]['link']:
+                return render_template('same_player_games.html')
+            data = db.get_results_html(int(output1[0]['link']), int(output2[0]['link']))
+            # TODO what if no results?
+            return render_template('game_results.html', data=data, playername1=output1[0]['player'], playername2=output2[0]['player'])
+        elif len(output1) == 0:
+            return render_template('no_results.html', playername=player1)
+        elif len(output2) == 0:
+            return render_template('no_results.html', playername=player2)
+        elif len(output1) > 1 and len(output2) == 1:
+            # clarify player 1
+            session["player2"], session["player2_id"] = (output2[0]['player'], output2[0]['link']) #target2
+            session["player_to_clarify"] = "player1"
+            return render_template('options_1.html', data=output1)
+        elif len(output2) > 1 and len(output1) == 1:
+            # clarify player 2
+            session["player1"], session["player1_id"] = (output1[0]['player'], output1[0]['link'])
+            session["player_to_clarify"] = "player2"
+            return render_template('options_1.html', data=output2)
+        else:
+            # clarify both players
+            return render_template('options_2.html', data1=output1, data2=output2)
+    else:
+        return render_template('error.html')
+
 
 @app.route("/team_year_result", methods=["GET", "POST"])
 def team_year_result():
@@ -121,7 +170,8 @@ def team_year_result():
         session.clear()
         team = request.form['team_hist']
         season = request.form['season_hist']
-        db = hockey_db()
+        names_db = name_db()
+        db = hockey_db(names_db)
         session["task"] = "roster_history"
         session["team"] = team
         session["season"] = season
@@ -137,25 +187,26 @@ def player_team_year_result():
         player = request.form['player'].strip()
         team = request.form['team']
         season = request.form['season']
-        db = hockey_db()
+        names_db = name_db()
+        db = hockey_db(names_db)
         session["task"] = "roster"
         session["team"] = team
         session["season"] = season
-        num_results, target = db.retrieve_player_link(player)
-        if num_results == 1:
+        # num_results, target\
+        output = db.retrieve_player_link(player)
+        if len(output) == 1:
             # we have a unique player id
-            orig_name, player_id = target
-            data, len_data = db.query_roster(player_id, team, season)
+            data, len_data = db.query_roster(output[0]['link'], team, season)
             if len_data == 0:
-                return render_template('no_roster_results.html', playername=orig_name,team=team, season=season)
+                return render_template('no_roster_results.html', playername=output[0]['player'], team=team, season=season)
             else:
-                return render_template('roster_results.html', playername=orig_name, team=team, season=season, data=data)
-        elif num_results == 0:
-            return render_template('no_results.html', playername=target)
-        elif num_results > 1:
+                return render_template('roster_results.html', playername=output[0]['player'], team=team, season=season, data=data)
+        elif len(output) == 0:
+            return render_template('no_results.html', playername=player)
+        elif len(output) > 1:
             # clarify player id
             session["player_to_clarify"] = "player1"
-            return render_template('options_1.html', data=target)
+            return render_template('options_1.html', data=output)
     else:
         return render_template('error.html')
 
@@ -168,7 +219,8 @@ def roster_pair_result():
         if team1 == team2:
             return render_template('rosters_same_team.html')
         season = request.form['season_pair']
-        db = hockey_db()
+        names_db = name_db()
+        db = hockey_db(names_db)
         session["task"] = "roster"
         session["team1"] = team1
         session["team2"] = team2
@@ -183,43 +235,46 @@ def roster_pair_result():
 def graph_traverse_result():
     if request.method == "POST":
         session.clear()
-        db = hockey_db()
+        names_db = name_db()
+        db = hockey_db(names_db)
         player1 = request.form['player1'].strip()
-        num_results1, target1 = db.retrieve_player_link(player1)
+        # num_results1, target1 \
+        output1 = db.retrieve_player_link(player1)
         player2 = request.form['player2'].strip()
-        num_results2, target2 = db.retrieve_player_link(player2)
+        # num_results2, target2\
+        output2 = db.retrieve_player_link(player2)
         session["task"] = "traverse"
-        if num_results1 == 1 and num_results2 == 1:
+        if len(output1) == 1 and len(output2) == 1:
             # we have unique player ids for both
-            orig_name1, player_id1 = target1
-            orig_name2, player_id2 = target2
-            if player_id1 == player_id2:
+            # orig_name1, player_id1 = target1
+            # orig_name2, player_id2 = target2
+            if output1[0]['link'] == output2[0]['link']:
                 return render_template('traverse_same_player.html')
-            data = db.traverse_graph(player_id1, player_id2)
-            team_data, _ = db.get_overlapping_player_terms(player_id1, player_id2)
+            data = db.traverse_graph(output1[0]['link'], output2[0]['link'])
+            team_data, _ = db.get_overlapping_player_terms(output1[0]['link'], output2[0]['link'])
             if len(data) == 0:
-                return render_template('no_traverse_results.html', playername1=orig_name1, playername2=orig_name2)
+                return render_template('no_traverse_results.html', playername1=output1[0]['player'], playername2=output2[0]['player'])
             elif len(team_data) == 0:
-                return render_template('traverse_results.html', data=data, playername1=orig_name1, playername2=orig_name2)
+                return render_template('traverse_results.html', data=data, playername1=output1[0]['player'], playername2=output2[0]['player'])
             else:
-                return render_template('traverse_results_same_team.html', data=data, team_data=team_data, playername1=orig_name1, playername2=orig_name2)
-        elif num_results1 == 0:
-            return render_template('no_results.html', playername=target1)
-        elif num_results2 == 0:
-            return render_template('no_results.html', playername=target2)
-        elif num_results1 > 1 and num_results2 == 1:
+                return render_template('traverse_results_same_team.html', data=data, team_data=team_data, playername1=output1[0]['player'], playername2=output2[0]['player'])
+        elif len(output1) == 0:
+            return render_template('no_results.html', playername=player1)
+        elif len(output2) == 0:
+            return render_template('no_results.html', playername=player2)
+        elif len(output1) > 1 and len(output2) == 1:
             # clarify player 1
-            session["player2"], session["player2_id"] = target2
+            session["player2"], session["player2_id"] = (output2[0]['player'], output2[0]['link']) #target2
             session["player_to_clarify"] = "player1"
-            return render_template('options_1.html', data=target1)
-        elif num_results2 > 1 and num_results1 == 1:
+            return render_template('options_1.html', data=output1)
+        elif len(output2) > 1 and len(output1) == 1:
             # clarify player 2
-            session["player1"], session["player1_id"] = target1
+            session["player1"], session["player1_id"] = (output1[0]['player'], output1[0]['link'])
             session["player_to_clarify"] = "player2"
-            return render_template('options_1.html', data=target2)
+            return render_template('options_1.html', data=output2)
         else:
             # clarify both players
-            return render_template('options_2.html', data1=target1, data2=target2)
+            return render_template('options_2.html', data1=output1, data2=output2)
     else:
         return render_template('error.html')
 
@@ -237,8 +292,10 @@ def options_result_1():
             session["player2_id"] = tmp[1]
         if "player2_id" in session and session["player1_id"] == session["player2_id"]:
             return render_template(f"{session['task']}_same_player.html")
-        db = hockey_db()
-        data = []
+        names_db = name_db()
+        db = hockey_db(names_db)
+        games_db = game_roster_db(names_db)
+        # data = []
         if session["task"] == "career":
             data, longest_name = db.get_overlapping_player_terms(session["player1_id"])
             career_data = db.get_player_career(session["player1_id"])
@@ -264,6 +321,15 @@ def options_result_1():
                 return render_template('no_roster_results.html', playername=session.get("player1"),team=session.get("team"), season=session.get("season"))
             else:
                 return render_template('roster_results.html', playername=session.get("player1"), team=session.get("team"), season=session.get("season"), data=data)
+        elif session["task"] == "games":
+            data = games_db.get_results_html(int(session["player1_id"]), int(session["player2_id"]))
+            # if len(data) == 0:
+            #     return render_template(f'no_pair_results.html', playername1=session.get("player1"),
+            #                            playername2=session.get("player2"))
+            # else:
+            return render_template(f'game_results.html', data=data, playername1=session.get("player1"),
+                                       playername2=session.get("player2"))
+
     else:
         return render_template('error.html')
 
@@ -278,8 +344,10 @@ def options_result_2():
         session["player2_id"] = tmp2[1]
         if session["player1_id"] == session["player2_id"]:
             return render_template(f"{session['task']}_same_player.html")
-        db = hockey_db()
-        data = []
+        names_db = name_db()
+        db = hockey_db(names_db)
+        games_db = game_roster_db(names_db)
+        # data = []
         if session["task"] == "traverse":
             data = db.traverse_graph(session["player1_id"], session["player2_id"])
             team_data, _ = db.get_overlapping_player_terms(session["player1_id"], session["player2_id"])
@@ -295,6 +363,14 @@ def options_result_2():
                 return render_template(f'no_pair_results.html', playername1=session.get("player1"), playername2=session.get("player2"))
             else:
                 return render_template(f'pair_results.html', data=data, playername1=session.get("player1"), playername2=session.get("player2"))
+        elif session["task"] == "games":
+            data = games_db.get_results_html(int(session["player1_id"]), int(session["player2_id"]))
+            # if len(data) == 0:
+            #     return render_template(f'no_pair_results.html', playername1=session.get("player1"),
+            #                            playername2=session.get("player2"))
+            # else:
+            return render_template(f'game_results.html', data=data, playername1=session.get("player1"),
+                                   playername2=session.get("player2"))
     else:
         return render_template('error.html')
 

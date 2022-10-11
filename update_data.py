@@ -262,24 +262,32 @@ class DBBuilder:
         print(pd_rows)
         return pd_rows
 
-    def full_update(self):
+    def full_update(self, test=False):
         db_filename = f"hockey_rosters_{self.today_str}_raw.db"
-        if exists(db_filename):
+        if test:
+            db_filename = f"hockey_rosters_{self.today_str}_raw_test.db"
+        if exists(db_filename) and not test:
             print(f"Error: file {db_filename} already exists.")
             return
         # scrape data and save to raw db
         conn = sql.connect(db_filename)
         # get new league data
         leagues = ["nhl", "ahl", "ohl", "ushl", "khl", "wc", "wjc-20", "wjc-18", "mhl", "og", "qmjhl", "whl", "ncaa", "usdp", "whc-17", "wcup", "ushs-prep", "russia", "russia3", "shl", "liiga", "u20-sm-liiga", "u18-sm-sarja", "j20-superelit", "j18-allsvenskan", "elitserien"]
+        if test:
+            leagues = ['nhl']
         # define seasons
         start_year = self.scrape_start_year
         end_year = int(self.season_calc.get_latest_season().split("-")[1])
         years = []
         for year in range(start_year, end_year):
             years.append(f"{year}-{year+1}")
-
+        if test:
+            years = ['2021-2022']
         # get ASG data
-        asg_data = scraper.get_asg()
+        if test:
+            asg_data = pd.DataFrame()
+        else:
+            asg_data = scraper.get_asg()
         # get skaters
         skaters = scraper.get_skaters(leagues, years)
         skaters = pd.concat([skaters, asg_data], axis=0, ignore_index=True) # add ASG data to skaters table
@@ -368,62 +376,62 @@ class DBBuilder:
         if exists(out_db_filename):
             print(f"Error: file {out_db_filename} already exists.")
             return
-        # read in duplicate names
-        dup_name_filename = db_filename.replace(".db", "_dup_names_disambig.txt")
-        dup_names_link_to_str = {}
-        name_map_list = [] # for names routing table
-        with open(dup_name_filename, 'r') as in_file:
-            for line in in_file:
-                tmp = line.strip().split(",")
-                dedup_name_str = f"{tmp[0]} ({tmp[3]})" 
-                dup_names_link_to_str[tmp[2]] = dedup_name_str
-                name_map_list.append([dedup_name_str, tmp[1]])
+        # # read in duplicate names
+        # dup_name_filename = db_filename.replace(".db", "_dup_names_disambig.txt")
+        # dup_names_link_to_str = {}
+        # name_map_list = [] # for names routing table
+        # with open(dup_name_filename, 'r') as in_file:
+        #     for line in in_file:
+        #         tmp = line.strip().split(",")
+        #         dedup_name_str = f"{tmp[0]} ({tmp[3]})"
+        #         dup_names_link_to_str[tmp[2]] = dedup_name_str
+        #         name_map_list.append([dedup_name_str, tmp[1]])
         # process raw data into app format and save to new db
         all_rows = []
         for player in self.nhl_players.link.unique():
-            dedup_playername = None 
-            if player in dup_names_link_to_str:
-                dedup_playername = dup_names_link_to_str[player]
+            dedup_playername = None
+            # if player in dup_names_link_to_str:
+            #     dedup_playername = dup_names_link_to_str[player]
             player_rows = self.nhl_players.loc[self.nhl_players.link == player]
             all_rows.extend(self.build_player_timeline(player_rows, dedup_playername))
         processed_players = pd.DataFrame(all_rows,
                                          columns=['player', 'team', 'league', 'start_date', 'end_date', 'link'])
         # update names routing table with normalized names
-        unique_names = processed_players.player.unique()
-        for name in unique_names:
-            lower = name.lower()
-            name_map_list.append([name, lower])
-            no_diacritics = strip_accents(lower)
-            if lower != no_diacritics:
-                name_map_list.append([name, no_diacritics])
-        names = pd.DataFrame(name_map_list, columns =['orig_name', 'norm_name'])
+        # unique_names = processed_players.player.unique()
+        # for name in unique_names:
+        #     lower = name.lower()
+        #     name_map_list.append([name, lower]) # TODO remove this?
+        #     no_diacritics = strip_accents(lower)
+        #     if lower != no_diacritics:
+        #         name_map_list.append([name, no_diacritics])
+        # names = pd.DataFrame(name_map_list, columns =['orig_name', 'norm_name'])
         # save output to new db
         conn_out = sql.connect(out_db_filename)
         processed_players.to_sql('skaters', conn_out)
         pd.set_option('display.max_columns', None)
-        names.to_sql('names', conn_out)
+        # names.to_sql('names', conn_out)
         self.postseasons.to_sql('postseasons', conn_out)
 
-    def dump_duplicate_names(self, db_filename):
-        out_filename = db_filename.replace(".db", "_dup_names.txt")
-        unique_people_links = self.nhl_players.link.unique()
-        unique_people_names = []
-        for link in unique_people_links:
-            unique_people_names.append(self.nhl_players.loc[self.nhl_players.link==link].iloc[0].player)
-        norm_names = [strip_accents(name.lower()) for name in unique_people_names]
-        norm_names_seen = {}
-        output_duplicates = []
-        for idx, name in enumerate(norm_names):
-            if name not in norm_names_seen:
-                norm_names_seen[name] = []
-            norm_names_seen[name].append(idx)
-        for name in norm_names_seen:
-            if len(norm_names_seen[name]) > 1:
-                for idx in norm_names_seen[name]:
-                    output_duplicates.append((name, unique_people_names[idx], unique_people_links[idx]))
-        with open(out_filename, 'w') as out_file:
-            for norm_name, name, link in output_duplicates:
-                out_file.write(f"{name},{norm_name},{link}\n")
+    # def dump_duplicate_names(self, db_filename):
+    #     out_filename = db_filename.replace(".db", "_dup_names.txt")
+    #     unique_people_links = self.nhl_players.link.unique()
+    #     unique_people_names = []
+    #     for link in unique_people_links:
+    #         unique_people_names.append(self.nhl_players.loc[self.nhl_players.link==link].iloc[0].player)
+    #     norm_names = [strip_accents(name.lower()) for name in unique_people_names]
+    #     norm_names_seen = {}
+    #     output_duplicates = []
+    #     for idx, name in enumerate(norm_names):
+    #         if name not in norm_names_seen:
+    #             norm_names_seen[name] = []
+    #         norm_names_seen[name].append(idx)
+    #     for name in norm_names_seen:
+    #         if len(norm_names_seen[name]) > 1:
+    #             for idx in norm_names_seen[name]:
+    #                 output_duplicates.append((name, unique_people_names[idx], unique_people_links[idx]))
+    #     with open(out_filename, 'w') as out_file:
+    #         for norm_name, name, link in output_duplicates:
+    #             out_file.write(f"{name},{norm_name},{link}\n")
 
 
 def strip_accents(text):
@@ -450,12 +458,14 @@ if __name__ == "__main__":
             sys.exit(0)
     if function == "scrape_full":  # run whenever new guys are introduced, probably once a year at the beginning of the season, runs a full scrape from scratch
         db_filename = db_builder.full_update()
-    elif function == "dump_duplicate_names": # run after a new full scrape, because new guys means possible new overlapping names
-        db_builder.format_nhl_players(db_filename)
+    elif function == "scrape_test":
+        db_filename = db_builder.full_update(test=True)
+    # elif function == "dump_duplicate_names": # run after a new full scrape, because new guys means possible new overlapping names
+    #     db_builder.format_nhl_players(db_filename)
         #db_builder.read_from_db(db_filename)
-        db_builder.dump_duplicate_names(db_filename)
+        # db_builder.dump_duplicate_names(db_filename)
     elif function == "process": # run after full_scrape and dump_duplicate_names and after manually adding disambiguating name strings
-        db_builder.format_nhl_players(db_filename)
+        db_builder.format_nhl_players(db_filename) # todo why is this here
         #db_builder.read_from_db(db_filename)
         db_builder.process_db(db_filename)#'data/hockey_rosters_20220804_raw.db')
     elif function == "scrape_updates":  # run weekly/monthly to get new trades/transfers (will not grab new guys)
