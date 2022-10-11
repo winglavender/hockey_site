@@ -9,12 +9,16 @@ class game_roster_db():
 
     def __init__(self, name_db):
         self.name_db = name_db
-        db_name = 'game_records_20002022.db'
-        conn = sql.connect(db_name)
-        self.games = pd.read_sql_query('select * from games', conn)
-        self.players = pd.read_sql_query('select * from players', conn)
-        self.game_player = pd.read_sql_query('select * from game_player', conn)
-        self.scratches = pd.read_sql_query('select * from scratches', conn)
+        db_name_1 = 'game_records_20002022_1.db'
+        conn_1 = sql.connect(db_name_1)
+        self.games = pd.read_sql_query('select * from games', conn_1)
+        self.players = pd.read_sql_query('select * from players', conn_1)
+        game_player_1 = pd.read_sql_query('select * from game_player_1', conn_1)
+        db_name_2 = 'game_records_20002022_2.db'
+        conn_2 = sql.connect(db_name_2)
+        self.scratches = pd.read_sql_query('select * from scratches', conn_2)
+        game_player_2 = pd.read_sql_query('select * from game_player_2', conn_2)
+        self.game_player = pd.concat([game_player_1, game_player_2], ignore_index=True, sort=False)
         self.team_names = {'Mighty Ducks of Anaheim': 'ANA', 'Anaheim Ducks': 'ANA', 'Arizona Coyotes': 'ARI', 'Atlanta Thrashers': 'ATL', 'Boston Bruins': 'BOS', 'Buffalo Sabres': 'BUF', 'Carolina Hurricanes': 'CAR', 'Columbus Blue Jackets': 'CBJ', 'Calgary Flames': 'CGY', 'Chicago Blackhawks': 'CHI', 'Colorado Avalanche': 'COL', 'Dallas Stars': 'DAL', 'Detroit Red Wings': 'DET', 'Edmonton Oilers': 'EDM', 'Florida Panthers': 'FLA', 'Los Angeles Kings': 'LAK', 'Minnesota Wild': 'MIN', 'Montreal Canadiens': 'MTL', 'Montréal Canadiens': 'MTL', 'New Jersey Devils': 'NJD', 'Nashville Predators': 'NSH', 'New York Islanders': 'NYI', 'New York Rangers': 'NYR', 'Ottawa Senators': 'OTT', 'Philadelphia Flyers': 'PHI', 'Phoenix Coyotes': 'PHX', 'Pittsburgh Penguins': 'PIT', 'Seattle Kraken': 'SEA', 'San Jose Sharks': 'SJS', 'St. Louis Blues': 'STL', 'Tampa Bay Lightning': 'TBL', 'Toronto Maple Leafs': 'TOR', 'Vancouver Canucks': 'VAN', 'Vegas Golden Knights': 'VGK', 'Winnipeg Jets': 'WPG', 'Washington Capitals': 'WSH'}
 
     def get_team_name_abbrev(self, team_name_full):
