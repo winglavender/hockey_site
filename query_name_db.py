@@ -1,3 +1,5 @@
+import csv
+
 import pandas as pd
 import sqlite3 as sql
 import unicodedata
@@ -7,11 +9,18 @@ pd.set_option('max_columns', None)
 class name_db():
 
     def __init__(self):
-        db_name = 'names_20221006.db'
+        db_name = 'names_20221024.db'
         conn = sql.connect(db_name)
         norm_names = pd.read_sql_query('select * from norm_names', conn)
         links = pd.read_sql_query('select * from links', conn)
         self.name_links = norm_names.merge(links, on='canon_name')
+        self.correct_links()
+
+    def correct_links(self):
+        with open('ep_link_corrections.txt') as in_file:
+            reader = csv.DictReader(in_file)
+            for row in reader:
+                self.name_links.loc[self.name_links['ep_link'] == row['incorrect_link'], 'ep_link'] = row['correct_link']
 
     def get_possible_links(self, input_name, db_type):
         if db_type != "ep" and db_type != "nhl":
@@ -22,8 +31,21 @@ class name_db():
         name_rows = self.name_links.loc[(self.name_links.norm_name == tgt_name) & (self.name_links[link_name] != "")]
         output = []
         for _, row in name_rows.iterrows():
+
             output.append({'player': row['canon_name'], 'link': row[link_name]})
         return output
+
+    def correct_period_in_link(self, link):
+        # link = row[link_name]
+        name_link_idx = link.rfind("/")
+        name_link = link[name_link_idx:]
+        if "." in name_link:
+            # print(link)
+            name_link = name_link.replace(".", "")
+            link = link[:name_link_idx] + name_link
+            # print(link)
+        return link
+            # anme_ = link.replace(".", "")
 
     def get_name(self, player_id, db_type):
         if db_type != "ep" and db_type != "nhl":
@@ -49,10 +71,11 @@ class name_db():
 
 if __name__ == "__main__":
     name_db = name_db()
-    print(name_db.get_possible_links("connor mcDavid", "nhl"))
     print(name_db.get_possible_links("connor mcDavid", "ep"))
-    print(name_db.get_possible_links("sebastian aho", "nhl"))
-    print(name_db.get_possible_links("sebastian aho", "ep"))
-    print(name_db.get_possible_links("nate mackinnon", "nhl"))
-    print(name_db.get_possible_links("sid crosby", "nhl"))
-    print(name_db.get_possible_links("fdsakjl;", "nhl"))
+    # print(name_db.get_possible_links("connor mcDavid", "ep"))
+    # print(name_db.get_possible_links("sebastian aho", "nhl"))
+    # print(name_db.get_possible_links("sebastian aho", "ep"))
+    # print(name_db.get_possible_links("nate mackinnon", "nhl"))
+    print(name_db.get_possible_links("Martin St-Louis", "ep"))
+    # print(name_db.get_possible_links("fdsakjl;", "nhl"))
+    # print(name_db.name_links.loc[name_.name_links[]])

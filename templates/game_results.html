@@ -42,10 +42,10 @@ td:empty::after{
   <body>
 
   <h3>Games in Common</h3>
-  <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have played {{data.summary.total_games}} games in common:</p>
+  <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have played {{data.summary.total_games}} game{% if data.summary.total_games != 1 %}s{% endif %} in common:</p>
 
   <table>
-      <tr><td colspan="3">{{data.summary.teammate_games}} games as teammates</td></tr>
+      <tr><td colspan="3">{{data.summary.teammate_games}} game{% if data.summary.teammate_games != 1 %}s{% endif %} as teammates</td></tr>
     {% if data.summary.teammate_games > 0 %}
             {% if data.summary.teammate_games_preseason > 0 %}
             <tr>
@@ -69,7 +69,7 @@ td:empty::after{
             {% endif %}
     {% endif %}
       <tr><td></td><td></td><td></td></tr>
-      <tr><td colspan="3">{{data.summary.opponent_games}} games as opponents</td></tr>
+      <tr><td colspan="3">{{data.summary.opponent_games}} game{% if data.summary.opponent_games != 1 %}s{% endif %} as opponents</td></tr>
     {% if data.summary.opponent_games > 0 %}
             {% if data.summary.opponent_games_preseason > 0 %}
             <tr>

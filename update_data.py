@@ -124,6 +124,8 @@ class DBBuilder:
     def build_player_timeline(self, rows, dedup_name=None):
         rows['start_date'] = 0
         rows['end_date'] = 0
+        # asg_data = asg_data[asg_data['season'].apply(self.is_valid_season)]
+        rows = rows[rows['season'].apply(self.is_valid_season)] # remove ASG games from earlier years
         player = rows.iloc[0].player
         if dedup_name:
             player = dedup_name  # use the unique string representation of this player's name

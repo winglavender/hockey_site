@@ -9,13 +9,16 @@ import os.path
 from season_calculator import SeasonCalculator
 from datetime import date
 import numpy as np
+import csv
+
 
 class hockey_db():
 
     def __init__(self, name_db):
         self.name_db = name_db
-        db_name = 'hockey_rosters_20220824_formatted.db'
-        self.latest_date = pd.to_datetime('2022-06-26')
+        db_name = 'hockey_rosters_20221024_formatted.db'
+        # self.latest_date = pd.to_datetime('2022-06-26')
+        self.latest_date = pd.to_datetime('2023-06-30') # set to end of current season?
         conn = sql.connect(db_name)
         self.skaters = pd.read_sql_query('select * from skaters', conn)
         self.postseasons = pd.read_sql_query('select * from postseasons', conn)
@@ -28,6 +31,13 @@ class hockey_db():
         afm_filename = os.path.join(mpl.get_data_path(), 'fonts', 'afm', 'ptmr8a.afm')
         self.afm = AFM(open(afm_filename, "rb"))
         self.season_calc = SeasonCalculator(date.today())
+        self.correct_links()
+
+    def correct_links(self):
+        with open('ep_link_corrections.txt') as in_file:
+            reader = csv.DictReader(in_file)
+            for row in reader:
+                self.skaters.loc[self.skaters['link'] == row['incorrect_link'], 'link'] = row['correct_link']
 
     def get_string_width(self, input_string):
         width, height = self.afm.string_width_height(input_string)

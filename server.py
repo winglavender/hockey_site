@@ -3,6 +3,7 @@ from query_name_db import name_db
 from query_db import hockey_db
 from query_game_roster_db import game_roster_db
 import os
+import time
 
 app = Flask(__name__)
 if os.getenv('PYANYWHERE'):
@@ -141,7 +142,6 @@ def game_result():
             if output1[0]['link'] == output2[0]['link']:
                 return render_template('same_player_games.html')
             data = db.get_results_html(int(output1[0]['link']), int(output2[0]['link']))
-            # TODO what if no results?
             return render_template('game_results.html', data=data, playername1=output1[0]['player'], playername2=output2[0]['player'])
         elif len(output1) == 0:
             return render_template('no_results.html', playername=player1)
