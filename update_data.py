@@ -23,6 +23,7 @@ class DBBuilder:
         # get today's date
         self.today_str = self.today.strftime("%Y%m%d")
 
+    # takes raw scraped roster data and preps it for processing into player timelines for the website (drops all non-NHL players, etc)
     def format_nhl_players(self, db_filename):
         self.ahl_affiliates = {
             'Anaheim Ducks': 'San Diego Gulls',
@@ -302,7 +303,6 @@ class DBBuilder:
         transfers = scraper.get_transfers("nhl", self.earliest_transfer_date)
         transfers.to_sql('transfers', conn)
 
-
         # scrape NHL postseasons and save to raw db
         postseasons = scraper.get_postseasons()
         postseasons.to_sql('postseasons', conn)
@@ -355,6 +355,13 @@ class DBBuilder:
         new_goalies = scraper.get_goalies(["nhl","ahl"], [season])
         all_skaters = pd.concat([skaters_prev, new_skaters])
         all_goalies = pd.concat([goalies_prev, new_goalies])
+        # scrape this season ASG
+        # skaters = skaters[skaters.team.str.contains("All Star Game") == False]  # don't duplicate ASG data
+        asg_data = scraper.get_asg()
+        # asg_data = asg_data[asg_data['season']!=season] # drop all ASG rosters that are not from current seasons
+        all_skaters = all_skaters[all_skaters.team.str.contains("All Star Game") == False]  # drop all ASG data to avoid duplication
+        all_skaters = pd.concat([all_skaters, asg_data], axis=0, ignore_index=True)  # add ASG data to skaters table
+        # all_skaters = all_skaters.drop_duplicates() # slight hack to remove extra ASG data, not sure why it gets duplicated TODO
         # scrape new transfers
         prev_date_tmp = db_filename[-15:-7]
         prev_date = prev_date_tmp[0:4] + "/" + prev_date_tmp[4:6] + "/" + prev_date_tmp[6:8]
@@ -362,7 +369,7 @@ class DBBuilder:
         pd.set_option('display.max_rows', 500)
         print(new_transfers)
         all_transfers = pd.concat([transfers, new_transfers])
-        all_transfers.drop_duplicates()
+        all_transfers = all_transfers.drop_duplicates()
         # scrape NHL postseasons
         postseasons = scraper.get_postseasons()
         # write to new db
@@ -371,6 +378,7 @@ class DBBuilder:
         all_goalies.to_sql('goalies', conn_out)
         all_transfers.to_sql('transfers', conn_out)
         postseasons.to_sql('postseasons', conn_out)
+        return out_db_filename
 
     def process_db(self, db_filename):
         # check in and out db file existence
@@ -378,16 +386,6 @@ class DBBuilder:
         if exists(out_db_filename):
             print(f"Error: file {out_db_filename} already exists.")
             return
-        # # read in duplicate names
-        # dup_name_filename = db_filename.replace(".db", "_dup_names_disambig.txt")
-        # dup_names_link_to_str = {}
-        # name_map_list = [] # for names routing table
-        # with open(dup_name_filename, 'r') as in_file:
-        #     for line in in_file:
-        #         tmp = line.strip().split(",")
-        #         dedup_name_str = f"{tmp[0]} ({tmp[3]})"
-        #         dup_names_link_to_str[tmp[2]] = dedup_name_str
-        #         name_map_list.append([dedup_name_str, tmp[1]])
         # process raw data into app format and save to new db
         all_rows = []
         for player in self.nhl_players.link.unique():
@@ -398,42 +396,12 @@ class DBBuilder:
             all_rows.extend(self.build_player_timeline(player_rows, dedup_playername))
         processed_players = pd.DataFrame(all_rows,
                                          columns=['player', 'team', 'league', 'start_date', 'end_date', 'link'])
-        # update names routing table with normalized names
-        # unique_names = processed_players.player.unique()
-        # for name in unique_names:
-        #     lower = name.lower()
-        #     name_map_list.append([name, lower]) # TODO remove this?
-        #     no_diacritics = strip_accents(lower)
-        #     if lower != no_diacritics:
-        #         name_map_list.append([name, no_diacritics])
-        # names = pd.DataFrame(name_map_list, columns =['orig_name', 'norm_name'])
         # save output to new db
         conn_out = sql.connect(out_db_filename)
         processed_players.to_sql('skaters', conn_out)
         pd.set_option('display.max_columns', None)
         # names.to_sql('names', conn_out)
         self.postseasons.to_sql('postseasons', conn_out)
-
-    # def dump_duplicate_names(self, db_filename):
-    #     out_filename = db_filename.replace(".db", "_dup_names.txt")
-    #     unique_people_links = self.nhl_players.link.unique()
-    #     unique_people_names = []
-    #     for link in unique_people_links:
-    #         unique_people_names.append(self.nhl_players.loc[self.nhl_players.link==link].iloc[0].player)
-    #     norm_names = [strip_accents(name.lower()) for name in unique_people_names]
-    #     norm_names_seen = {}
-    #     output_duplicates = []
-    #     for idx, name in enumerate(norm_names):
-    #         if name not in norm_names_seen:
-    #             norm_names_seen[name] = []
-    #         norm_names_seen[name].append(idx)
-    #     for name in norm_names_seen:
-    #         if len(norm_names_seen[name]) > 1:
-    #             for idx in norm_names_seen[name]:
-    #                 output_duplicates.append((name, unique_people_names[idx], unique_people_links[idx]))
-    #     with open(out_filename, 'w') as out_file:
-    #         for norm_name, name, link in output_duplicates:
-    #             out_file.write(f"{name},{norm_name},{link}\n")
 
 
 def strip_accents(text):
@@ -467,12 +435,13 @@ if __name__ == "__main__":
         #db_builder.read_from_db(db_filename)
         # db_builder.dump_duplicate_names(db_filename)
     elif function == "process": # run after full_scrape and dump_duplicate_names and after manually adding disambiguating name strings
-        db_builder.format_nhl_players(db_filename) # todo why is this here
+        db_builder.format_nhl_players(db_filename)
         #db_builder.read_from_db(db_filename)
         db_builder.process_db(db_filename)#'data/hockey_rosters_20220804_raw.db')
     elif function == "scrape_updates":  # run weekly/monthly to get new trades/transfers (will not grab new guys)
-        db_builder.scrape_transfer_updates(db_filename)
-        db_builder.process_db(db_filename)
+        out_db_filename = db_builder.scrape_transfer_updates(db_filename)
+        db_builder.format_nhl_players(out_db_filename)
+        db_builder.process_db(out_db_filename)
     elif function == "add_asg":
         #db_builder.read_from_db(db_filename)
         db_builder.add_asg(db_filename)

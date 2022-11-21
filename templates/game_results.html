@@ -83,7 +83,7 @@ td:empty::after{
             {% endif %}
             {% if data.summary.opponent_games_playoff > 0 %}
             <tr>
-                <td></td><td class='alnright'>{{data.summary.opponent_games_playoff}}</td><td>playoff games{% if data.summary.opponent_games_playoff != 1 %}s{% endif %}</td>
+                <td></td><td class='alnright'>{{data.summary.opponent_games_playoff}}</td><td>playoff game{% if data.summary.opponent_games_playoff != 1 %}s{% endif %}</td>
             </tr>
             {% endif %}
             {% if data.summary.opponent_games_allstar > 0 %}
@@ -188,7 +188,7 @@ td:empty::after{
     {% endfor %}
     </ul>
 
-    <p>This is based on NHL roster data from 2000-2022.</p>
+    <p>This is based on NHL roster data up to {{latest_date}}.</p>
              
     <a href="{{ url_for('home') }}">Return to main page</a>
   </body>

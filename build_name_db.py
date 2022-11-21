@@ -71,10 +71,21 @@ def get_num_games_played(scratches, game_player, player_id):
         return len(games)
 
 
-def find_duplicates(ep_db, nhl_db, out_filename):
+def find_duplicates(ep_db, nhl_db, links_filename, out_filename):
     # out_filename = db_filename.replace(".db", "_dup_names.txt")
     # nhl_conn = sql.connect(nhl_db)
     # nhl_db_players = pd.read_sql_query('select * from players', nhl_conn)
+    # read previous links file
+    disambiguated_links = set()
+    with open(links_filename) as in_file:
+        for line in in_file:
+            tmp = line.strip().split(",")
+            ep_link = tmp[0].strip()
+            if ep_link != "":
+                disambiguated_links.add(ep_link)
+            nhl_link = tmp[1].strip()
+            if nhl_link != "":
+                disambiguated_links.add(nhl_link)
     nhl_db_players = pd.read_csv(f"{nhl_db}_players.zip", compression='zip')
     ep_conn = sql.connect(ep_db)
     ep_db_players = pd.read_sql_query('select * from skaters', ep_conn)
@@ -111,7 +122,8 @@ def find_duplicates(ep_db, nhl_db, out_filename):
                 output_duplicates.append((name, unique_people_names_ep[idx], unique_people_links_ep[idx]))
     with open(out_filename, 'w') as out_file:
         for norm_name, name, link in output_duplicates:
-            out_file.write(f"{name},{norm_name},{link}\n")
+            if str(link) not in disambiguated_links:
+                out_file.write(f"{name},{norm_name},{link}\n")
 
 def process_names(ep_db, nhl_db, out_db, link_file):
     normalized_names = pd.DataFrame(columns=['norm_name', 'canon_name'])
@@ -220,8 +232,9 @@ if __name__ == "__main__":
     if sys.argv[1] == "find_duplicates":
         ep_db = sys.argv[2]
         nhl_db = sys.argv[3] # nhl data root filename eg 'game_records_20002023_20221024'
-        duplicates_filename = sys.argv[4]
-        find_duplicates(ep_db, nhl_db, duplicates_filename)
+        links_filename = sys.argv[4] # the links file from the last time we build the name DB so we know which duplicates we've already dealt with
+        duplicates_filename = sys.argv[5]
+        find_duplicates(ep_db, nhl_db, links_filename, duplicates_filename)
     elif sys.argv[1] == "build_name_db": # repeat this step and manually fill out the link file until satisfied, then use resulting out_db file as website input
         ep_db = sys.argv[2] # processed, not raw
         nhl_db = sys.argv[3]

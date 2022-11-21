@@ -3,7 +3,6 @@ from query_name_db import name_db
 from query_db import hockey_db
 from query_game_roster_db import game_roster_db
 import os
-import time
 
 app = Flask(__name__)
 if os.getenv('PYANYWHERE'):
@@ -133,6 +132,7 @@ def game_result():
         session["task"] = "games"
         names_db = name_db()
         db = game_roster_db(names_db)
+        latest_date = db.get_latest_date()
         player1 = request.form['player1'].strip()
         output1 = db.get_player_id(player1)
         player2 = request.form['player2'].strip()
@@ -142,7 +142,7 @@ def game_result():
             if output1[0]['link'] == output2[0]['link']:
                 return render_template('same_player_games.html')
             data = db.get_results_html(int(output1[0]['link']), int(output2[0]['link']))
-            return render_template('game_results.html', data=data, playername1=output1[0]['player'], playername2=output2[0]['player'])
+            return render_template('game_results.html', data=data, playername1=output1[0]['player'], playername2=output2[0]['player'], latest_date=latest_date)
         elif len(output1) == 0:
             return render_template('no_results.html', playername=player1)
         elif len(output2) == 0:
@@ -295,6 +295,7 @@ def options_result_1():
         names_db = name_db()
         db = hockey_db(names_db)
         games_db = game_roster_db(names_db)
+        latest_date = games_db.get_latest_date()
         # data = []
         if session["task"] == "career":
             data, longest_name = db.get_overlapping_player_terms(session["player1_id"])
@@ -328,7 +329,7 @@ def options_result_1():
             #                            playername2=session.get("player2"))
             # else:
             return render_template(f'game_results.html', data=data, playername1=session.get("player1"),
-                                       playername2=session.get("player2"))
+                                       playername2=session.get("player2"), latest_date=latest_date)
 
     else:
         return render_template('error.html')
