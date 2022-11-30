@@ -11,13 +11,15 @@ class game_roster_db():
         self.name_db = name_db
         self.latest_date = pd.to_datetime('2022-11-19')  # update this to the last accurate game data I have (probably the day before the scrape date)
         data_root_name = 'game_records_20002023_20221120' # update this for new data files
-        self.games = pd.read_csv(f"{data_root_name}_games.zip", compression='zip')#, dtype={'seasonId': 'int', 'seasonName': 'str', 'homeTeamGoals': 'int'})
+        self.games = pd.read_csv(f"{data_root_name}_games_withwinningteam.zip", compression='zip')#, dtype={'seasonId': 'int', 'seasonName': 'str', 'homeTeamGoals': 'int'})
         self.games['gameDateTimestamp'] = pd.to_datetime(self.games['gameDate'])
         self.games = self.games[self.games.gameDateTimestamp < self.latest_date]
         self.players = pd.read_csv(f"{data_root_name}_players.zip", compression='zip')
         self.scratches = pd.read_csv(f"{data_root_name}_scratches.zip", compression='zip')
         self.game_player = pd.read_csv(f"{data_root_name}_game_player.zip", compression='zip', dtype={'assists': 'str', 'goals': 'str', 'powerPlayAssists': 'str'})
         self.team_names = {'Mighty Ducks of Anaheim': 'ANA', 'Anaheim Ducks': 'ANA', 'Arizona Coyotes': 'ARI', 'Atlanta Thrashers': 'ATL', 'Boston Bruins': 'BOS', 'Buffalo Sabres': 'BUF', 'Carolina Hurricanes': 'CAR', 'Columbus Blue Jackets': 'CBJ', 'Calgary Flames': 'CGY', 'Chicago Blackhawks': 'CHI', 'Colorado Avalanche': 'COL', 'Dallas Stars': 'DAL', 'Detroit Red Wings': 'DET', 'Edmonton Oilers': 'EDM', 'Florida Panthers': 'FLA', 'Los Angeles Kings': 'LAK', 'Minnesota Wild': 'MIN', 'Montreal Canadiens': 'MTL', 'Montréal Canadiens': 'MTL', 'New Jersey Devils': 'NJD', 'Nashville Predators': 'NSH', 'New York Islanders': 'NYI', 'New York Rangers': 'NYR', 'Ottawa Senators': 'OTT', 'Philadelphia Flyers': 'PHI', 'Phoenix Coyotes': 'PHX', 'Pittsburgh Penguins': 'PIT', 'Seattle Kraken': 'SEA', 'San Jose Sharks': 'SJS', 'St. Louis Blues': 'STL', 'Tampa Bay Lightning': 'TBL', 'Toronto Maple Leafs': 'TOR', 'Vancouver Canucks': 'VAN', 'Vegas Golden Knights': 'VGK', 'Winnipeg Jets': 'WPG', 'Washington Capitals': 'WSH'}
+        self.game_types = [('PR', 'preseason'), ('R', 'regular season'), ('P', 'playoff'), ('A', 'All-Star')]
+
 
     def get_latest_date(self):
         return self.latest_date.date()
@@ -34,8 +36,13 @@ class game_roster_db():
         common_games = player1_games.merge(player2_games, suffixes=('_1', '_2'), on='gameId')
         common_games_info = common_games.merge(self.games, on='gameId')
         common_games_info['teammates'] = np.where(common_games_info['team_1']==common_games_info['team_2'],True,False)
-        common_games_info['team_1'] = common_games_info['team_1'].apply(lambda x: self.get_team_name_abbrev(x))
-        common_games_info['team_2'] = common_games_info['team_2'].apply(lambda x: self.get_team_name_abbrev(x))
+        common_games_info['team_1_abbrev'] = common_games_info['team_1'].apply(lambda x: self.get_team_name_abbrev(x))
+        common_games_info['team_2_abbrev'] = common_games_info['team_2'].apply(lambda x: self.get_team_name_abbrev(x))
+        # compute whether p1's team won or not
+        common_games_info['player1_win'] = common_games_info['winningTeam']==common_games_info['team_1']
+        # for _, row in common_games_info.iterrows():
+        #     print(f"{common_games_info['winningTeam']} {common_games_info['']}")
+        print(common_games_info)
         return common_games_info
 
     def get_results_html(self, player1_id, player2_id):
@@ -68,32 +75,48 @@ class game_roster_db():
         return data
 
     def split_game_data_by_type(self, game_rows):
-        game_types = [('PR', 'preseason'), ('R', 'regular season'), ('P', 'playoff'), ('A', 'All-Star')]
         game_rows_split = []
-        for game_type_id, display_name in game_types:
+        for game_type_id, display_name in self.game_types:
             type_data = {'display_name': display_name}
             rows = game_rows.loc[game_rows.gameType == game_type_id]
             if len(rows) == 0:
                 continue
             type_data['games'] = rows.to_dict('records')
+            type_data['games_record'] = self.get_win_loss_record(rows)
             game_rows_split.append(type_data)
         return game_rows_split
+
+    def get_win_loss_record(self, game_rows):
+        total = len(game_rows)
+        wins = game_rows['player1_win'].sum()
+        losses = total - wins
+        return {'wins': wins, 'losses': losses}
 
     def get_summary_counts(self, game_rows):
         data = {}
         data['total_games'] = len(game_rows)
         teammate_games = game_rows.loc[game_rows.teammates == True]
         data['teammate_games'] = len(teammate_games)
+        data['teammate_games_record'] = self.get_win_loss_record(teammate_games)
         data['teammate_games_preseason'] = len(teammate_games.loc[teammate_games.gameType == 'PR'])
+        data['teammate_games_preseason_record'] = self.get_win_loss_record(teammate_games.loc[teammate_games.gameType == 'PR'])
         data['teammate_games_regular'] = len(teammate_games.loc[teammate_games.gameType == 'R'])
+        data['teammate_games_regular_record'] = self.get_win_loss_record(teammate_games.loc[teammate_games.gameType == 'R'])
         data['teammate_games_playoff'] = len(teammate_games.loc[teammate_games.gameType == 'P'])
+        data['teammate_games_playoff_record'] = self.get_win_loss_record(teammate_games.loc[teammate_games.gameType == 'P'])
         data['teammate_games_allstar'] = len(teammate_games.loc[teammate_games.gameType == 'A'])
+        data['teammate_games_allstar_record'] = self.get_win_loss_record(teammate_games.loc[teammate_games.gameType == 'A'])
         opponent_games = game_rows.loc[game_rows.teammates == False]
         data['opponent_games'] = len(opponent_games)
+        data['opponent_games_record'] = self.get_win_loss_record(opponent_games)
         data['opponent_games_preseason'] = len(opponent_games.loc[opponent_games.gameType == 'PR'])
+        data['opponent_games_preseason_record'] = self.get_win_loss_record(opponent_games.loc[opponent_games.gameType == 'PR'])
         data['opponent_games_regular'] = len(opponent_games.loc[opponent_games.gameType == 'R'])
+        data['opponent_games_regular_record'] = self.get_win_loss_record(opponent_games.loc[opponent_games.gameType == 'R'])
         data['opponent_games_playoff'] = len(opponent_games.loc[opponent_games.gameType == 'P'])
+        data['opponent_games_playoff_record'] = self.get_win_loss_record(opponent_games.loc[opponent_games.gameType == 'P'])
         data['opponent_games_allstar'] = len(opponent_games.loc[opponent_games.gameType == 'A'])
+        data['opponent_games_allstar_record'] = self.get_win_loss_record(opponent_games.loc[opponent_games.gameType == 'A'])
         return data
 
     def display_results(self, player1_name, player2_name, game_rows):

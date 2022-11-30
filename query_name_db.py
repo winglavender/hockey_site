@@ -4,7 +4,8 @@ import pandas as pd
 import sqlite3 as sql
 import unicodedata
 import re
-pd.set_option('max_columns', None)
+#pd.set_option('max_columns', None)
+pd.options.display.max_columns = None
 
 class name_db():
 
