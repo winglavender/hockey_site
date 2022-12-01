@@ -45,7 +45,7 @@ td:empty::after{
   <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have played {{data.summary.total_games}} game{% if data.summary.total_games != 1 %}s{% endif %} in common:</p>
 
   <table>
-	  <tr><td colspan="3">{{data.summary.teammate_games}} game{% if data.summary.teammate_games != 1 %}s{% endif %} as teammates <i>({{data.summary.teammate_games_record.wins}}-{{data.summary.teammate_games_record.losses}})</i></td></tr>
+	  <tr><td colspan="3">{{data.summary.teammate_games}} game{% if data.summary.teammate_games != 1 %}s{% endif %} as teammates {% if data.summary.teammate_games>0 %}<i>({{data.summary.teammate_games_record.wins}}-{{data.summary.teammate_games_record.losses}})</i>{% endif %}</td></tr>
     {% if data.summary.teammate_games > 0 %}
             {% if data.summary.teammate_games_preseason > 0 %}
             <tr>
@@ -69,7 +69,7 @@ td:empty::after{
             {% endif %}
     {% endif %}
       <tr><td></td><td></td><td></td></tr>
-      <tr><td colspan="3">{{data.summary.opponent_games}} game{% if data.summary.opponent_games != 1 %}s{% endif %} as opponents <i>({{data.summary.opponent_games_record.wins}}-{{data.summary.opponent_games_record.losses}})</i></td></tr>
+      <tr><td colspan="3">{{data.summary.opponent_games}} game{% if data.summary.opponent_games != 1 %}s{% endif %} as opponents {% if data.summary.opponent_games > 0 %}<i>({{data.summary.opponent_games_record.wins}}-{{data.summary.opponent_games_record.losses}})</i>{% endif %}</td></tr>
     {% if data.summary.opponent_games > 0 %}
             {% if data.summary.opponent_games_preseason > 0 %}
             <tr>

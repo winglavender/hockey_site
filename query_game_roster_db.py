@@ -40,9 +40,6 @@ class game_roster_db():
         common_games_info['team_2_abbrev'] = common_games_info['team_2'].apply(lambda x: self.get_team_name_abbrev(x))
         # compute whether p1's team won or not
         common_games_info['player1_win'] = common_games_info['winningTeam']==common_games_info['team_1']
-        # for _, row in common_games_info.iterrows():
-        #     print(f"{common_games_info['winningTeam']} {common_games_info['']}")
-        print(common_games_info)
         return common_games_info
 
     def get_results_html(self, player1_id, player2_id):
