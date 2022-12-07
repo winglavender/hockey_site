@@ -9,10 +9,13 @@ class game_roster_db():
 
     def __init__(self, name_db):
         self.name_db = name_db
-        self.latest_date = pd.to_datetime('2022-11-19')  # update this to the last accurate game data I have (probably the day before the scrape date)
-        data_root_name = 'game_records_20002023_20221120' # update this for new data files
-        self.games = pd.read_csv(f"{data_root_name}_games_withwinningteam.zip", compression='zip')#, dtype={'seasonId': 'int', 'seasonName': 'str', 'homeTeamGoals': 'int'})
+        self.latest_date = pd.to_datetime('2022-12-06')  # update this to the last accurate game data I have (probably the day before the scrape date)
+        data_root_name = 'game_records_20002023_20221207' # update this for new data files
+        #self.games = pd.read_csv(f"{data_root_name}_games_withwinningteam.zip", compression='zip')#, dtype={'seasonId': 'int', 'seasonName': 'str', 'homeTeamGoals': 'int'})
+        self.games = pd.read_csv(f"{data_root_name}_games.zip", compression='zip')#, dtype={'seasonId': 'int', 'seasonName': 'str', 'homeTeamGoals': 'int'})
         self.games['gameDateTimestamp'] = pd.to_datetime(self.games['gameDate'])
+        #print(self.games)
+        print(self.games.loc[self.games.gameId==2017020339])
         self.games = self.games[self.games.gameDateTimestamp < self.latest_date]
         self.players = pd.read_csv(f"{data_root_name}_players.zip", compression='zip')
         self.scratches = pd.read_csv(f"{data_root_name}_scratches.zip", compression='zip')
@@ -40,6 +43,7 @@ class game_roster_db():
         common_games_info['team_2_abbrev'] = common_games_info['team_2'].apply(lambda x: self.get_team_name_abbrev(x))
         # compute whether p1's team won or not
         common_games_info['player1_win'] = common_games_info['winningTeam']==common_games_info['team_1']
+        print(common_games_info)
         return common_games_info
 
     def get_results_html(self, player1_id, player2_id):

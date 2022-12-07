@@ -94,9 +94,11 @@ def find_duplicates(ep_db, nhl_db, links_filename, out_filename):
     unique_people_names_nhl = []
     unique_people_names_ep = []
     for link in unique_people_links_nhl:
-        unique_people_names_nhl.append(nhl_db_players.loc[nhl_db_players.playerId == link].iloc[0].playerName)
+        unique_people_names_nhl = pd.concat([unique_people_names_nhl,nhl_db_players.loc[nhl_db_players.playerId == link].iloc[0].playerName])
+        #unique_people_names_nhl.append(nhl_db_players.loc[nhl_db_players.playerId == link].iloc[0].playerName)
     for link in unique_people_links_ep:
-        unique_people_names_ep.append(ep_db_players.loc[ep_db_players.link == link].iloc[0].player)
+        #unique_people_names_ep.append(ep_db_players.loc[ep_db_players.link == link].iloc[0].player)
+        unique_people_names_ep = pd.concat([unique_people_names_ep,ep_db_players.loc[ep_db_players.link == link].iloc[0].player])
     # NHL DB
     norm_names = [strip_accents(name.lower()) for name in unique_people_names_nhl]
     norm_names_seen = {}
@@ -154,8 +156,9 @@ def process_names(ep_db, nhl_db, out_db, link_file):
         # existing_canon_name = ""
         if len(existing_link) == 0:
             # need to add this link to the links table
-            name_links = name_links.append({'nhl_link': player_nhl_link, 'canon_name': player_nhl_name, 'ep_link': ""}, ignore_index=True)
-            normalized_names = normalized_names.append({'norm_name': norm_nhl_name, 'canon_name': player_nhl_name}, ignore_index=True)
+            #name_links = name_links.append({'nhl_link': player_nhl_link, 'canon_name': player_nhl_name, 'ep_link': ""}, ignore_index=True)
+            name_links = pd.concat([name_links,pd.DataFrame([{'nhl_link': player_nhl_link, 'canon_name': player_nhl_name, 'ep_link': ""}])])
+            normalized_names = pd.concat([normalized_names,pd.DataFrame([{'norm_name': norm_nhl_name, 'canon_name': player_nhl_name}])])
         elif len(existing_link) == 1: # TODO it can't be more than 1 right?
             existing_canon_name = existing_link.iloc[0].canon_name
             if existing_canon_name == "":
@@ -163,10 +166,12 @@ def process_names(ep_db, nhl_db, out_db, link_file):
                 name_links.loc[name_links.nhl_link==player_nhl_link, 'canon_name'] = player_nhl_name
                 # update normalized name df
                 # TODO make this more efficient later, when I've figured out what data I need when
-                normalized_names = normalized_names.append({'norm_name': norm_nhl_name, 'canon_name': player_nhl_name}, ignore_index=True)
+                #normalized_names = normalized_names.append({'norm_name': norm_nhl_name, 'canon_name': player_nhl_name}, ignore_index=True)
+                normalized_names = pd.concat([normalized_names,pd.DataFrame([{'norm_name': norm_nhl_name, 'canon_name': player_nhl_name}])])
             else:
                 # update normalized name df to map to the existing canon name
-                normalized_names = normalized_names.append({'norm_name': norm_nhl_name, 'canon_name': existing_canon_name}, ignore_index=True)
+                #normalized_names = normalized_names.append({'norm_name': norm_nhl_name, 'canon_name': existing_canon_name}, ignore_index=True)
+                normalized_names = pd.concat([normalized_names,pd.DataFrame([{'norm_name': norm_nhl_name, 'canon_name': existing_canon_name}])])
     # attempt to match EP names to canon names
     ep_conn = sql.connect(ep_db)
     ep_db_players = pd.read_sql_query('select * from skaters', ep_conn)
@@ -186,7 +191,8 @@ def process_names(ep_db, nhl_db, out_db, link_file):
             else:
                 # can't use the name form to find a link, this EP name will be used as the canon name
                 # TODO is this assumption correct?
-                name_links = name_links.append({'canon_name': player_ep_name, 'nhl_link': "", 'ep_link': player_ep_link}, ignore_index=True)
+                name_links = pd.concat([name_links,pd.DataFrame([{'canon_name': player_ep_name, 'nhl_link': "", 'ep_link': player_ep_link}])])
+                #name_links = name_links.append({'canon_name': player_ep_name, 'nhl_link': "", 'ep_link': player_ep_link}, ignore_index=True)
         elif len(existing_link) == 1: # TODO it can't be more than 1 right?
             # we found a specified link
             existing_canon_name = existing_link.iloc[0].canon_name
@@ -194,7 +200,8 @@ def process_names(ep_db, nhl_db, out_db, link_file):
             existing_norm_row = normalized_names.loc[(normalized_names.canon_name==existing_canon_name) & (normalized_names.norm_name==norm_ep_name)]
             if len(existing_norm_row) == 0:
                 # update normalized_names
-                normalized_names = normalized_names.append({'norm_name': norm_ep_name, 'canon_name': existing_canon_name}, ignore_index=True)
+                #normalized_names = normalized_names.append({'norm_name': norm_ep_name, 'canon_name': existing_canon_name}, ignore_index=True)
+                normalized_names = pd.concat([normalized_names,pd.DataFrame([{'norm_name': norm_ep_name, 'canon_name': existing_canon_name}])])
     # output missing links
     # nhl_scratches = pd.read_sql_query('select * from scratches', nhl_conn)
     # nhl_game_player = pd.read_sql_query('select * from game_player', nhl_conn)

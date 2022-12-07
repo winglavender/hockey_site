@@ -10,7 +10,7 @@ pd.options.display.max_columns = None
 class name_db():
 
     def __init__(self):
-        db_name = 'names_20221120.db'
+        db_name = 'names_20221207.db'
         conn = sql.connect(db_name)
         norm_names = pd.read_sql_query('select * from norm_names', conn)
         links = pd.read_sql_query('select * from links', conn)

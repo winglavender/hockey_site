@@ -16,7 +16,7 @@ class hockey_db():
 
     def __init__(self, name_db):
         self.name_db = name_db
-        db_name = 'hockey_rosters_20221112_formatted.db'
+        db_name = 'hockey_rosters_20221207_formatted.db'
         # self.latest_date = pd.to_datetime('2022-06-26')
         self.latest_date = pd.to_datetime('2023-06-30') # set to end of current season?
         conn = sql.connect(db_name)
