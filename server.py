@@ -180,6 +180,33 @@ def team_year_result():
     else:
         return render_template('error.html')
 
+
+@app.route("/player_team_game_result", methods=["GET", "POST"])
+def player_team_game_result():
+    if request.method == "POST":
+        session.clear()
+        player = request.form['player'].strip()
+        team = request.form['team']
+        names_db = name_db()
+        db = game_roster_db(names_db)
+        latest_date = db.get_latest_date()
+        session["task"] = "team_games"
+        session["team"] = team
+        # num_results, target
+        output = db.get_player_id(player)
+        if len(output) == 1:
+            # we have a unique player id
+            data = db.get_results_html_vs_team(int(output[0]['link']), team)
+            return render_template('vs_team_game_results.html', playername=output[0]['player'], team=team, data=data, latest_date=latest_date)
+        elif len(output) == 0:
+            return render_template('no_results.html', playername=player)
+        elif len(output) > 1:
+            # clarify player id
+            session["player_to_clarify"] = "player1"
+            return render_template('options_1.html', data=output)
+    else:
+        return render_template('error.html')
+
 @app.route("/player_team_year_result", methods=["GET", "POST"])
 def player_team_year_result():
     if request.method == "POST":
@@ -324,12 +351,12 @@ def options_result_1():
                 return render_template('roster_results.html', playername=session.get("player1"), team=session.get("team"), season=session.get("season"), data=data)
         elif session["task"] == "games":
             data = games_db.get_results_html(int(session["player1_id"]), int(session["player2_id"]))
-            # if len(data) == 0:
-            #     return render_template(f'no_pair_results.html', playername1=session.get("player1"),
-            #                            playername2=session.get("player2"))
-            # else:
             return render_template(f'game_results.html', data=data, playername1=session.get("player1"),
                                        playername2=session.get("player2"), latest_date=latest_date)
+        elif session["task"] == "team_games":
+            data = games_db.get_results_html_vs_team(int(session["player1_id"]), session.get("team"))
+            return render_template(f'vs_team_game_results.html', data=data, playername=session.get("player1"),
+                                       team=session.get("team"), latest_date=latest_date)
 
     else:
         return render_template('error.html')

@@ -11,11 +11,8 @@ class game_roster_db():
         self.name_db = name_db
         self.latest_date = pd.to_datetime('2022-12-06')  # update this to the last accurate game data I have (probably the day before the scrape date)
         data_root_name = 'game_records_20002023_20221207' # update this for new data files
-        #self.games = pd.read_csv(f"{data_root_name}_games_withwinningteam.zip", compression='zip')#, dtype={'seasonId': 'int', 'seasonName': 'str', 'homeTeamGoals': 'int'})
         self.games = pd.read_csv(f"{data_root_name}_games.zip", compression='zip')#, dtype={'seasonId': 'int', 'seasonName': 'str', 'homeTeamGoals': 'int'})
         self.games['gameDateTimestamp'] = pd.to_datetime(self.games['gameDate'])
-        #print(self.games)
-        print(self.games.loc[self.games.gameId==2017020339])
         self.games = self.games[self.games.gameDateTimestamp < self.latest_date]
         self.players = pd.read_csv(f"{data_root_name}_players.zip", compression='zip')
         self.scratches = pd.read_csv(f"{data_root_name}_scratches.zip", compression='zip')
@@ -33,6 +30,22 @@ class game_roster_db():
         else:
             return team_name_full
 
+    def get_games_vs_team(self, player_id, team_name):
+        player_games = self.get_player_games(player_id)
+        team_games = self.get_team_games(team_name)
+        # identify games where player played AGAINST the team
+        player_games_vs = player_games[player_games['gameId'].isin(team_games['gameId'])] # games involving team_name
+        player_games_vs = player_games_vs[player_games['team'] != team_name] # games where team_name is the opponent
+        player_games_vs_info = player_games_vs.merge(self.games, on='gameId')
+        player_games_vs_info['player1_win'] = player_games_vs_info['winningTeam'] == player_games_vs_info['team']
+        player_games_vs_info['team_abbrev'] = player_games_vs_info['team'].apply(lambda x: self.get_team_name_abbrev(x))
+        return player_games_vs_info
+
+    def get_team_games(self, team_name):
+        games = pd.concat([self.games.loc[self.games.awayTeam == team_name], self.games.loc[
+            self.games.homeTeam == team_name]])
+        return games
+
     def get_common_games(self, player1_id, player2_id):
         player1_games = self.get_player_games(player1_id)
         player2_games = self.get_player_games(player2_id)
@@ -45,6 +58,32 @@ class game_roster_db():
         common_games_info['player1_win'] = common_games_info['winningTeam']==common_games_info['team_1']
         print(common_games_info)
         return common_games_info
+
+    def get_results_html_vs_team(self, player1_id, team_name):
+        start = time.time()
+        vs_games = self.get_games_vs_team(player1_id, team_name)
+        data = {}
+        # get all summary game counts
+        data['summary'] = self.get_summary_counts_vs_team(vs_games)
+        # restructure game data for HTML output
+        season_ids = vs_games.seasonId.unique()
+        season_ids.sort()
+        data['seasons'] = []
+        for season_id in season_ids:
+            # get season rows
+            season_data = {}
+            season_rows = vs_games.loc[vs_games.seasonId == season_id]
+            season_name = season_rows.iloc[0].seasonName
+            season_data['name'] = season_name
+            season_data['summary'] = self.get_summary_counts_vs_team(season_rows)
+            # add game data
+            opponent_rows = season_rows
+            opponent_rows_split = self.split_game_data_by_type(opponent_rows)
+            season_data['opponent_games'] = opponent_rows_split
+            data['seasons'].append(season_data)
+        end = time.time()
+        print(f"elapsed time: {end - start}")
+        return data
 
     def get_results_html(self, player1_id, player2_id):
         start = time.time()
@@ -92,6 +131,22 @@ class game_roster_db():
         wins = game_rows['player1_win'].sum()
         losses = total - wins
         return {'wins': wins, 'losses': losses}
+
+    def get_summary_counts_vs_team(self, game_rows):
+        data = {}
+        data['total_games'] = len(game_rows)
+        opponent_games = game_rows
+        data['opponent_games'] = len(opponent_games)
+        data['opponent_games_record'] = self.get_win_loss_record(opponent_games)
+        data['opponent_games_preseason'] = len(opponent_games.loc[opponent_games.gameType == 'PR'])
+        data['opponent_games_preseason_record'] = self.get_win_loss_record(opponent_games.loc[opponent_games.gameType == 'PR'])
+        data['opponent_games_regular'] = len(opponent_games.loc[opponent_games.gameType == 'R'])
+        data['opponent_games_regular_record'] = self.get_win_loss_record(opponent_games.loc[opponent_games.gameType == 'R'])
+        data['opponent_games_playoff'] = len(opponent_games.loc[opponent_games.gameType == 'P'])
+        data['opponent_games_playoff_record'] = self.get_win_loss_record(opponent_games.loc[opponent_games.gameType == 'P'])
+        data['opponent_games_allstar'] = len(opponent_games.loc[opponent_games.gameType == 'A'])
+        data['opponent_games_allstar_record'] = self.get_win_loss_record(opponent_games.loc[opponent_games.gameType == 'A'])
+        return data
 
     def get_summary_counts(self, game_rows):
         data = {}
@@ -185,7 +240,11 @@ from query_name_db import name_db
 if __name__ == "__main__":
     names_db = name_db()
     db = game_roster_db(names_db)
+    print(db.get_player_id('Connor McDavid'))
     player1_id = '8478402'
     player2_id = '8477934'
-    common_games = db.get_common_games(player1_id, player2_id)
-    print(common_games)
+    # common_games = db.get_common_games(player1_id, player2_id)
+    # print(common_games)
+    # db.get_team_games('Boston Bruins')
+    # db.get_games_vs_team(8478402, 'Pittsburgh Penguins')
+    print(db.get_results_html_vs_team(8478402, 'Pittsburgh Penguins'))

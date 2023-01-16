@@ -44,6 +44,7 @@ function reset_options() {
         <ul>
             <li>over their entire career</li>
             <li>on a particular roster</li>
+            <li>as well as their history vs a particular team</li>
         </ul>
 
       <h4>Two Players</h4>
@@ -99,6 +100,24 @@ function reset_options() {
        <input type="submit" name="submit" value="Submit" id="submit3">
     </fieldset>
     </form><br>
+
+        <h4>Game History Vs Team</h4>
+       <form method="post" action="/player_team_game_result">
+    <fieldset>
+    <p>View a player's relationships with a specific NHL roster</p>
+        <label for="player">Player:</label>
+            <input type="text" id="player" name="player" required>&nbsp;&nbsp;
+        <label for="team">Team:</label>
+            <select name="team" id="team">
+                {% for team in nhl_team_data.team_order %}
+                <option value="{{team}}">{{team}}</option>
+                {% endfor %}
+            </select>
+       <input type="submit" name="submit" value="Submit" id="submit4">
+    </fieldset>
+    </form><br>
+    </div>
+
     </div>
 
 
