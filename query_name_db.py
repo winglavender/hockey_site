@@ -1,5 +1,6 @@
 import csv
 
+from normalize_name import *
 import pandas as pd
 import sqlite3 as sql
 import unicodedata
@@ -10,11 +11,11 @@ pd.options.display.max_columns = None
 class name_db():
 
     def __init__(self):
-        db_name = 'names_20221207.db'
+        db_name = 'names_20230316.db'
         conn = sql.connect(db_name)
         norm_names = pd.read_sql_query('select * from norm_names', conn)
         links = pd.read_sql_query('select * from links', conn)
-        self.name_links = norm_names.merge(links, on='canon_name')
+        self.name_links = norm_names.merge(links, how='outer', on='canon_name')
         self.correct_links()
 
     def correct_links(self):
@@ -28,7 +29,8 @@ class name_db():
             print("ERROR: specify valid link type for name_db ('ep' or 'nhl')")
             return None
         link_name = f"{db_type}_link"
-        tgt_name = self.strip_accents(input_name.lower())
+        tgt_name = normalize_name(input_name)
+        #tgt_name = self.strip_accents(input_name.lower())
         name_rows = self.name_links.loc[(self.name_links.norm_name == tgt_name) & (self.name_links[link_name] != "")]
         output = []
         for _, row in name_rows.iterrows():
