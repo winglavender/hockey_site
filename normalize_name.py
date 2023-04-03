@@ -26,3 +26,5 @@ def strip_accents(text):
     text = text.replace(".", "") # remove periods from "J.T. Brown" but we don't want to remove all punctuation e.g. "O'Connor"
     #text = re.sub(r'[^\w\s]', '', text) # remove punctuation (e.g. "J.T. Brown")
     return str(text)
+
+#print(normalize_name("Nicklas Nordgren (born 1979)"))

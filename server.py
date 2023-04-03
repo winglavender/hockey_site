@@ -141,7 +141,7 @@ def game_result():
             # we have unique player ids for both
             if output1[0]['link'] == output2[0]['link']:
                 return render_template('same_player_games.html')
-            data = db.get_results_html(int(output1[0]['link']), int(output2[0]['link']))
+            data = db.get_results_html(int(float(output1[0]['link'])), int(float(output2[0]['link'])))
             return render_template('game_results.html', data=data, playername1=output1[0]['player'], playername2=output2[0]['player'], latest_date=latest_date)
         elif len(output1) == 0:
             return render_template('no_results.html', playername=player1)
@@ -196,7 +196,7 @@ def player_team_game_result():
         output = db.get_player_id(player)
         if len(output) == 1:
             # we have a unique player id
-            data = db.get_results_html_vs_team(int(output[0]['link']), team)
+            data = db.get_results_html_vs_team(int(float(output[0]['link'])), team)
             return render_template('vs_team_game_results.html', playername=output[0]['player'], team=team, data=data, latest_date=latest_date)
         elif len(output) == 0:
             return render_template('no_results.html', playername=player)

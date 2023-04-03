@@ -5,13 +5,14 @@ import pandas as pd
 import sqlite3 as sql
 import unicodedata
 import re
+import numpy as np
 #pd.set_option('max_columns', None)
 pd.options.display.max_columns = None
 
 class name_db():
 
     def __init__(self):
-        db_name = 'names_20230316.db'
+        db_name = 'names_20230403.db'
         conn = sql.connect(db_name)
         norm_names = pd.read_sql_query('select * from norm_names', conn)
         links = pd.read_sql_query('select * from links', conn)
@@ -72,13 +73,14 @@ class name_db():
         text = re.sub(r'[^\w\s]', '', text) # remove punctuation (e.g. "J.T. Brown")
         return str(text)
 
+    # check if the normalization function changes anyone's name length -- hoping to catch the Mads Sogaard error faster
+    def check_name_normalization(self):
+        for row in self.name_links.itertuples(index=False):
+            if normalize_name(row.canon_name) == row.norm_name and len(row.canon_name) != len(row.norm_name):
+                print(row)
+
 if __name__ == "__main__":
     name_db = name_db()
-    print(name_db.get_possible_links("connor mcDavid", "ep"))
-    # print(name_db.get_possible_links("connor mcDavid", "ep"))
-    # print(name_db.get_possible_links("sebastian aho", "nhl"))
-    # print(name_db.get_possible_links("sebastian aho", "ep"))
-    # print(name_db.get_possible_links("nate mackinnon", "nhl"))
-    print(name_db.get_possible_links("Martin St-Louis", "ep"))
-    # print(name_db.get_possible_links("fdsakjl;", "nhl"))
-    # print(name_db.name_links.loc[name_.name_links[]])
+    name_db.check_name_normalization()
+    #print(name_db.get_possible_links("connor mcDavid", "ep"))
+    #print(name_db.get_possible_links("Martin St-Louis", "ep"))

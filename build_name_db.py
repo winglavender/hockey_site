@@ -67,9 +67,11 @@ def find_duplicates(ep_db, nhl_db, links_filename, out_filename):
     unique_people_names_nhl = []
     unique_people_names_ep = []
     for link in unique_people_links_nhl:
-        unique_people_names_nhl = pd.concat([unique_people_names_nhl,nhl_db_players.loc[nhl_db_players.playerId == link].iloc[0].playerName])
+        unique_people_names_nhl.append(nhl_db_players.loc[nhl_db_players.playerId == link].iloc[0].playerName)
+        #unique_people_names_nhl = pd.concat([unique_people_names_nhl,nhl_db_players.loc[nhl_db_players.playerId == link].iloc[0].playerName])
     for link in unique_people_links_ep:
-        unique_people_names_ep = pd.concat([unique_people_names_ep,ep_db_players.loc[ep_db_players.link == link].iloc[0].player])
+        unique_people_names_ep.append(ep_db_players.loc[ep_db_players.link == link].iloc[0].player)
+        #unique_people_names_ep = pd.concat([unique_people_names_ep,ep_db_players.loc[ep_db_players.link == link].iloc[0].player])
     # NHL DB
     norm_names = [strip_accents(name.lower()) for name in unique_people_names_nhl]
     norm_names_seen = {}
@@ -139,19 +141,35 @@ def process_names(ep_db, nhl_db, out_db, link_file):
         player_ep_link = player_row['link']
         player_ep_name = player_row['player']
         norm_ep_name = normalize_name(player_ep_name)
+        if player_ep_name == "Nicholas Abruzzese":
+            print("find 1")
+            print(player_row, norm_ep_name)
         # check for an existing canon name
         existing_link = name_links.loc[name_links.ep_link == player_ep_link]
+        if player_ep_name == "Nicholas Abruzzese":
+            print("find 2")
+            print(existing_link)
         if len(existing_link) == 0:
             # no defined link, we have to use the name form to look for a link
             norm_name_row = normalized_names.loc[normalized_names.norm_name==norm_ep_name]
+            if player_ep_name == "Nicholas Abruzzese":
+                print("find 3")
+                print(norm_name_row)
             if len(norm_name_row) == 1:
                 # found an existing canon name, update that name with EP link
                 existing_canon_name = norm_name_row.iloc[0].canon_name
                 name_links.loc[name_links.canon_name==existing_canon_name, 'ep_link'] = player_ep_link
+                if player_ep_name == "Nicholas Abruzzese":
+                    print("find 4")
+                    print("**"+existing_canon_name+"**")
+                    print(name_links.loc[name_links.canon_name==existing_canon_name])
+                    print(name_links.loc[name_links.canon_name == "Nicholas Abruzzese"])
             else:
                 # can't use the name form to find a link, this EP name will be used as the canon name
                 # TODO is this assumption correct?
                 name_links = pd.concat([name_links,pd.DataFrame([{'canon_name': player_ep_name, 'nhl_link': "", 'ep_link': player_ep_link}])])
+                if player_ep_name == "Nicholas Abruzzese":
+                    print("added")
         elif len(existing_link) == 1: # TODO it can't be more than 1 right?
             # we found a specified link
             existing_canon_name = existing_link.iloc[0].canon_name
@@ -173,7 +191,8 @@ def process_names(ep_db, nhl_db, out_db, link_file):
     nhl_scratches = pd.read_csv(f"{nhl_db}_scratches.zip", compression='zip')
     nhl_game_player = pd.read_csv(f"{nhl_db}_game_player.zip", compression='zip',
                                    dtype={'assists': 'str', 'goals': 'str', 'powerPlayAssists': 'str'})
-
+    print("find 5")
+    print(name_links.loc[name_links.canon_name == "Nicholas Abruzzese"])
     with open('nhl_link_only_10.txt', 'w') as nhl_out_file_10, open('nhl_link_only.txt', 'w') as nhl_out_file, open('ep_link_only.txt', 'w') as ep_out_file:
         nhl_out_tuples = []
         ep_out_tuples = []
@@ -197,11 +216,11 @@ def process_names(ep_db, nhl_db, out_db, link_file):
     normalized_names.drop_duplicates(inplace=True, ignore_index=True)
     normalized_names.to_sql('norm_names', out_conn)
     name_links.drop_duplicates(inplace=True, ignore_index=True)
+    print('find 6')
+    print(name_links.loc[name_links.canon_name == "Nicholas Abruzzese"])
     name_links.to_sql('links', out_conn)
 
 def get_name_parts(name):
-    print("NAME")
-    print(name)
     name_parts = name.split()
     #last_word_idx = len(name_parts)-1
     all_name_parts = []
@@ -213,13 +232,7 @@ def get_name_parts(name):
             name_part += " " + name_parts[j]
             if name_part != name:
                 all_name_parts.append(name_part)
-    print(all_name_parts)
     return all_name_parts
-    #if len(name_parts) == 2:
-    #    return name_parts
-    #if len(name_parts) > 0:
-    #    return name_parts[0]
-    #return [""]
 
 
 if __name__ == "__main__":
