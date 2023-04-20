@@ -234,6 +234,7 @@ class hockey_db():
                             tooltip_str += f" ({season_count} seasons)"
                     output.append((overlap_term[0].year, overlap_term[0].month, overlap_term[0].day, [teammate_name, term.league, term.team, team_display_str, overlap_term[0].year, overlap_term[0].month, overlap_term[0].day, overlap_term[1].year, overlap_term[1].month, overlap_term[1].day, tooltip_str, teammate_rows.iloc[0].link, years_str]))
         # sort all overlaps by first overlap year
+        print(output)
         output.sort()
         sorted_output = []
         longest_name = ""
