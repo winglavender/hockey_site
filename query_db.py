@@ -16,7 +16,7 @@ class hockey_db():
 
     def __init__(self, name_db):
         self.name_db = name_db
-        db_name = 'hockey_rosters_20230403_formatted.db'
+        db_name = 'hockey_rosters_20230505_formatted.db'
         # self.latest_date = pd.to_datetime('2022-06-26')
         self.latest_date = pd.to_datetime('2023-06-30') # set to end of current season?
         conn = sql.connect(db_name)
@@ -38,6 +38,7 @@ class hockey_db():
             reader = csv.DictReader(in_file)
             for row in reader:
                 self.skaters.loc[self.skaters['link'] == row['incorrect_link'], 'link'] = row['correct_link']
+
 
     def get_string_width(self, input_string):
         width, height = self.afm.string_width_height(input_string)
@@ -174,7 +175,6 @@ class hockey_db():
                     playoffs_end_date = last_season_dates[1]
                     if term.start_date < playoffs_end_date and term.end_date >= playoffs_end_date: # check whether the player was on the team during playoffs in the last possible season
                         playoff_queries.append((term.team, f"{term.end_date.year-1}-{term.end_date.year}"))
-        # print(output)
         # get playoff runs
         for team, playoff_year in playoff_queries:
             team_str = self.strip_accents(team)
@@ -234,7 +234,6 @@ class hockey_db():
                             tooltip_str += f" ({season_count} seasons)"
                     output.append((overlap_term[0].year, overlap_term[0].month, overlap_term[0].day, [teammate_name, term.league, term.team, team_display_str, overlap_term[0].year, overlap_term[0].month, overlap_term[0].day, overlap_term[1].year, overlap_term[1].month, overlap_term[1].day, tooltip_str, teammate_rows.iloc[0].link, years_str]))
         # sort all overlaps by first overlap year
-        print(output)
         output.sort()
         sorted_output = []
         longest_name = ""

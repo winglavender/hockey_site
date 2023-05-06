@@ -53,6 +53,9 @@ def find_duplicates(ep_db, nhl_db, links_filename, out_filename):
     with open(links_filename) as in_file:
         for line in in_file:
             tmp = line.strip().split(",")
+            if len(tmp) != 3:
+                print(f"skipped line: {tmp}")
+                continue
             ep_link = tmp[0].strip()
             if ep_link != "":
                 disambiguated_links.add(ep_link)
@@ -141,35 +144,19 @@ def process_names(ep_db, nhl_db, out_db, link_file):
         player_ep_link = player_row['link']
         player_ep_name = player_row['player']
         norm_ep_name = normalize_name(player_ep_name)
-        if player_ep_name == "Nicholas Abruzzese":
-            print("find 1")
-            print(player_row, norm_ep_name)
         # check for an existing canon name
         existing_link = name_links.loc[name_links.ep_link == player_ep_link]
-        if player_ep_name == "Nicholas Abruzzese":
-            print("find 2")
-            print(existing_link)
         if len(existing_link) == 0:
             # no defined link, we have to use the name form to look for a link
             norm_name_row = normalized_names.loc[normalized_names.norm_name==norm_ep_name]
-            if player_ep_name == "Nicholas Abruzzese":
-                print("find 3")
-                print(norm_name_row)
             if len(norm_name_row) == 1:
                 # found an existing canon name, update that name with EP link
                 existing_canon_name = norm_name_row.iloc[0].canon_name
                 name_links.loc[name_links.canon_name==existing_canon_name, 'ep_link'] = player_ep_link
-                if player_ep_name == "Nicholas Abruzzese":
-                    print("find 4")
-                    print("**"+existing_canon_name+"**")
-                    print(name_links.loc[name_links.canon_name==existing_canon_name])
-                    print(name_links.loc[name_links.canon_name == "Nicholas Abruzzese"])
             else:
                 # can't use the name form to find a link, this EP name will be used as the canon name
                 # TODO is this assumption correct?
                 name_links = pd.concat([name_links,pd.DataFrame([{'canon_name': player_ep_name, 'nhl_link': "", 'ep_link': player_ep_link}])])
-                if player_ep_name == "Nicholas Abruzzese":
-                    print("added")
         elif len(existing_link) == 1: # TODO it can't be more than 1 right?
             # we found a specified link
             existing_canon_name = existing_link.iloc[0].canon_name
@@ -182,8 +169,6 @@ def process_names(ep_db, nhl_db, out_db, link_file):
     new_names = []
     for _, row in normalized_names.iterrows():
         name_parts = get_name_parts(row['norm_name'])
-        #if name_parts[0] == "":
-        #    print(row)
         for part in name_parts:
             new_names.append([part, row['canon_name']])
     normalized_names = pd.concat([normalized_names,pd.DataFrame(new_names, columns=['norm_name', 'canon_name'])])
@@ -191,8 +176,6 @@ def process_names(ep_db, nhl_db, out_db, link_file):
     nhl_scratches = pd.read_csv(f"{nhl_db}_scratches.zip", compression='zip')
     nhl_game_player = pd.read_csv(f"{nhl_db}_game_player.zip", compression='zip',
                                    dtype={'assists': 'str', 'goals': 'str', 'powerPlayAssists': 'str'})
-    print("find 5")
-    print(name_links.loc[name_links.canon_name == "Nicholas Abruzzese"])
     with open('nhl_link_only_10.txt', 'w') as nhl_out_file_10, open('nhl_link_only.txt', 'w') as nhl_out_file, open('ep_link_only.txt', 'w') as ep_out_file:
         nhl_out_tuples = []
         ep_out_tuples = []
@@ -216,8 +199,6 @@ def process_names(ep_db, nhl_db, out_db, link_file):
     normalized_names.drop_duplicates(inplace=True, ignore_index=True)
     normalized_names.to_sql('norm_names', out_conn)
     name_links.drop_duplicates(inplace=True, ignore_index=True)
-    print('find 6')
-    print(name_links.loc[name_links.canon_name == "Nicholas Abruzzese"])
     name_links.to_sql('links', out_conn)
 
 def get_name_parts(name):

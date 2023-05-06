@@ -9,8 +9,8 @@ class game_roster_db():
 
     def __init__(self, name_db):
         self.name_db = name_db
-        self.latest_date = pd.to_datetime('2023-04-02')  # update this to the last accurate game data I have (probably the day before the scrape date)
-        data_root_name = 'game_records_20002023_20230403' # update this for new data files
+        self.latest_date = pd.to_datetime('2023-05-05')  # update this to the last accurate game data I have (the day of the scrape date, since we're doing an inequality check)
+        data_root_name = 'game_records_20002023_20230505' # update this for new data files
         self.games = pd.read_csv(f"{data_root_name}_games.zip", compression='zip')#, dtype={'seasonId': 'int', 'seasonName': 'str', 'homeTeamGoals': 'int'})
         self.games['gameDateTimestamp'] = pd.to_datetime(self.games['gameDate'])
         self.games = self.games[self.games.gameDateTimestamp < self.latest_date]
@@ -56,7 +56,6 @@ class game_roster_db():
         common_games_info['team_2_abbrev'] = common_games_info['team_2'].apply(lambda x: self.get_team_name_abbrev(x))
         # compute whether p1's team won or not
         common_games_info['player1_win'] = common_games_info['winningTeam']==common_games_info['team_1']
-        print(common_games_info)
         return common_games_info
 
     def get_results_html_vs_team(self, player1_id, team_name):
