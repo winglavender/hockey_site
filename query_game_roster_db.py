@@ -9,8 +9,8 @@ class game_roster_db():
 
     def __init__(self, name_db):
         self.name_db = name_db
-        self.latest_date = pd.to_datetime('2023-05-05')  # update this to the last accurate game data I have (the day of the scrape date, since we're doing an inequality check)
-        data_root_name = 'game_records_20002023_20230505' # update this for new data files
+        self.latest_date = pd.to_datetime('2023-06-12')  # update this to the last accurate game data I have (the day of the scrape date, since we're doing an inequality check)
+        data_root_name = 'game_records_20002023_20230612' # update this for new data files
         self.games = pd.read_csv(f"{data_root_name}_games.zip", compression='zip')#, dtype={'seasonId': 'int', 'seasonName': 'str', 'homeTeamGoals': 'int'})
         self.games['gameDateTimestamp'] = pd.to_datetime(self.games['gameDate'])
         self.games = self.games[self.games.gameDateTimestamp < self.latest_date]
