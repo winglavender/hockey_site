@@ -12,13 +12,13 @@ import numpy as np
 import csv
 
 
-class hockey_db():
+class ep_db():
 
-    def __init__(self, name_db):
+    def __init__(self, name_db, config):
         self.name_db = name_db
-        db_name = 'hockey_rosters_20230612_formatted.db'
+        db_name = f"../hockey_db_data/hockey_rosters_{config['filename_date']}_formatted.db"
         # self.latest_date = pd.to_datetime('2022-06-26')
-        self.latest_date = pd.to_datetime('2023-06-30') # set to end of current season?
+        self.latest_date = pd.to_datetime(config['timeline_end']) # set to end of current season?
         conn = sql.connect(db_name)
         self.skaters = pd.read_sql_query('select * from skaters', conn)
         self.postseasons = pd.read_sql_query('select * from postseasons', conn)
@@ -34,7 +34,7 @@ class hockey_db():
         self.correct_links()
 
     def correct_links(self):
-        with open('ep_link_corrections.txt') as in_file:
+        with open('../hockey_db_data/ep_link_corrections.txt') as in_file:
             reader = csv.DictReader(in_file)
             for row in reader:
                 self.skaters.loc[self.skaters['link'] == row['incorrect_link'], 'link'] = row['correct_link']

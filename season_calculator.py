@@ -26,7 +26,7 @@ class SeasonCalculator:
     def read_season_dates(self):
         # read from file of season dates: name, start date, end date
         season_dates = []
-        with open('nhl_season_dates.txt') as in_file:
+        with open('../hockey_db_data/nhl_season_dates.txt') as in_file:
             for line in in_file:
                 season_dates.append(line.strip().split(","))
         # iterate backwards over season dates to define season structure

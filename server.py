@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request, session
 from query_name_db import name_db
-from query_db import hockey_db
+from query_ep_db import ep_db
 from query_game_roster_db import game_roster_db
 import os
+import yaml
 
 app = Flask(__name__)
 if os.getenv('PYANYWHERE'):
@@ -13,10 +14,12 @@ if local:
     app.config.from_pyfile('config.py')
 else:
     app.config.update(SECRET_KEY = os.getenv("SECRET_KEY"))
-
+with open('config.yaml', 'r') as f:
+    config = yaml.safe_load(f)
+print(config)
 # populate NHL team data
 nhl_team_data = {'team_order': [], 'team_seasons': {}}
-with open('nhl_team_data.txt','r') as in_file:
+with open('../hockey_db_data/nhl_team_data.txt','r') as in_file:
     line_count = 1
     for line in in_file:
         if line_count == 1:
@@ -57,8 +60,8 @@ def form_result():
     if request.method == "POST":
         session.clear()
         target = request.form['target'].strip()
-        names_db = name_db()
-        db = hockey_db(names_db)
+        names_db = name_db(config)
+        db = ep_db(names_db, config)
         output = db.retrieve_player_link(target)
         session["task"] = "career"
         # if num_results == 1:
@@ -83,8 +86,8 @@ def form_result():
 def pair_form_result():
     if request.method == "POST":
         session.clear()
-        names_db = name_db()
-        db = hockey_db(names_db)
+        names_db = name_db(config)
+        db = ep_db(names_db, config)
         player1 = request.form['player1'].strip()
         # num_results1, target1\
         output1 = db.retrieve_player_link(player1)
@@ -130,8 +133,8 @@ def game_result():
     if request.method == "POST":
         session.clear()
         session["task"] = "games"
-        names_db = name_db()
-        db = game_roster_db(names_db)
+        names_db = name_db(config)
+        db = game_roster_db(names_db, config)
         latest_date = db.get_latest_date()
         player1 = request.form['player1'].strip()
         output1 = db.get_player_id(player1)
@@ -170,8 +173,8 @@ def team_year_result():
         session.clear()
         team = request.form['team_hist']
         season = request.form['season_hist']
-        names_db = name_db()
-        db = hockey_db(names_db)
+        names_db = name_db(config)
+        db = ep_db(names_db, config)
         session["task"] = "roster_history"
         session["team"] = team
         session["season"] = season
@@ -187,8 +190,8 @@ def player_team_game_result():
         session.clear()
         player = request.form['player'].strip()
         team = request.form['team']
-        names_db = name_db()
-        db = game_roster_db(names_db)
+        names_db = name_db(config)
+        db = game_roster_db(names_db, config)
         latest_date = db.get_latest_date()
         session["task"] = "team_games"
         session["team"] = team
@@ -214,8 +217,8 @@ def player_team_year_result():
         player = request.form['player'].strip()
         team = request.form['team']
         season = request.form['season']
-        names_db = name_db()
-        db = hockey_db(names_db)
+        names_db = name_db(config)
+        db = ep_db(names_db, config)
         session["task"] = "roster"
         session["team"] = team
         session["season"] = season
@@ -246,8 +249,8 @@ def roster_pair_result():
         if team1 == team2:
             return render_template('rosters_same_team.html')
         season = request.form['season_pair']
-        names_db = name_db()
-        db = hockey_db(names_db)
+        names_db = name_db(config)
+        db = ep_db(names_db, config)
         session["task"] = "roster"
         session["team1"] = team1
         session["team2"] = team2
@@ -262,8 +265,8 @@ def roster_pair_result():
 def graph_traverse_result():
     if request.method == "POST":
         session.clear()
-        names_db = name_db()
-        db = hockey_db(names_db)
+        names_db = name_db(config)
+        db = ep_db(names_db, config)
         player1 = request.form['player1'].strip()
         # num_results1, target1 \
         output1 = db.retrieve_player_link(player1)
@@ -319,9 +322,9 @@ def options_result_1():
             session["player2_id"] = tmp[1]
         if "player2_id" in session and session["player1_id"] == session["player2_id"]:
             return render_template(f"{session['task']}_same_player.html")
-        names_db = name_db()
-        db = hockey_db(names_db)
-        games_db = game_roster_db(names_db)
+        names_db = name_db(config)
+        db = ep_db(names_db, config)
+        games_db = game_roster_db(names_db, config)
         latest_date = games_db.get_latest_date()
         # data = []
         if session["task"] == "career":
@@ -372,9 +375,9 @@ def options_result_2():
         session["player2_id"] = tmp2[1]
         if session["player1_id"] == session["player2_id"]:
             return render_template(f"{session['task']}_same_player.html")
-        names_db = name_db()
-        db = hockey_db(names_db)
-        games_db = game_roster_db(names_db)
+        names_db = name_db(config)
+        db = ep_db(names_db, config)
+        games_db = game_roster_db(names_db, config)
         # data = []
         if session["task"] == "traverse":
             data = db.traverse_graph(session["player1_id"], session["player2_id"])

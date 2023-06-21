@@ -11,8 +11,8 @@ pd.options.display.max_columns = None
 
 class name_db():
 
-    def __init__(self):
-        db_name = 'names_20230612.db'
+    def __init__(self, config):
+        db_name = f"../hockey_db_data/names_{config['filename_date']}.db"
         conn = sql.connect(db_name)
         norm_names = pd.read_sql_query('select * from norm_names', conn)
         links = pd.read_sql_query('select * from links', conn)
@@ -20,7 +20,7 @@ class name_db():
         self.correct_links()
 
     def correct_links(self):
-        with open('ep_link_corrections.txt') as in_file:
+        with open('../hockey_db_data/ep_link_corrections.txt') as in_file:
             reader = csv.DictReader(in_file)
             for row in reader:
                 self.name_links.loc[self.name_links['ep_link'] == row['incorrect_link'], 'ep_link'] = row['correct_link']

@@ -1,4 +1,0 @@
-incorrect_link,correct_link
-https://www.eliteprospects.com/player/8772/martin-st.-louis,https://www.eliteprospects.com/player/8772/martin-st-louis
-https://www.eliteprospects.com/player/201476/nicholas-abruzzese,https://www.eliteprospects.com/player/201476/nick-abruzzese
-https://www.eliteprospects.com/player/338571/j.j.-moser,https://www.eliteprospects.com/player/338571/janis-moser
