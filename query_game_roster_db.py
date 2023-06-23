@@ -11,12 +11,12 @@ class game_roster_db():
         self.name_db = name_db
         self.latest_date = pd.to_datetime(config['current_date'])  # update this to the last accurate game data I have (the day of the scrape date, since we're doing an inequality check)
         data_root_name = f"game_records_20002023_{config['filename_date']}" # update this for new data files
-        self.games = pd.read_csv(f"../hockey_db_data/{data_root_name}_games.zip", compression='zip')#, dtype={'seasonId': 'int', 'seasonName': 'str', 'homeTeamGoals': 'int'})
+        self.games = pd.read_csv(f"{config['root_dir']}/hockey_db_data/{data_root_name}_games.zip", compression='zip')#, dtype={'seasonId': 'int', 'seasonName': 'str', 'homeTeamGoals': 'int'})
         self.games['gameDateTimestamp'] = pd.to_datetime(self.games['gameDate'])
         self.games = self.games[self.games.gameDateTimestamp < self.latest_date]
-        self.players = pd.read_csv(f"../hockey_db_data/{data_root_name}_players.zip", compression='zip')
-        self.scratches = pd.read_csv(f"../hockey_db_data/{data_root_name}_scratches.zip", compression='zip')
-        self.game_player = pd.read_csv(f"../hockey_db_data/{data_root_name}_game_player.zip", compression='zip', dtype={'assists': 'str', 'goals': 'str', 'powerPlayAssists': 'str'})
+        self.players = pd.read_csv(f"{config['root_dir']}/hockey_db_data/{data_root_name}_players.zip", compression='zip')
+        self.scratches = pd.read_csv(f"{config['root_dir']}/hockey_db_data/{data_root_name}_scratches.zip", compression='zip')
+        self.game_player = pd.read_csv(f"{config['root_dir']}/hockey_db_data/{data_root_name}_game_player.zip", compression='zip', dtype={'assists': 'str', 'goals': 'str', 'powerPlayAssists': 'str'})
         self.team_names = {'Mighty Ducks of Anaheim': 'ANA', 'Anaheim Ducks': 'ANA', 'Arizona Coyotes': 'ARI', 'Atlanta Thrashers': 'ATL', 'Boston Bruins': 'BOS', 'Buffalo Sabres': 'BUF', 'Carolina Hurricanes': 'CAR', 'Columbus Blue Jackets': 'CBJ', 'Calgary Flames': 'CGY', 'Chicago Blackhawks': 'CHI', 'Colorado Avalanche': 'COL', 'Dallas Stars': 'DAL', 'Detroit Red Wings': 'DET', 'Edmonton Oilers': 'EDM', 'Florida Panthers': 'FLA', 'Los Angeles Kings': 'LAK', 'Minnesota Wild': 'MIN', 'Montreal Canadiens': 'MTL', 'Montréal Canadiens': 'MTL', 'New Jersey Devils': 'NJD', 'Nashville Predators': 'NSH', 'New York Islanders': 'NYI', 'New York Rangers': 'NYR', 'Ottawa Senators': 'OTT', 'Philadelphia Flyers': 'PHI', 'Phoenix Coyotes': 'PHX', 'Pittsburgh Penguins': 'PIT', 'Seattle Kraken': 'SEA', 'San Jose Sharks': 'SJS', 'St. Louis Blues': 'STL', 'Tampa Bay Lightning': 'TBL', 'Toronto Maple Leafs': 'TOR', 'Vancouver Canucks': 'VAN', 'Vegas Golden Knights': 'VGK', 'Winnipeg Jets': 'WPG', 'Washington Capitals': 'WSH'}
         self.game_types = [('PR', 'preseason'), ('R', 'regular season'), ('P', 'playoff'), ('A', 'All-Star')]
 

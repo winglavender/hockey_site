@@ -4,6 +4,8 @@ from query_ep_db import ep_db
 from query_game_roster_db import game_roster_db
 import os
 import yaml
+from pathlib import Path
+root_dir = str(Path.cwd())
 
 app = Flask(__name__)
 if os.getenv('PYANYWHERE'):
@@ -12,14 +14,17 @@ else:
     local = True
 if local:
     app.config.from_pyfile('config.py')
+    config['root_dir'] = root_dir + ".."
 else:
     app.config.update(SECRET_KEY = os.getenv("SECRET_KEY"))
+    config['root_dir'] = root_dir
 with open('config.yaml', 'r') as f:
     config = yaml.safe_load(f)
-print(config)
+print(root_dir)
+
 # populate NHL team data
 nhl_team_data = {'team_order': [], 'team_seasons': {}}
-with open('../hockey_db_data/nhl_team_data.txt','r') as in_file:
+with open(config['root_dir'] + '/hockey_db_data/nhl_team_data.txt','r') as in_file:
     line_count = 1
     for line in in_file:
         if line_count == 1:

@@ -16,7 +16,8 @@ class ep_db():
 
     def __init__(self, name_db, config):
         self.name_db = name_db
-        db_name = f"../hockey_db_data/hockey_rosters_{config['filename_date']}_formatted.db"
+        self.config = config
+        db_name = f"{self.config['root_dir']}/hockey_db_data/hockey_rosters_{config['filename_date']}_formatted.db"
         # self.latest_date = pd.to_datetime('2022-06-26')
         self.latest_date = pd.to_datetime(config['timeline_end']) # set to end of current season?
         conn = sql.connect(db_name)
@@ -30,11 +31,11 @@ class ep_db():
         # for font-accurate string comparisons
         afm_filename = os.path.join(mpl.get_data_path(), 'fonts', 'afm', 'ptmr8a.afm')
         self.afm = AFM(open(afm_filename, "rb"))
-        self.season_calc = SeasonCalculator(date.today())
+        self.season_calc = SeasonCalculator(date.today(), config)
         self.correct_links()
 
     def correct_links(self):
-        with open('../hockey_db_data/ep_link_corrections.txt') as in_file:
+        with open(self.config['root_dir'] + '/hockey_db_data/ep_link_corrections.txt') as in_file:
             reader = csv.DictReader(in_file)
             for row in reader:
                 self.skaters.loc[self.skaters['link'] == row['incorrect_link'], 'link'] = row['correct_link']

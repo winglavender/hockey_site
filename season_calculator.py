@@ -3,12 +3,13 @@ import pandas as pd
 
 class SeasonCalculator:
 
-    def __init__(self, today):
+    def __init__(self, today, config):
         self.seasons = []
         self.season_dates = {}
         self.year_to_season = {}
         self.read_season_dates()  # all use cases require season dates
         self.today = today
+        self.config = config
 
     def get_season_dates(self, season):
         return self.season_dates[season]
@@ -26,7 +27,7 @@ class SeasonCalculator:
     def read_season_dates(self):
         # read from file of season dates: name, start date, end date
         season_dates = []
-        with open('../hockey_db_data/nhl_season_dates.txt') as in_file:
+        with open(self.config['root_dir'] + '/hockey_db_data/nhl_season_dates.txt') as in_file:
             for line in in_file:
                 season_dates.append(line.strip().split(","))
         # iterate backwards over season dates to define season structure
