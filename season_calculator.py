@@ -7,9 +7,9 @@ class SeasonCalculator:
         self.seasons = []
         self.season_dates = {}
         self.year_to_season = {}
-        self.read_season_dates()  # all use cases require season dates
-        self.today = today
         self.config = config
+        self.today = today
+        self.read_season_dates()  # all use cases require season dates
 
     def get_season_dates(self, season):
         return self.season_dates[season]
