@@ -12,13 +12,15 @@ if os.getenv('PYANYWHERE'):
     local = False
 else:
     local = True
-with open('config.yaml', 'r') as f:
-    config = yaml.safe_load(f)
 if local:
     app.config.from_pyfile('config.py')
+    with open('config.yaml', 'r') as f:
+        config = yaml.safe_load(f)
     config['root_dir'] = root_dir + "/.."
 else:
     app.config.update(SECRET_KEY = os.getenv("SECRET_KEY"))
+    with open('hockey_teammates/config.yaml', 'r') as f:
+        config = yaml.safe_load(f)
     config['root_dir'] = root_dir
 print(root_dir)
 
