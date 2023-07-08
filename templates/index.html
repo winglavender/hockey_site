@@ -21,9 +21,6 @@ function reset_options() {
 <div class="container">
   <h2>Hockey Teammates</h2>
 
-<!--  <a href="{{ url_for('details') }}">Details</a> | <a href="{{ url_for('data') }}">Data</a> | <a href="{{ url_for('contact') }}">Contact</a><br>-->
-<!--  <p><small>Roster data last updated: 2022-06-26</small></p>-->
-
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
     <li><a data-toggle="tab" href="#one-player-tab">One Player</a></li>
@@ -272,7 +269,7 @@ function reset_options() {
 
         <h4>Last Updated</h4>
 
-        <p>Roster data is up-to-date through: 2023-06-12.</p>
+        <p>Roster data is up-to-date through: {{update_date}}.</p>
 
         <h4>Contact</h4>
 

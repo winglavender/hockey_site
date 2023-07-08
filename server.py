@@ -60,7 +60,7 @@ for team1 in nhl_team_data['team_order']:
 @app.route("/")
 def home():
     session.clear()
-    return render_template("index.html",nhl_team_data=nhl_team_data)
+    return render_template("index.html",nhl_team_data=nhl_team_data,update_date=config['current_date'])
 
 @app.route("/form_result", methods=["GET","POST"])
 def form_result():
@@ -411,18 +411,6 @@ def options_result_2():
                                    playername2=session.get("player2"))
     else:
         return render_template('error.html')
-
-@app.route("/details")
-def details():
-    return render_template("details.html")
-
-@app.route("/data")
-def data():
-    return render_template("data.html")
-
-@app.route("/contact")
-def contact():
-    return render_template("contact.html")
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80)

@@ -18,11 +18,10 @@ class ep_db():
         self.name_db = name_db
         self.config = config
         db_name = f"{self.config['root_dir']}/hockey_db_data/hockey_rosters_{config['filename_date']}_formatted.db"
-        # self.latest_date = pd.to_datetime('2022-06-26')
         self.latest_date = pd.to_datetime(config['timeline_end']) # set to end of current season?
-        conn = sql.connect(db_name)
-        self.skaters = pd.read_sql_query('select * from skaters', conn)
-        self.postseasons = pd.read_sql_query('select * from postseasons', conn)
+        self.conn = sql.connect(db_name)
+        self.skaters = pd.read_sql_query('select * from skaters', self.conn)
+        self.postseasons = pd.read_sql_query('select * from postseasons', self.conn)
         self.skaters.start_date = pd.to_datetime(self.skaters.start_date)
         self.skaters.end_date = pd.to_datetime(self.skaters.end_date)
         # self.names = pd.read_sql_query('select * from names', conn)
@@ -39,7 +38,6 @@ class ep_db():
             reader = csv.DictReader(in_file)
             for row in reader:
                 self.skaters.loc[self.skaters['link'] == row['incorrect_link'], 'link'] = row['correct_link']
-
 
     def get_string_width(self, input_string):
         width, height = self.afm.string_width_height(input_string)
@@ -164,16 +162,27 @@ class ep_db():
             # check for playoff query
             if term.league == "nhl":
                 possible_first_season = f"{term.start_date.year-1}-{term.start_date.year}"
+                print("**")
+                print(term)
+                print(possible_first_season) # TODO I should know what season they started on the team? why am I getting 14-15 for CMD Oilers
                 first_season_dates = self.season_calc.get_season_dates(possible_first_season)
+                print(first_season_dates)
                 playoffs_end_date = first_season_dates[1]
                 if term.start_date < playoffs_end_date and term.end_date >= playoffs_end_date: # check whether the player was on the team during playoffs in the first possible season of their tenure (approximation)
+                    print("A")
                     playoff_queries.append((term.team, possible_first_season))
                 if term.start_date.year != term.end_date.year: # check following seasons 
                     for i in range(term.start_date.year, term.end_date.year-1): # for all seasons in the middle of this tenure, player was definition on the roster during playoffs
                         playoff_queries.append((term.team, f"{i}-{i+1}"))
+                    print(playoff_queries)
                     possible_last_season = f"{term.end_date.year-1}-{term.end_date.year}"
+                    print(possible_last_season)
                     last_season_dates = self.season_calc.get_season_dates(possible_last_season)
+                    print(last_season_dates)
                     playoffs_end_date = last_season_dates[1]
+                    print(playoffs_end_date)
+                    print(term.start_date)
+                    print(term.end_date)
                     if term.start_date < playoffs_end_date and term.end_date >= playoffs_end_date: # check whether the player was on the team during playoffs in the last possible season
                         playoff_queries.append((term.team, f"{term.end_date.year-1}-{term.end_date.year}"))
         # get playoff runs
