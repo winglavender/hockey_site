@@ -162,27 +162,16 @@ class ep_db():
             # check for playoff query
             if term.league == "nhl":
                 possible_first_season = f"{term.start_date.year-1}-{term.start_date.year}"
-                print("**")
-                print(term)
-                print(possible_first_season) # TODO I should know what season they started on the team? why am I getting 14-15 for CMD Oilers
                 first_season_dates = self.season_calc.get_season_dates(possible_first_season)
-                print(first_season_dates)
                 playoffs_end_date = first_season_dates[1]
                 if term.start_date < playoffs_end_date and term.end_date >= playoffs_end_date: # check whether the player was on the team during playoffs in the first possible season of their tenure (approximation)
-                    print("A")
                     playoff_queries.append((term.team, possible_first_season))
                 if term.start_date.year != term.end_date.year: # check following seasons 
                     for i in range(term.start_date.year, term.end_date.year-1): # for all seasons in the middle of this tenure, player was definition on the roster during playoffs
                         playoff_queries.append((term.team, f"{i}-{i+1}"))
-                    print(playoff_queries)
                     possible_last_season = f"{term.end_date.year-1}-{term.end_date.year}"
-                    print(possible_last_season)
                     last_season_dates = self.season_calc.get_season_dates(possible_last_season)
-                    print(last_season_dates)
                     playoffs_end_date = last_season_dates[1]
-                    print(playoffs_end_date)
-                    print(term.start_date)
-                    print(term.end_date)
                     if term.start_date < playoffs_end_date and term.end_date >= playoffs_end_date: # check whether the player was on the team during playoffs in the last possible season
                         playoff_queries.append((term.team, f"{term.end_date.year-1}-{term.end_date.year}"))
         # get playoff runs
@@ -246,12 +235,15 @@ class ep_db():
         # sort all overlaps by first overlap year
         output.sort()
         sorted_output = []
+        output_no_asg = []
         longest_name = ""
         for year, month, day, data in output:
             sorted_output.append({"player": data[0], "league": self.get_league_display_string(data[1]), "team": data[2], "team_display": data[3], "year1": data[4], "month1": data[5], "day1": data[6], "year2": data[7], "month2": data[8], "day2": data[9], "tooltip_str": data[10], "id": data[11], "years_str": data[12]})
+            if self.get_league_display_string(data[1]) != "NHL ASG":
+                output_no_asg.append({"player": data[0], "league": self.get_league_display_string(data[1]), "team": data[2], "team_display": data[3], "year1": data[4], "month1": data[5], "day1": data[6], "year2": data[7], "month2": data[8], "day2": data[9], "tooltip_str": data[10], "id": data[11], "years_str": data[12]})
             if self.get_string_width(self.strip_accents(data[0])) > self.get_string_width(self.strip_accents(longest_name)):
                 longest_name = data[0]
-        return sorted_output, longest_name
+        return sorted_output, longest_name, output_no_asg
 
     # get all players on the roster for this team in this season
     def get_players_from_roster(self, team, season):
@@ -317,7 +309,7 @@ class ep_db():
         for player1 in ids1:
             playername1 = player_id_to_name[player1]
             player_data = {} 
-            potential_overlap, _ = self.get_overlapping_player_terms(player1)
+            potential_overlap, _, potential_overlap_no_asg = self.get_overlapping_player_terms(player1) # TODO ASG
             for row in potential_overlap:
                 if row['id'] in ids2:
                     playername2 = player_id_to_name[row['id']] #row['player']
@@ -387,15 +379,25 @@ class ep_db():
         potential_teammates = self.get_players_from_roster(team, season)
         potential_teammate_ids = potential_teammates.link.unique()
         output = {"before": [], "during": [], "after": []}
+        output_no_asg = {"before": [], "during": [], "after": []}
         # get all teammates for target player
-        all_player_teammates, _ = self.get_overlapping_player_terms(player_id)
+        all_player_teammates, _, _ = self.get_overlapping_player_terms(player_id)
+        # print(all_player_teammates)
         # reformat
         overlapping_teammates = {}
+        overlapping_teammates_no_asg = {}
         for row in all_player_teammates:
             if row['id'] in potential_teammate_ids:
+                # add to all data
                 if row['id'] not in overlapping_teammates:
                     overlapping_teammates[row['id']] = []
                 overlapping_teammates[row['id']].append(row)
+                # add to no_asg data
+                if row['league'] != 'NHL ASG':
+                    if row['id'] not in overlapping_teammates_no_asg:
+                        overlapping_teammates_no_asg[row['id']] = []
+                    overlapping_teammates_no_asg[row['id']].append(row)
+        # all data
         for teammate_id in overlapping_teammates:
             overlap = overlapping_teammates[teammate_id]
             if len(overlap) > 0:
@@ -404,7 +406,6 @@ class ep_db():
                 for term in overlap:
                     relationships = self.is_before_after_during_season(season, term['year1'], term['month1'], term['day1'], term['year2'], term['month2'], term['day2'])
                     for relationship in relationships:
-                        #formatted_data[relationship].append(f"{term['team']} ({term['league']}, {term['year1']}-{term['year2']})")
                         formatted_data[relationship].append(f"{term['team']} ({term['league']}, {term['years_str']})")
                 for relationship in formatted_data:
                     if len(formatted_data[relationship]) > 0:
@@ -415,9 +416,28 @@ class ep_db():
             output[relationship].sort()
             for name, data in output[relationship]:
                 sorted_output[relationship].append(data)
+        # no asg data
+        for teammate_id in overlapping_teammates_no_asg:
+            overlap = overlapping_teammates_no_asg[teammate_id]
+            if len(overlap) > 0:
+                playername = self.get_player_name_from_id(teammate_id)
+                formatted_data = {"before": [], "after": [], "during": []}
+                for term in overlap:
+                    relationships = self.is_before_after_during_season(season, term['year1'], term['month1'], term['day1'], term['year2'], term['month2'], term['day2'])
+                    for relationship in relationships:
+                        formatted_data[relationship].append(f"{term['team']} ({term['league']}, {term['years_str']})")
+                for relationship in formatted_data:
+                    if len(formatted_data[relationship]) > 0:
+                        player_data = {"playername": playername, "data": ", ".join(formatted_data[relationship])}
+                        output_no_asg[relationship].append((playername, player_data))
+        sorted_output_no_asg = {"before": [], "after": [], "during": []}
+        for relationship in output_no_asg:
+            output_no_asg[relationship].sort()
+            for name, data in output_no_asg[relationship]:
+                sorted_output_no_asg[relationship].append(data)
         end = time.time()
         print(f"elapsed time: {end-start}")
-        return sorted_output, len(sorted_output["before"]) + len(sorted_output["after"]) + len(sorted_output["during"])
+        return sorted_output, sorted_output_no_asg
 
     # returns list of terms to specify whether the period START_YEAR to END_YEAR happens BEFORE/DURING/AFTER the specified season
     def is_before_after_during_season(self, season, year1, month1, day1, year2, month2, day2):
@@ -480,14 +500,13 @@ class ep_db():
         # else:
         #     return len(players), players
 
-    def traverse_graph(self, player1_id, player2_id):
-        teammates1, _ = self.get_overlapping_player_terms(player1_id)
+    def get_teammates_intersection_format(self, teammates1, teammates2):
+        # get intersection
         teammates1_dict = {}
         for row in teammates1:
             if row['id'] not in teammates1_dict:
                 teammates1_dict[row['id']] = []
             teammates1_dict[row['id']].append(row)
-        teammates2, _ = self.get_overlapping_player_terms(player2_id)
         overlapping_teammates = {}
         for row in teammates2:
             if row['id'] in teammates1_dict:
@@ -505,6 +524,13 @@ class ep_db():
             for row in data:
                 sorted_output.append(row)
         return sorted_output
+
+    def traverse_graph(self, player1_id, player2_id):
+        teammates1, _, teammates1_no_asg = self.get_overlapping_player_terms(player1_id)
+        teammates2, _, teammates2_no_asg = self.get_overlapping_player_terms(player2_id)
+        sorted_output = self.get_teammates_intersection_format(teammates1, teammates2)
+        sorted_output_no_asg = self.get_teammates_intersection_format(teammates1_no_asg, teammates2_no_asg)
+        return sorted_output, sorted_output_no_asg
 
     def condense_terms_into_table_rows(self, rows1, rows2):
         player = rows1[0]["player"]

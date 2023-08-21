@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hockey Teammates</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+  </head>
+  <body>
+    <label class="switch">
+      <input type="checkbox" >
+      <span class="slider round"></span>
+    </label>
+    Include NHL All-Star Games
+
+  <h3>Roster Overlaps</h3>
+  <div id="content_on"> <!-- all data -->
+  {% if data.before|length > 0 or data.during|length > 0 or data.after|length > 0 %} 
+  <p><b>{{playername}}</b> has played on a team with the following members of the <b>{{team}} {{season}}</b> roster:</p>
+  {% if data.before|length > 0 %}
+  <p>Before {{season}}:</p>
+    <table>
+        {% for player in data.before %}
+        <tr>
+            <td>{{player.playername}}</td>
+            <td>{{player.data}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+   {% endif %}
+   {% if data.during|length > 0 %}
+   <p>During {{season}}:</p>
+    <table>
+        {% for player in data.during %}
+        <tr>
+            <td>{{player.playername}}</td>
+            <td>{{player.data}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+  {% endif %}
+  {% if data.after|length > 0 %}
+  <p>After {{season}}:</p>
+    <table>
+        {% for player in data.after %}
+        <tr>
+            <td>{{player.playername}}</td>
+            <td>{{player.data}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+  {% endif %}
+  {% else %}
+  <p><b>{{playername}}</b> has not played on a team with any of the players from the <b>{{team}} {{season}}</b> roster, at least according to the data currently available on this site.</p>
+  {% endif %}
+  </div>
+  <div id="content_off"> <!-- no asg data -->
+    {% if data_no_asg.before|length > 0 or data_no_asg.during|length > 0 or data_no_asg.after|length > 0 %} 
+    <p><b>{{playername}}</b> has played on a team with the following members of the <b>{{team}} {{season}}</b> roster:</p>
+    {% if data_no_asg.before|length > 0 %}
+    <p>Before {{season}}:</p>
+      <table>
+          {% for player in data_no_asg.before %}
+          <tr>
+              <td>{{player.playername}}</td>
+              <td>{{player.data}}</td>
+          </tr>
+          {% endfor %}
+      </table>
+     {% endif %}
+     {% if data_no_asg.during|length > 0 %}
+     <p>During {{season}}:</p>
+      <table>
+          {% for player in data_no_asg.during %}
+          <tr>
+              <td>{{player.playername}}</td>
+              <td>{{player.data}}</td>
+          </tr>
+          {% endfor %}
+      </table>
+    {% endif %}
+    {% if data_no_asg.after|length > 0 %}
+    <p>After {{season}}:</p>
+      <table>
+          {% for player in data_no_asg.after %}
+          <tr>
+              <td>{{player.playername}}</td>
+              <td>{{player.data}}</td>
+          </tr>
+          {% endfor %}
+      </table>
+    {% endif %}
+    {% else %}
+    <p><b>{{playername}}</b> has not played on a team with any of the players from the <b>{{team}} {{season}}</b> roster, at least according to the data currently available on this site.</p>
+    {% endif %}
+  </div>
+
+    <a href="{{ url_for('home') }}">Return to main page</a>
+    <script>
+      let contentOff = document.querySelector('#content_off');
+let contentOn = document.querySelector('#content_on');
+
+document.querySelector('.switch input').addEventListener('change', e => { 
+contentOff.style.display = e.target.checked ? 'none' : 'block';
+contentOn.style.display = e.target.checked ? 'block' : 'none';
+});
+</script>
+  </body>
+</html>

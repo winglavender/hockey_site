@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hockey Teammates</title>
+
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+  </head>
+  <style>
+        .tree_invisible{
+        visibility: hidden;
+  --spacing : 1.5rem;
+  --radius  : 10px;
+  font-size:0; margin:0;
+}
+      .tree{
+  --spacing : 2rem;
+  --radius  : 10px;
+}
+.tree li{
+  display      : block;
+  position     : relative;
+  padding-left : calc(0 - var(--radius) - 2px);
+}
+
+.tree ul{
+  margin-left  : calc(var(--radius) );
+
+  padding-left : 0;
+}
+.alnright {
+text-align: right;
+}
+table {
+  border-collapse: collapse;
+}
+td:empty::after{
+  content: "\00a0";
+}
+
+  </style>
+  <body>
+    <label class="switch">
+        <input type="checkbox" >
+        <span class="slider round"></span>
+      </label>
+      Include NHL All-Star Games
+
+  <h3>Games in Common</h3>
+  <div id="content_on"><!-- all data -->
+  <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have played {{data.summary.total_games}} game{% if data.summary.total_games != 1 %}s{% endif %} in common:</p>
+
+  <table>
+	  <tr><td colspan="3">{{data.summary.teammate_games}} game{% if data.summary.teammate_games != 1 %}s{% endif %} as teammates {% if data.summary.teammate_games>0 %}<i>({{data.summary.teammate_games_record.wins}}-{{data.summary.teammate_games_record.losses}})</i>{% endif %}</td></tr>
+    {% if data.summary.teammate_games > 0 %}
+            {% if data.summary.teammate_games_preseason > 0 %}
+            <tr>
+                <td></td><td class='alnright'>{{data.summary.teammate_games_preseason}}</td><td>preseason game{% if data.summary.teammate_games_preseason != 1 %}s{% endif %} <i>({{data.summary.teammate_games_preseason_record.wins}}-{{data.summary.teammate_games_preseason_record.losses}})</i></td>
+            </tr>
+            {% endif %}
+            {% if data.summary.teammate_games_regular > 0 %}
+            <tr>
+                <td></td><td class='alnright'>{{data.summary.teammate_games_regular}}</td><td>regular season game{% if data.summary.teammate_games_regular != 1 %}s{% endif %} <i>({{data.summary.teammate_games_regular_record.wins}}-{{data.summary.teammate_games_regular_record.losses}})</i></td>
+            </tr>
+            {% endif %}
+            {% if data.summary.teammate_games_playoff > 0 %}
+            <tr>
+                <td></td><td class='alnright'>{{data.summary.teammate_games_playoff}}</td><td>playoff game{% if data.summary.teammate_games_playoff != 1 %}s{% endif %} <i>({{data.summary.teammate_games_playoff_record.wins}}-{{data.summary.teammate_games_playoff_record.losses}})</i></td>
+            </tr>
+            {% endif %}
+            {% if data.summary.teammate_games_allstar > 0 %}
+            <tr>
+                <td></td><td class='alnright'>{{data.summary.teammate_games_allstar}}</td><td>All-Star game{% if data.summary.teammate_games_allstar != 1 %}s{% endif %} <i>({{data.summary.teammate_games_allstar_record.wins}}-{{data.summary.teammate_games_allstar_record.losses}})</i></td>
+            </tr>
+            {% endif %}
+    {% endif %}
+      <tr><td></td><td></td><td></td></tr>
+      <tr><td colspan="3">{{data.summary.opponent_games}} game{% if data.summary.opponent_games != 1 %}s{% endif %} as opponents {% if data.summary.opponent_games > 0 %}<i>({{data.summary.opponent_games_record.wins}}-{{data.summary.opponent_games_record.losses}})</i>{% endif %}</td></tr>
+    {% if data.summary.opponent_games > 0 %}
+            {% if data.summary.opponent_games_preseason > 0 %}
+            <tr>
+                <td></td><td class='alnright'>{{data.summary.opponent_games_preseason}}</td><td>preseason game{% if data.summary.opponent_games_preseason != 1 %}s{% endif %} <i>({{data.summary.opponent_games_preseason_record.wins}}-{{data.summary.opponent_games_preseason_record.losses}})</i></td>
+            </tr>
+            {% endif %}
+            {% if data.summary.opponent_games_regular > 0 %}
+            <tr>
+                <td></td><td class='alnright'>{{data.summary.opponent_games_regular}}</td><td>regular season game{% if data.summary.opponent_games_regular != 1 %}s{% endif %} <i>({{data.summary.opponent_games_regular_record.wins}}-{{data.summary.opponent_games_regular_record.losses}})</i></td>
+            </tr>
+            {% endif %}
+            {% if data.summary.opponent_games_playoff > 0 %}
+            <tr>
+                <td></td><td class='alnright'>{{data.summary.opponent_games_playoff}}</td><td>playoff game{% if data.summary.opponent_games_playoff != 1 %}s{% endif %} <i>({{data.summary.opponent_games_playoff_record.wins}}-{{data.summary.opponent_games_playoff_record.losses}})</i></td>
+            </tr>
+            {% endif %}
+            {% if data.summary.opponent_games_allstar > 0 %}
+            <tr>
+                <td></td><td class='alnright'>{{data.summary.opponent_games_allstar}}</td><td>All-Star game{% if data.summary.opponent_games_allstar != 1 %}s{% endif %} <i>({{data.summary.opponent_games_allstar_record.wins}}-{{data.summary.opponent_games_allstar_record.losses}})</i></td>
+            </tr>
+            {% endif %}
+
+    {% endif %}
+
+<!--this is a dummy table to fix the table inside the tree display-->
+ <ul class="tree_invisible"><li>
+<details>
+  <table>
+    <tr>
+      <td></td>
+    </tr>
+  </table>
+</details></li></ul>
+
+<h3>Detailed Game Data</h3>
+
+<ul class="tree">
+    {% for season in data.seasons %}
+<!--        {{season}}-->
+        <li>
+            <details>
+                <summary>{{season.name}}: {{season.summary.total_games}} game{% if season.summary.total_games != 1 %}s{% endif %}</summary>
+                <ul>
+                    </li>
+                    {% if season.summary.teammate_games > 0 %}
+                    <li>
+                        <details>
+                            <summary>{{season.summary.teammate_games}} game{% if season.summary.teammate_games != 1 %}s{% endif %} as teammates <i>({{season.summary.teammate_games_record.wins}}-{{season.summary.teammate_games_record.losses}})</i></summary>
+                            <ul>
+                                {% for game_type in season.teammate_games %}
+                                <li>
+                                    <details>
+                                        <summary>{{game_type.games|length}} {{game_type.display_name}} game{% if game_type.games|length != 1 %}s{% endif %} <i>({{game_type.games_record.wins}}-{{game_type.games_record.losses}})</i></summary>
+                                        <ul>
+                                            {% for game in game_type.games %}
+                                            <li>
+                                                <details>
+                                                    <summary>{{game.gameDate}}, {{game.awayTeam}} @ {{game.homeTeam}}, {% if game.awayTeamGoals>game.homeTeamGoals %}<b>{% endif %}{{game.awayTeamGoals}}{% if game.awayTeamGoals>game.homeTeamGoals %}</b>{% endif %}-{% if game.homeTeamGoals>game.awayTeamGoals %}<b>{% endif %}{{game.homeTeamGoals}}{% if game.homeTeamGoals>game.awayTeamGoals %}</b>{% endif %}</summary>
+                                                    <ul>
+                                                        <li>
+                                                            <table>
+                                                                <tr><th></th><th>Team</th><th>TOI</th></th><th>G</th><th>A</th><th>S</th><th>HIT</th><th>PIM</th><th>SA</th><th>SV</th><th>SV%</th></tr>
+                                                                <tr><td>{{playername1}}</td><td>{{game.team_1_abbrev}}</td><td>{{game.timeOnIce_1}}</td><td>{{game.goals_1}}</td><td>{{game.assists_1}}</td><td>{{game.shots_1}}</td><td>{{game.hits_1}}</td><td>{{game.pim_1}}</td><td>{{game.shotsAgainst_1}}</td><td>{{game.saves_1}}</td><td>{{game.savePercentage_1}}</td></tr>
+                                                                <tr><td>{{playername2}}</td><td>{{game.team_2_abbrev}}</td><td>{{game.timeOnIce_2}}</td><td>{{game.goals_2}}</td><td>{{game.assists_2}}</td><td>{{game.shots_2}}</td><td>{{game.hits_2}}</td><td>{{game.pim_2}}</td><td>{{game.shotsAgainst_2}}</td><td>{{game.saves_2}}</td><td>{{game.savePercentage_2}}</td></tr>
+                                                            </table>
+                                                        </li>
+                                                    </ul>
+                                                </details>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </details>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </details>
+                    </li>
+                    {% endif %}
+                    {% if season.summary.opponent_games > 0 %}
+                    <li>
+                        <details>
+                            <summary>{{season.summary.opponent_games}} game{% if season.summary.opponent_games != 1 %}s{% endif %} as opponents <i>({{season.summary.opponent_games_record.wins}}-{{season.summary.opponent_games_record.losses}})</i></summary>
+                            <ul>
+                                {% for game_type in season.opponent_games %}
+                                <li>
+                                    <details>
+                                        <summary>{{game_type.games|length}} {{game_type.display_name}} game{% if game_type.games|length != 1 %}s{% endif %} <i>({{game_type.games_record.wins}}-{{game_type.games_record.losses}})</i></summary>
+                                        <ul>
+                                            {% for game in game_type.games %}
+                                            <li>
+                                                <details>
+                                                    <summary>{{game.gameDate}}, {{game.awayTeam}} @ {{game.homeTeam}}, {% if game.awayTeamGoals>game.homeTeamGoals %}<b>{% endif %}{{game.awayTeamGoals}}{% if game.awayTeamGoals>game.homeTeamGoals %}</b>{% endif %}-{% if game.homeTeamGoals>game.awayTeamGoals %}<b>{% endif %}{{game.homeTeamGoals}}{% if game.homeTeamGoals>game.awayTeamGoals %}</b>{% endif %}</summary>
+                                                    <ul>
+                                                        <li>
+                                                            <table>
+                                                                <tr><th></th><th>Team</th><th>TOI</th></th><th>G</th><th>A</th><th>S</th><th>HIT</th><th>PIM</th><th>SA</th><th>SV</th><th>SV%</th></tr>
+                                                                <tr><td>{{playername1}}</td><td>{{game.team_1_abbrev}}</td><td>{{game.timeOnIce_1}}</td><td>{{game.goals_1}}</td><td>{{game.assists_1}}</td><td>{{game.shots_1}}</td><td>{{game.hits_1}}</td><td>{{game.pim_1}}</td><td>{{game.shotsAgainst_1}}</td><td>{{game.saves_1}}</td><td>{{game.savePercentage_1}}</td></tr>
+                                                                <tr><td>{{playername2}}</td><td>{{game.team_2_abbrev}}</td><td>{{game.timeOnIce_2}}</td><td>{{game.goals_2}}</td><td>{{game.assists_2}}</td><td>{{game.shots_2}}</td><td>{{game.hits_2}}</td><td>{{game.pim_2}}</td><td>{{game.shotsAgainst_2}}</td><td>{{game.saves_2}}</td><td>{{game.savePercentage_2}}</td></tr>
+                                                            </table>
+                                                        </li>
+                                                    </ul>
+                                                    </details>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </details>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </details>
+                    </li>
+                    {% endif %}
+                </ul>
+            </details>
+        </li>
+    {% endfor %}
+    </ul>
+</div> 
+<div id="content_off"> <!-- data without ASG -->
+    <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have played {{data_no_asg.summary.total_games}} game{% if data_no_asg.summary.total_games != 1 %}s{% endif %} in common:</p>
+
+    <table>
+        <tr><td colspan="3">{{data_no_asg.summary.teammate_games}} game{% if data_no_asg.summary.teammate_games != 1 %}s{% endif %} as teammates {% if data_no_asg.summary.teammate_games>0 %}<i>({{data_no_asg.summary.teammate_games_record.wins}}-{{data_no_asg.summary.teammate_games_record.losses}})</i>{% endif %}</td></tr>
+      {% if data_no_asg.summary.teammate_games > 0 %}
+              {% if data_no_asg.summary.teammate_games_preseason > 0 %}
+              <tr>
+                  <td></td><td class='alnright'>{{data_no_asg.summary.teammate_games_preseason}}</td><td>preseason game{% if data_no_asg.summary.teammate_games_preseason != 1 %}s{% endif %} <i>({{data_no_asg.summary.teammate_games_preseason_record.wins}}-{{data_no_asg.summary.teammate_games_preseason_record.losses}})</i></td>
+              </tr>
+              {% endif %}
+              {% if data_no_asg.summary.teammate_games_regular > 0 %}
+              <tr>
+                  <td></td><td class='alnright'>{{data_no_asg.summary.teammate_games_regular}}</td><td>regular season game{% if data_no_asg.summary.teammate_games_regular != 1 %}s{% endif %} <i>({{data_no_asg.summary.teammate_games_regular_record.wins}}-{{data_no_asg.summary.teammate_games_regular_record.losses}})</i></td>
+              </tr>
+              {% endif %}
+              {% if data_no_asg.summary.teammate_games_playoff > 0 %}
+              <tr>
+                  <td></td><td class='alnright'>{{data_no_asg.summary.teammate_games_playoff}}</td><td>playoff game{% if data_no_asg.summary.teammate_games_playoff != 1 %}s{% endif %} <i>({{data_no_asg.summary.teammate_games_playoff_record.wins}}-{{data_no_asg.summary.teammate_games_playoff_record.losses}})</i></td>
+              </tr>
+              {% endif %}
+              {% if data_no_asg.summary.teammate_games_allstar > 0 %}
+              <tr>
+                  <td></td><td class='alnright'>{{data_no_asg.summary.teammate_games_allstar}}</td><td>All-Star game{% if data_no_asg.summary.teammate_games_allstar != 1 %}s{% endif %} <i>({{data_no_asg.summary.teammate_games_allstar_record.wins}}-{{data_no_asg.summary.teammate_games_allstar_record.losses}})</i></td>
+              </tr>
+              {% endif %}
+      {% endif %}
+        <tr><td></td><td></td><td></td></tr>
+        <tr><td colspan="3">{{data_no_asg.summary.opponent_games}} game{% if data_no_asg.summary.opponent_games != 1 %}s{% endif %} as opponents {% if data_no_asg.summary.opponent_games > 0 %}<i>({{data_no_asg.summary.opponent_games_record.wins}}-{{data_no_asg.summary.opponent_games_record.losses}})</i>{% endif %}</td></tr>
+      {% if data_no_asg.summary.opponent_games > 0 %}
+              {% if data_no_asg.summary.opponent_games_preseason > 0 %}
+              <tr>
+                  <td></td><td class='alnright'>{{data_no_asg.summary.opponent_games_preseason}}</td><td>preseason game{% if data_no_asg.summary.opponent_games_preseason != 1 %}s{% endif %} <i>({{data_no_asg.summary.opponent_games_preseason_record.wins}}-{{data_no_asg.summary.opponent_games_preseason_record.losses}})</i></td>
+              </tr>
+              {% endif %}
+              {% if data_no_asg.summary.opponent_games_regular > 0 %}
+              <tr>
+                  <td></td><td class='alnright'>{{data_no_asg.summary.opponent_games_regular}}</td><td>regular season game{% if data_no_asg.summary.opponent_games_regular != 1 %}s{% endif %} <i>({{data_no_asg.summary.opponent_games_regular_record.wins}}-{{data_no_asg.summary.opponent_games_regular_record.losses}})</i></td>
+              </tr>
+              {% endif %}
+              {% if data_no_asg.summary.opponent_games_playoff > 0 %}
+              <tr>
+                  <td></td><td class='alnright'>{{data_no_asg.summary.opponent_games_playoff}}</td><td>playoff game{% if data_no_asg.summary.opponent_games_playoff != 1 %}s{% endif %} <i>({{data_no_asg.summary.opponent_games_playoff_record.wins}}-{{data_no_asg.summary.opponent_games_playoff_record.losses}})</i></td>
+              </tr>
+              {% endif %}
+              {% if data_no_asg.summary.opponent_games_allstar > 0 %}
+              <tr>
+                  <td></td><td class='alnright'>{{data_no_asg.summary.opponent_games_allstar}}</td><td>All-Star game{% if data_no_asg.summary.opponent_games_allstar != 1 %}s{% endif %} <i>({{data_no_asg.summary.opponent_games_allstar_record.wins}}-{{data_no_asg.summary.opponent_games_allstar_record.losses}})</i></td>
+              </tr>
+              {% endif %}
+  
+      {% endif %}
+  
+  <!--this is a dummy table to fix the table inside the tree display-->
+   <ul class="tree_invisible"><li>
+  <details>
+    <table>
+      <tr>
+        <td></td>
+      </tr>
+    </table>
+  </details></li></ul>
+  
+  <h3>Detailed Game Data</h3>
+  
+  <ul class="tree">
+      {% for season in data_no_asg.seasons %}
+  <!--        {{season}}-->
+          <li>
+              <details>
+                  <summary>{{season.name}}: {{season.summary.total_games}} game{% if season.summary.total_games != 1 %}s{% endif %}</summary>
+                  <ul>
+                      </li>
+                      {% if season.summary.teammate_games > 0 %}
+                      <li>
+                          <details>
+                              <summary>{{season.summary.teammate_games}} game{% if season.summary.teammate_games != 1 %}s{% endif %} as teammates <i>({{season.summary.teammate_games_record.wins}}-{{season.summary.teammate_games_record.losses}})</i></summary>
+                              <ul>
+                                  {% for game_type in season.teammate_games %}
+                                  <li>
+                                      <details>
+                                          <summary>{{game_type.games|length}} {{game_type.display_name}} game{% if game_type.games|length != 1 %}s{% endif %} <i>({{game_type.games_record.wins}}-{{game_type.games_record.losses}})</i></summary>
+                                          <ul>
+                                              {% for game in game_type.games %}
+                                              <li>
+                                                  <details>
+                                                      <summary>{{game.gameDate}}, {{game.awayTeam}} @ {{game.homeTeam}}, {% if game.awayTeamGoals>game.homeTeamGoals %}<b>{% endif %}{{game.awayTeamGoals}}{% if game.awayTeamGoals>game.homeTeamGoals %}</b>{% endif %}-{% if game.homeTeamGoals>game.awayTeamGoals %}<b>{% endif %}{{game.homeTeamGoals}}{% if game.homeTeamGoals>game.awayTeamGoals %}</b>{% endif %}</summary>
+                                                      <ul>
+                                                          <li>
+                                                              <table>
+                                                                  <tr><th></th><th>Team</th><th>TOI</th></th><th>G</th><th>A</th><th>S</th><th>HIT</th><th>PIM</th><th>SA</th><th>SV</th><th>SV%</th></tr>
+                                                                  <tr><td>{{playername1}}</td><td>{{game.team_1_abbrev}}</td><td>{{game.timeOnIce_1}}</td><td>{{game.goals_1}}</td><td>{{game.assists_1}}</td><td>{{game.shots_1}}</td><td>{{game.hits_1}}</td><td>{{game.pim_1}}</td><td>{{game.shotsAgainst_1}}</td><td>{{game.saves_1}}</td><td>{{game.savePercentage_1}}</td></tr>
+                                                                  <tr><td>{{playername2}}</td><td>{{game.team_2_abbrev}}</td><td>{{game.timeOnIce_2}}</td><td>{{game.goals_2}}</td><td>{{game.assists_2}}</td><td>{{game.shots_2}}</td><td>{{game.hits_2}}</td><td>{{game.pim_2}}</td><td>{{game.shotsAgainst_2}}</td><td>{{game.saves_2}}</td><td>{{game.savePercentage_2}}</td></tr>
+                                                              </table>
+                                                          </li>
+                                                      </ul>
+                                                  </details>
+                                              </li>
+                                              {% endfor %}
+                                          </ul>
+                                      </details>
+                                  </li>
+                                  {% endfor %}
+                              </ul>
+                          </details>
+                      </li>
+                      {% endif %}
+                      {% if season.summary.opponent_games > 0 %}
+                      <li>
+                          <details>
+                              <summary>{{season.summary.opponent_games}} game{% if season.summary.opponent_games != 1 %}s{% endif %} as opponents <i>({{season.summary.opponent_games_record.wins}}-{{season.summary.opponent_games_record.losses}})</i></summary>
+                              <ul>
+                                  {% for game_type in season.opponent_games %}
+                                  <li>
+                                      <details>
+                                          <summary>{{game_type.games|length}} {{game_type.display_name}} game{% if game_type.games|length != 1 %}s{% endif %} <i>({{game_type.games_record.wins}}-{{game_type.games_record.losses}})</i></summary>
+                                          <ul>
+                                              {% for game in game_type.games %}
+                                              <li>
+                                                  <details>
+                                                      <summary>{{game.gameDate}}, {{game.awayTeam}} @ {{game.homeTeam}}, {% if game.awayTeamGoals>game.homeTeamGoals %}<b>{% endif %}{{game.awayTeamGoals}}{% if game.awayTeamGoals>game.homeTeamGoals %}</b>{% endif %}-{% if game.homeTeamGoals>game.awayTeamGoals %}<b>{% endif %}{{game.homeTeamGoals}}{% if game.homeTeamGoals>game.awayTeamGoals %}</b>{% endif %}</summary>
+                                                      <ul>
+                                                          <li>
+                                                              <table>
+                                                                  <tr><th></th><th>Team</th><th>TOI</th></th><th>G</th><th>A</th><th>S</th><th>HIT</th><th>PIM</th><th>SA</th><th>SV</th><th>SV%</th></tr>
+                                                                  <tr><td>{{playername1}}</td><td>{{game.team_1_abbrev}}</td><td>{{game.timeOnIce_1}}</td><td>{{game.goals_1}}</td><td>{{game.assists_1}}</td><td>{{game.shots_1}}</td><td>{{game.hits_1}}</td><td>{{game.pim_1}}</td><td>{{game.shotsAgainst_1}}</td><td>{{game.saves_1}}</td><td>{{game.savePercentage_1}}</td></tr>
+                                                                  <tr><td>{{playername2}}</td><td>{{game.team_2_abbrev}}</td><td>{{game.timeOnIce_2}}</td><td>{{game.goals_2}}</td><td>{{game.assists_2}}</td><td>{{game.shots_2}}</td><td>{{game.hits_2}}</td><td>{{game.pim_2}}</td><td>{{game.shotsAgainst_2}}</td><td>{{game.saves_2}}</td><td>{{game.savePercentage_2}}</td></tr>
+                                                              </table>
+                                                          </li>
+                                                      </ul>
+                                                      </details>
+                                              </li>
+                                              {% endfor %}
+                                          </ul>
+                                      </details>
+                                  </li>
+                                  {% endfor %}
+                              </ul>
+                          </details>
+                      </li>
+                      {% endif %}
+                  </ul>
+              </details>
+          </li>
+      {% endfor %}
+      </ul>
+    </div>
+
+    <p>This is based on NHL roster data up to {{latest_date}}.</p>
+
+      <p>Win-Loss records are expressed from the perspective of the first player listed (here, {{playername1}}) when players are opponents.</p>
+             
+    <a href="{{ url_for('home') }}">Return to main page</a>
+    <script>
+        let contentOff = document.querySelector('#content_off');
+  let contentOn = document.querySelector('#content_on');
+  
+  document.querySelector('.switch input').addEventListener('change', e => { 
+  contentOff.style.display = e.target.checked ? 'none' : 'block';
+  contentOn.style.display = e.target.checked ? 'block' : 'none';
+  });
+  </script>
+  </body>
+</html>

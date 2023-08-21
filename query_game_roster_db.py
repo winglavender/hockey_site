@@ -46,11 +46,13 @@ class game_roster_db():
             self.games.homeTeam == team_name]])
         return games
 
-    def get_common_games(self, player1_id, player2_id):
+    def get_common_games(self, player1_id, player2_id, include_asg):
         player1_games = self.get_player_games(player1_id)
         player2_games = self.get_player_games(player2_id)
         common_games = player1_games.merge(player2_games, suffixes=('_1', '_2'), on='gameId')
         common_games_info = common_games.merge(self.games, on='gameId')
+        if not include_asg:
+            common_games_info = common_games_info.loc[common_games_info['gameType'] != 'A']
         common_games_info['teammates'] = np.where(common_games_info['team_1']==common_games_info['team_2'],True,False)
         common_games_info['team_1_abbrev'] = common_games_info['team_1'].apply(lambda x: self.get_team_name_abbrev(x))
         common_games_info['team_2_abbrev'] = common_games_info['team_2'].apply(lambda x: self.get_team_name_abbrev(x))
@@ -86,7 +88,7 @@ class game_roster_db():
 
     def get_results_html(self, player1_id, player2_id):
         start = time.time()
-        common_games = self.get_common_games(player1_id, player2_id)
+        common_games = self.get_common_games(player1_id, player2_id, True)
         data = {}
         # get all summary game counts
         data['summary'] = self.get_summary_counts(common_games)
@@ -109,13 +111,39 @@ class game_roster_db():
             season_data['teammate_games'] = teammate_rows_split
             season_data['opponent_games'] = opponent_rows_split
             data['seasons'].append(season_data)
+        # get data without ASG
+        common_games_no_asg = self.get_common_games(player1_id, player2_id, False)
+        data_no_asg = {}
+        # get all summary game counts
+        data_no_asg['summary'] = self.get_summary_counts(common_games_no_asg)
+        # restructure game data for HTML output
+        season_ids = common_games_no_asg.seasonId.unique()
+        season_ids.sort()
+        data_no_asg['seasons'] = []
+        for season_id in season_ids:
+            # get season rows
+            season_data = {}
+            season_rows = common_games_no_asg.loc[common_games_no_asg.seasonId == season_id]
+            season_name = season_rows.iloc[0].seasonName
+            season_data['name'] = season_name
+            season_data['summary'] = self.get_summary_counts(season_rows)
+            # add game data
+            teammate_rows = season_rows.loc[season_rows.teammates==True]
+            teammate_rows_split = self.split_game_data_by_type(teammate_rows)
+            opponent_rows = season_rows.loc[season_rows.teammates==False]
+            opponent_rows_split = self.split_game_data_by_type(opponent_rows)
+            season_data['teammate_games'] = teammate_rows_split
+            season_data['opponent_games'] = opponent_rows_split
+            data_no_asg['seasons'].append(season_data)
         end = time.time()
         print(f"elapsed time: {end - start}")
-        return data
+        return data, data_no_asg
 
     def split_game_data_by_type(self, game_rows):
         game_rows_split = []
         for game_type_id, display_name in self.game_types:
+            # if not include_asg and game_type_id == 'A': # skip all star games
+                # continue
             type_data = {'display_name': display_name}
             rows = game_rows.loc[game_rows.gameType == game_type_id]
             if len(rows) == 0:
@@ -149,6 +177,8 @@ class game_roster_db():
 
     def get_summary_counts(self, game_rows):
         data = {}
+        # if not include_asg:
+            # game_rows = game_rows.loc[game_rows.gameType != 'A']
         data['total_games'] = len(game_rows)
         teammate_games = game_rows.loc[game_rows.teammates == True]
         data['teammate_games'] = len(teammate_games)

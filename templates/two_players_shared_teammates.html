@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hockey Teammates</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+  </head>
+  <body>
+    <label class="switch">
+      <input type="checkbox" >
+      <span class="slider round"></span>
+    </label>
+    Include NHL All-Star Games
+
+    <h3>Shared Teammates</h3>
+    <div id="content_on"> <!-- include all data -->
+      {% if data|length == 0 %} <!-- no teammates in common (therefore no team in common either)-->
+      <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have no teammates in common, at least according to the data currently available on this site.</p>
+
+      {% elif team_data|length > 0 %} <!-- a team in common (and later teammates in common)-->
+  <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have played on the same team:</p>
+
+    <table>
+        {% for term in team_data %}
+        <tr>
+            <td>{{term.team}} ({{term.league}})</td>
+            <td>({{term.year1}}-{{term.year2}})</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p>They also have the following teammates in common:</p>
+    {% else %}  <!-- no team in common (but there will be teammates in common)-->
+    <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have not played on a team together, at least according to the data currently available on this site, however, they have the following teammates in common:</p>
+    {% endif %}
+    <table>
+        <th>
+            <td><b>played with {{playername1}}</b></td>
+            <td><b>played with {{playername2}}</b></td>
+        </th>
+        {% for row in data %}
+        <tr>
+            {% for val in row %}
+            <td>{{val}}</td>
+            {% endfor %}
+        {% endfor %}
+    </table>
+    </div>
+    <div id="content_off"><!-- data without ASG -->
+      {% if data_no_asg|length == 0 %} <!-- no teammates in common (therefore no team in common either)-->
+      <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have no teammates in common, at least according to the data currently available on this site.</p>
+
+      {% elif team_data_no_asg|length > 0 %} <!-- a team in common (and later teammates in common)-->
+  <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have played on the same team:</p>
+
+    <table>
+        {% for term in team_data_no_asg %}
+        <tr>
+            <td>{{term.team}} ({{term.league}})</td>
+            <td>({{term.year1}}-{{term.year2}})</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p>They also have the following teammates in common:</p>
+    {% else %}  <!-- no team in common (but there will be teammates in common)-->
+    <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have not played on a team together, at least according to the data currently available on this site, however, they have the following teammates in common:</p>
+    {% endif %}
+    <table>
+        <th>
+            <td><b>played with {{playername1}}</b></td>
+            <td><b>played with {{playername2}}</b></td>
+        </th>
+        {% for row in data_no_asg %}
+        <tr>
+            {% for val in row %}
+            <td>{{val}}</td>
+            {% endfor %}
+        {% endfor %}
+    </table>
+    </div>
+
+    <a href="{{ url_for('home') }}">Return to main page</a>
+    <script>
+      let contentOff = document.querySelector('#content_off');
+let contentOn = document.querySelector('#content_on');
+
+document.querySelector('.switch input').addEventListener('change', e => { 
+contentOff.style.display = e.target.checked ? 'none' : 'block';
+contentOn.style.display = e.target.checked ? 'block' : 'none';
+});
+</script>
+  </body>
+</html>

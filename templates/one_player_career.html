@@ -38,12 +38,34 @@
          });
        }); 
       }
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
+
+      // google.charts.setOnLoadCallback(drawChart);
+      google.charts.setOnLoadCallback(function() {drawChart();} );
+
+   
+    </script>
+  </head>
+  <body>
+    <label class="switch">
+      <input type="checkbox" id="switch_id">
+      <span class="slider round"></span>
+    </label>
+    Include NHL All-Star Games  
+  <h3>{{playername1}}</h3>
+    <div id="timeline2"></div>
+    <div id="timeline" style="height: 65%;"></div>
+
+    <script>
+         function drawChart() {
+        if (document.getElementById("switch_id") == null || !document.getElementById("switch_id").checked) {
+          var player_data = {{data_no_asg|tojson}};
+        }
+        else {
+          var player_data = {{data|tojson}};
+        }  
         var container = document.getElementById('timeline');
         var chart = new google.visualization.Timeline(container);
         var dataTable = new google.visualization.DataTable();
-        var player_data = {{data|tojson}}
 
         dataTable.addColumn({ type: 'string', id: 'Name' });
         dataTable.addColumn({ type: 'string', id: 'Summary' });
@@ -63,13 +85,10 @@
        }); 
       }
     </script>
-  </head>
-  <body>
-
-  <h3>{{playername1}}</h3>
-    <div id="timeline2"></div>
-    <div id="timeline" style="height: 65%;"></div>
-             
-    <!--<a href="{{ url_for('home') }}">Return to main page</a>-->
+    <script>
+      let contentOff = document.querySelector('#content_off');
+      let contentOn = document.querySelector('#content_on');
+      document.querySelector('.switch input').addEventListener('change', drawChart, false); 
+    </script>
   </body>
 </html>
