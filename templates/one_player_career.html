@@ -50,18 +50,32 @@
       <input type="checkbox" id="switch_id">
       <span class="slider round"></span>
     </label>
-    Include NHL All-Star Games  
+    Include NHL All-Star Games<br><br>  
+
+    <label class="switch">
+      <input type="checkbox" id="switch_len_id">
+      <span class="slider round"></span>
+    </label>
+    Sort players by length of time as teammmates  
+
   <h3>{{playername1}}</h3>
     <div id="timeline2"></div>
     <div id="timeline" style="height: 65%;"></div>
 
     <script>
          function drawChart() {
-        if (document.getElementById("switch_id") == null || !document.getElementById("switch_id").checked) {
-          var player_data = {{data_no_asg|tojson}};
+        // if (document.getElementById("switch_id") == null || 
+        if (document.getElementById("switch_id").checked && document.getElementById("switch_len_id").checked) {
+          var player_data = {{data_length|tojson}};
+        }
+        else if (!document.getElementById("switch_id").checked && document.getElementById("switch_len_id").checked) {
+          var player_data = {{data_length_no_asg|tojson}};
+        }
+        else if (document.getElementById("switch_id").checked && !document.getElementById("switch_len_id").checked) {
+          var player_data = {{data|tojson}};
         }
         else {
-          var player_data = {{data|tojson}};
+          var player_data = {{data_no_asg|tojson}};
         }  
         var container = document.getElementById('timeline');
         var chart = new google.visualization.Timeline(container);
@@ -86,9 +100,11 @@
       }
     </script>
     <script>
-      let contentOff = document.querySelector('#content_off');
-      let contentOn = document.querySelector('#content_on');
+      // let contentOff = document.querySelector('#content_off');
+      // let contentOn = document.querySelector('#content_on');
       document.querySelector('.switch input').addEventListener('change', drawChart, false); 
-    </script>
+      document.querySelectorAll('.switch input')[1].addEventListener('change', drawChart, false); 
+
+  </script>
   </body>
 </html>

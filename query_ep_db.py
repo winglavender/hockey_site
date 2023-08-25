@@ -197,6 +197,7 @@ class ep_db():
     def get_overlapping_player_terms(self, player1_id, player2_id=None):
         output = []
         player_rows = self.get_terms_from_player_id(player1_id)
+        teammate_length = {}
         #for index, term in player_rows.iterrows():
         for term in player_rows:
             if player2_id: # only return overlaps involving this specific second target player
@@ -232,6 +233,9 @@ class ep_db():
                         else:
                             tooltip_str += f" ({season_count} seasons)"
                     output.append((overlap_term[0].year, overlap_term[0].month, overlap_term[0].day, [teammate_name, term.league, term.team, team_display_str, overlap_term[0].year, overlap_term[0].month, overlap_term[0].day, overlap_term[1].year, overlap_term[1].month, overlap_term[1].day, tooltip_str, teammate_rows.iloc[0].link, years_str]))
+                    if teammate_id not in teammate_length:
+                        teammate_length[teammate_id] = pd.Timedelta(0)
+                    teammate_length[teammate_id] += (overlap_term[1] - overlap_term[0])
         # sort all overlaps by first overlap year
         output.sort()
         sorted_output = []
@@ -243,7 +247,21 @@ class ep_db():
                 output_no_asg.append({"player": data[0], "league": self.get_league_display_string(data[1]), "team": data[2], "team_display": data[3], "year1": data[4], "month1": data[5], "day1": data[6], "year2": data[7], "month2": data[8], "day2": data[9], "tooltip_str": data[10], "id": data[11], "years_str": data[12]})
             if self.get_string_width(self.strip_accents(data[0])) > self.get_string_width(self.strip_accents(longest_name)):
                 longest_name = data[0]
-        return sorted_output, longest_name, output_no_asg
+        # create output with overlap term sorting
+        overlap_term_output = []
+        for _, _, _, data in output:
+            teammate_id = data[11]
+            teammate_overlap_term = teammate_length[teammate_id]
+            overlap_term_output.append((teammate_overlap_term, data))
+        overlap_term_output.sort(reverse=True) # sort by overlap term length
+        sorted_output_overlap_term = []
+        sorted_output_overlap_term_no_asg = []
+        # format output with overlap term
+        for _, data in overlap_term_output:
+            sorted_output_overlap_term.append({"player": data[0], "league": self.get_league_display_string(data[1]), "team": data[2], "team_display": data[3], "year1": data[4], "month1": data[5], "day1": data[6], "year2": data[7], "month2": data[8], "day2": data[9], "tooltip_str": data[10], "id": data[11], "years_str": data[12]})
+            if self.get_league_display_string(data[1]) != "NHL ASG":
+                sorted_output_overlap_term_no_asg.append({"player": data[0], "league": self.get_league_display_string(data[1]), "team": data[2], "team_display": data[3], "year1": data[4], "month1": data[5], "day1": data[6], "year2": data[7], "month2": data[8], "day2": data[9], "tooltip_str": data[10], "id": data[11], "years_str": data[12]})
+        return sorted_output, longest_name, output_no_asg, sorted_output_overlap_term, sorted_output_overlap_term_no_asg
 
     # get all players on the roster for this team in this season
     def get_players_from_roster(self, team, season):
@@ -309,7 +327,7 @@ class ep_db():
         for player1 in ids1:
             playername1 = player_id_to_name[player1]
             player_data = {} 
-            potential_overlap, _, potential_overlap_no_asg = self.get_overlapping_player_terms(player1) # TODO ASG
+            potential_overlap, _, _, _, _ = self.get_overlapping_player_terms(player1) # TODO ASG
             for row in potential_overlap:
                 if row['id'] in ids2:
                     playername2 = player_id_to_name[row['id']] #row['player']
@@ -381,8 +399,7 @@ class ep_db():
         output = {"before": [], "during": [], "after": []}
         output_no_asg = {"before": [], "during": [], "after": []}
         # get all teammates for target player
-        all_player_teammates, _, _ = self.get_overlapping_player_terms(player_id)
-        # print(all_player_teammates)
+        all_player_teammates, _, _, _, _ = self.get_overlapping_player_terms(player_id)
         # reformat
         overlapping_teammates = {}
         overlapping_teammates_no_asg = {}
@@ -487,18 +504,6 @@ class ep_db():
     # if there are multiple possible players, return all possibilities, each with a description
     def retrieve_player_link(self, name):
         return self.name_db.get_possible_links(name, "ep")
-        # tgt_name = self.strip_accents(name.lower())
-        # names = self.names.loc[self.names.norm_name==tgt_name]
-        # players = []
-        # for index, name_row in names.iterrows():
-        #     ids = self.skaters.loc[self.skaters.player==name_row.orig_name] # may return multiple rows (multiple tenures) but should all belong to the same person
-        #     players.append({'player': name_row.orig_name, 'link': ids.iloc[0].link})
-        # if len(players) == 1:
-        #     return 1, (players[0]['player'], players[0]['link'])
-        # elif len(players) == 0:
-        #     return 0, name
-        # else:
-        #     return len(players), players
 
     def get_teammates_intersection_format(self, teammates1, teammates2):
         # get intersection
@@ -526,8 +531,8 @@ class ep_db():
         return sorted_output
 
     def traverse_graph(self, player1_id, player2_id):
-        teammates1, _, teammates1_no_asg = self.get_overlapping_player_terms(player1_id)
-        teammates2, _, teammates2_no_asg = self.get_overlapping_player_terms(player2_id)
+        teammates1, _, teammates1_no_asg, _, _ = self.get_overlapping_player_terms(player1_id)
+        teammates2, _, teammates2_no_asg, _, _ = self.get_overlapping_player_terms(player2_id)
         sorted_output = self.get_teammates_intersection_format(teammates1, teammates2)
         sorted_output_no_asg = self.get_teammates_intersection_format(teammates1_no_asg, teammates2_no_asg)
         return sorted_output, sorted_output_no_asg
