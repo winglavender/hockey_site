@@ -21,13 +21,14 @@ class ep_db():
         self.latest_date = pd.to_datetime(config['timeline_end']) # set to end of current season?
         self.conn = sql.connect(db_name)
         self.skaters = pd.read_sql_query('select * from skaters', self.conn)
+        self.teammates = pd.read_sql_query('select * from teammates', self.conn)
         self.postseasons = pd.read_sql_query('select * from postseasons', self.conn)
         self.skaters.start_date = pd.to_datetime(self.skaters.start_date)
         self.skaters.end_date = pd.to_datetime(self.skaters.end_date)
         # self.names = pd.read_sql_query('select * from names', conn)
         self.league_strings = {'nhl': 'NHL', 'og': 'Olympics', 'khl': 'KHL', 'ahl': 'AHL', 'wc': 'Worlds', 'ohl': 'OHL', 'whl': 'WHL', 'qmjhl': 'QMJHL', 'ushl': 'USHL', 'usdp': 'USDP', 'ncaa': 'NCAA', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', 'wcup': 'World Cup', 'shl': 'SHL', 'elitserien': 'Elitserien', 'mhl': 'MHL', 'liiga': 'Liiga', 'u20-sm-liiga': 'U20 SM Liiga', 'u18-sm-sarja': 'U18 SM Sarja', 'j20-superelit': 'J20 SuperElit', 'j18-allsvenskan': 'J18 Allsvenskan', 'russia': 'Russia', 'russia3': 'Russia3', 'ushs-prep': 'USHS Prep', 'nhl-asg': 'NHL ASG'}
         self.tournament_leagues = {'og': (2,1), 'wjc-20': (1,1), 'wc': (6,1), 'wjc-18': (4,1), 'whc-17': (11,0), 'wcup': (9,0), 'nhl-asg': (2,1)} # first value is month and second value is 0 if the first year in a season should be used, 1 if the second year in the season should be used
-        # for font-accurate string comparisons
+        # for font-accurate string comparisons 
         afm_filename = os.path.join(mpl.get_data_path(), 'fonts', 'afm', 'ptmr8a.afm')
         self.afm = AFM(open(afm_filename, "rb"))
         self.season_calc = SeasonCalculator(date.today(), config)
@@ -194,6 +195,70 @@ class ep_db():
             output.append({"player": "", "league": "nhl_playoffs", "team_display": "", "year1": year, "month1": 5, "day1": 1, "year2": year, "month2": 5, "day2": 30, "tooltip_str": tooltip_str, "id": player_id, "color": color})
         return output
 
+    def get_overlapping_player_terms_teammate(self, player1_id, player2_id=None):
+        start = time.time()
+        if player2_id: 
+            overlaps = self.teammates.loc[(self.teammates.link_x == player1_id) & (self.teammates.link_y == player2_id)]
+        else:
+            overlaps = self.teammates.loc[self.teammates.link_x==player1_id]
+        end = time.time()
+        print(f"elapsed time: {end-start}")
+        overlaps['overlap_start_date'] = overlaps[['start_date_x','start_date_y']].max(axis=1)
+        overlaps['overlap_end_date'] = overlaps[['end_date_x','end_date_y']].min(axis=1)
+        overlaps['overlap_start_year_js'] = pd.DatetimeIndex(overlaps['overlap_start_date']).year
+        overlaps['overlap_start_month_js'] = pd.DatetimeIndex(overlaps['overlap_start_date']).month-1
+        overlaps['overlap_start_day_js'] = pd.DatetimeIndex(overlaps['overlap_start_date']).day
+        overlaps['overlap_end_year_js'] = pd.DatetimeIndex(overlaps['overlap_end_date']).year
+        overlaps['overlap_end_month_js'] = pd.DatetimeIndex(overlaps['overlap_end_date']).month-1
+        overlaps['overlap_end_day_js'] = pd.DatetimeIndex(overlaps['overlap_end_date']).day
+        end = time.time()
+        print(f"elapsed time: {end-start}")
+        # get teammate names from name db -- TODO eventually do this as a preprocessing step too (join)
+        # TODO THIS is the slow step -- when i make everything one unified db then this player name will be returned above and it won't take a whole second to get all the canon names
+        overlaps['player_name_y'] = overlaps.apply(lambda x: self.name_db.get_name(x.link_y, "ep"), axis=1) # TODO this will be join eventually
+        overlaps['player_name_y_len'] = overlaps.apply(lambda x: self.name_db.get_name_len(x.link_y, "ep"), axis=1) # TODO turn into join eventually
+        # print(overlaps)
+        end = time.time()
+        print(f"elapsed time: {end-start}")
+        overlaps['tooltip_str'] = overlaps.apply(lambda x: self.get_tooltip_str(x.player_name_y, x.team_display_str, x.years_str, x.league, x.num_seasons), axis=1) 
+        end = time.time()
+        print(f"elapsed time: {end-start}")
+        # sort orders
+        overlaps.sort_values(by=['overlap_start_date', 'player_name_y'], inplace=True)
+        overlaps_sort_date_no_asg = overlaps.loc[overlaps['league']!='nhl-asg']
+        # get max name length 
+        idx = overlaps['player_name_y_len'].idxmax()
+        # print(idx)
+        # print(overlaps.shape)
+        print(overlaps.loc[idx])
+        max_name = overlaps.loc[idx]['player_name_y'] # with asg
+        idx = overlaps_sort_date_no_asg['player_name_y_len'].idxmax()
+        print(overlaps_sort_date_no_asg.loc[idx])
+        max_name_no_asg = overlaps_sort_date_no_asg.loc[idx]['player_name_y'] # without asg
+        # finish sorting
+        overlaps_sort_date = overlaps.to_dict('records')
+        overlaps_sort_date_no_asg = overlaps_sort_date_no_asg.to_dict('records') # no asg
+        overlaps.sort_values(by=['overlap_len', 'player_name_y'], inplace=True, ascending=False)
+        overlaps_sort_len = overlaps.to_dict('records')
+        overlaps_sort_len_no_asg = overlaps.loc[overlaps['league']!='nhl-asg'].to_dict('records') # no asg
+
+        end = time.time()
+        print(f"elapsed time: {end-start}")
+        # TODO longest name - get from name DB when I rerun name processing
+        end = time.time()
+        print(f"elapsed time: {end-start}")
+        return overlaps_sort_date, max_name, max_name_no_asg, overlaps_sort_date_no_asg, overlaps_sort_len, overlaps_sort_len_no_asg
+        # sorted_output, longest_name, output_no_asg, sorted_output_overlap_term, sorted_output_overlap_term_no_asg
+
+    def get_tooltip_str(self, teammate_name, team_display_str, years_str, league, num_seasons):
+        tooltip_str = f"{teammate_name}<br>{team_display_str}<br>{years_str}"
+        if league not in self.tournament_leagues:
+            if num_seasons == 1:
+                tooltip_str += f" ({num_seasons} season)"
+            else:
+                tooltip_str += f" ({num_seasons} seasons)"
+        return tooltip_str
+    
     def get_overlapping_player_terms(self, player1_id, player2_id=None):
         output = []
         player_rows = self.get_terms_from_player_id(player1_id)
@@ -389,7 +454,6 @@ class ep_db():
         for tenure_time, data in unsorted_output:
             sorted_output.append({"player": data[0], "league": data[1], "team_display": data[2], "year1": data[3], "month1": data[4], "day1": data[5], "year2": data[6], "month2": data[7], "day2": data[8], "tooltip_str": data[9], "id": data[10]})
         return sorted_output
-
     
     def query_roster(self, player_id, team, season):
         start = time.time()

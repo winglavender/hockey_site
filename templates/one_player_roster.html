@@ -14,81 +14,41 @@
 
   <h3>Roster Overlaps</h3>
   <div id="content_on"> <!-- all data -->
-  {% if data.before|length > 0 or data.during|length > 0 or data.after|length > 0 %} 
+  {% if data.num_teammates > 0 %} 
   <p><b>{{playername}}</b> has played on a team with the following members of the <b>{{team}} {{season}}</b> roster:</p>
-  {% if data.before|length > 0 %}
-  <p>Before {{season}}:</p>
+  {% for row in data.data %}
+  {% if row.teammates|length > 0 %}
+  <p>{{row.time}} {{season}}:</p>
     <table>
-        {% for player in data.before %}
+        {% for player in row.teammates %}
         <tr>
-            <td>{{player.playername}}</td>
-            <td>{{player.data}}</td>
+            <td>{{player.canon_name_y}}</td>
+            <td>{{player.team}} ({{player.league_display_str}}, {{player.years_str}})</td>
         </tr>
         {% endfor %}
     </table>
    {% endif %}
-   {% if data.during|length > 0 %}
-   <p>During {{season}}:</p>
-    <table>
-        {% for player in data.during %}
-        <tr>
-            <td>{{player.playername}}</td>
-            <td>{{player.data}}</td>
-        </tr>
-        {% endfor %}
-    </table>
-  {% endif %}
-  {% if data.after|length > 0 %}
-  <p>After {{season}}:</p>
-    <table>
-        {% for player in data.after %}
-        <tr>
-            <td>{{player.playername}}</td>
-            <td>{{player.data}}</td>
-        </tr>
-        {% endfor %}
-    </table>
-  {% endif %}
+  {% endfor %}
   {% else %}
   <p><b>{{playername}}</b> has not played on a team with any of the players from the <b>{{team}} {{season}}</b> roster, at least according to the data currently available on this site.</p>
   {% endif %}
   </div>
   <div id="content_off"> <!-- no asg data -->
-    {% if data_no_asg.before|length > 0 or data_no_asg.during|length > 0 or data_no_asg.after|length > 0 %} 
+    {% if data_no_asg.num_teammates > 0 %} 
     <p><b>{{playername}}</b> has played on a team with the following members of the <b>{{team}} {{season}}</b> roster:</p>
-    {% if data_no_asg.before|length > 0 %}
-    <p>Before {{season}}:</p>
+    {% for row in data_no_asg.data %}
+    {% if row.teammates|length > 0 %}
+    <p>{{row.time}} {{season}}:</p>
       <table>
-          {% for player in data_no_asg.before %}
+          {% for player in row.teammates %}
           <tr>
-              <td>{{player.playername}}</td>
-              <td>{{player.data}}</td>
-          </tr>
+              <td>{{player.canon_name_y}}</td>
+              <td>{{player.team}} ({{player.league_display_str}}, {{player.years_str}})</td>
+            </tr>
           {% endfor %}
       </table>
      {% endif %}
-     {% if data_no_asg.during|length > 0 %}
-     <p>During {{season}}:</p>
-      <table>
-          {% for player in data_no_asg.during %}
-          <tr>
-              <td>{{player.playername}}</td>
-              <td>{{player.data}}</td>
-          </tr>
-          {% endfor %}
-      </table>
-    {% endif %}
-    {% if data_no_asg.after|length > 0 %}
-    <p>After {{season}}:</p>
-      <table>
-          {% for player in data_no_asg.after %}
-          <tr>
-              <td>{{player.playername}}</td>
-              <td>{{player.data}}</td>
-          </tr>
-          {% endfor %}
-      </table>
-    {% endif %}
+    {% endfor %}
     {% else %}
     <p><b>{{playername}}</b> has not played on a team with any of the players from the <b>{{team}} {{season}}</b> roster, at least according to the data currently available on this site.</p>
     {% endif %}

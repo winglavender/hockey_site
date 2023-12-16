@@ -23,7 +23,7 @@ Include NHL All-Star Games
     <table>
         {% for term in data %}
         <tr>
-            <td>{{term.team}} ({{term.league}})</td>
+            <td>{{term.team}} ({{term.league_display_str}})</td>
             <td>({{term.years_str}})</td>
         </tr>
         {% endfor %}
@@ -48,7 +48,7 @@ Include NHL All-Star Games
     <table>
         {% for term in data_no_asg %}
         <tr>
-            <td>{{term.team}} ({{term.league}})</td>
+            <td>{{term.team}} ({{term.league_display_str}})</td>
             <td>({{term.years_str}})</td>
         </tr>
         {% endfor %}

@@ -39,8 +39,8 @@ class SeasonCalculator:
             name = season_tmp[0]
             self.seasons.append(name)
             # get start, end, end offseason dates
-            start_date = pd.to_datetime(season_tmp[1], infer_datetime_format=True)
-            end_season_date = pd.to_datetime(season_tmp[2], infer_datetime_format=True)
+            start_date = pd.to_datetime(season_tmp[1])
+            end_season_date = pd.to_datetime(season_tmp[2])
             end_offseason_date = next_start - pd.to_timedelta(1, unit='d')
             self.season_dates[name] = (start_date, end_season_date, end_offseason_date)
             next_start = start_date

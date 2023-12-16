@@ -66,7 +66,7 @@ function reset_options() {
       <p>View an individual player's teammates</p><br>
 
       <h4>Career View</h4>
-      <form method="post" action="/form_result">
+      <form method="post" action="/one_player_career">
     <fieldset>
     <p>View a player's career: which teams they played for and who were their teammates</p>
         <label for="target">Player:</label>
@@ -77,7 +77,7 @@ function reset_options() {
     </form><br>
 
       <h4>Roster View</h4>
-       <form method="post" action="/player_team_year_result">
+       <form method="post" action="/one_player_roster">
     <fieldset>
     <p>View a player's relationships with a specific NHL roster</p>
         <label for="player">Player:</label>
@@ -99,7 +99,7 @@ function reset_options() {
     </form><br>
 
         <h4>Game History Vs Team</h4>
-       <form method="post" action="/player_team_game_result">
+       <form method="post" action="/one_player_team_games">
     <fieldset>
     <p>View a player's relationships with a specific NHL roster</p>
         <label for="player">Player:</label>
@@ -122,7 +122,7 @@ function reset_options() {
       <p>View the relationship between two players</p><br>
 
         <h4>Teammate History</h4>
-      <form method="post" action="/pair_form_result">
+      <form method="post" action="/two_players_results">
     <fieldset>
     <p>Check whether the players have been teammates</p>
         <label for="player1">Player 1:</label>
@@ -134,7 +134,7 @@ function reset_options() {
     </form><br>
 
         <h4>Shared Teammates</h4>
-       <form method="post" action="/graph_traverse_result">
+       <form method="post" action="/two_players_shared_teammates">
     <fieldset>
     <p>View teammates that the players have in common</p>
         <label for="player1">Player 1:</label>
@@ -146,7 +146,7 @@ function reset_options() {
     </form><br>
 
         <h4>Shared Games Played</h4>
-       <form method="post" action="/game_result">
+       <form method="post" action="/two_players_games">
     <fieldset>
     <p>View shared games played (both as opponents and as teammates)</p>
         <label for="player1">Player 1:</label>
@@ -165,7 +165,7 @@ function reset_options() {
       <p>View relationships over an entire team</p><br>
 
         <h4>Roster History</h4>
-       <form method="post" action="/team_year_result">
+       <form method="post" action="/team_history">
     <fieldset>
     <p>View the NHL team history for each player on a particular roster</p>
         <label for="team_hist">Team:</label>
@@ -185,7 +185,7 @@ function reset_options() {
     </form><br>
 
         <h4>Roster Comparison</h4>
-      <form method="post" action="/roster_pair_result">
+      <form method="post" action="/team_compare_rosters">
     <fieldset>
     <p>View the previous teammate relationships between two NHL rosters</p>
         <label for="team1">Team:</label>

@@ -9,16 +9,32 @@
   </head>
   <body>
 
+    <label class="switch">
+      <input type="checkbox" >
+      <span class="slider round"></span>
+    </label>
+    Include NHL All-Star Games
+
   <h3>Roster Overlaps</h3>
   <p><b>{{team1}}</b> and <b>{{team2}}</b> overlaps for the {{season}} rosters:</p>
 
-  <p>(blue=includes NHL team, red=national teams only, green=other teams, yellow=only played together at NHL All-Star Game, gray=player played on both rosters this season)</p>
+  <h4>Legend</h4>
+  <p><span style="color:rgb(54, 162, 235);">blue</span>: includes NHL team<br>
+  <span style="color:rgb(255, 99, 132);">red</span>: national teams only<br>
+  <span style="color:rgb(255, 205, 86);">yellow</span>: NHL All-Star Game only<br>
+  <span style="color:rgb(75, 192, 192);">green</span>: other teams (e.g. other professional leagues, juniors)<br>
+  <span style="color:rgb(170, 171, 177);">gray</span>: player played on both rosters this season</p>
 
+  <div id="content_on"> <!-- all data -->
     <canvas id="canvas" width="800" height="400"></canvas><br><br>
-
+  </div>
+  <div id="content_off"> <!-- no asg data -->
+    <canvas id="canvas2" width="800" height="400"></canvas><br><br>
+  </div>
     <a href="{{ url_for('home') }}">Return to main page</a>
   </body>
   <script>
+
   window.chartColors = {
   red: 'rgb(255, 99, 132)',
   orange: 'rgb(255, 159, 64)',
@@ -28,12 +44,12 @@
   purple: 'rgb(153, 102, 255)',
   grey: 'rgb(231,233,237)'
   };
-  var player_data = {{data|tojson}};
-  var datasets_arr = [];
-  for (var link_idx in player_data.links) {
-    var link = player_data.links[link_idx];
+  var player_data_asg = {{data_asg|tojson}};
+  var datasets_arr_asg = [];
+  for (var link_idx in player_data_asg.links) {
+    var link = player_data_asg.links[link_idx];
     console.log(link);
-    datasets_arr.push({
+    datasets_arr_asg.push({
       label: link[2],
       backgroundColor: window.chartColors[link[3]],
       borderColor: window.chartColors[link[3]],
@@ -42,10 +58,10 @@
     });
   }
 
-  var config = {
+  var config_asg = {
     type: 'line',
     data: {
-      datasets: datasets_arr
+      datasets: datasets_arr_asg
     },
     options: {
     responsive: true,
@@ -99,10 +115,10 @@
           display: true,
           autoSkip: false,
           stepSize: 1,
-          max: player_data['team1_players'].length-1,
+          max: player_data_asg['team1_players'].length-1,
           min: 0,
           callback: function(val, index) {
-            playernames = player_data['team1_players'];
+            playernames = player_data_asg['team1_players'];
             return playernames[val];
           }
         }
@@ -115,10 +131,108 @@
           display: true,
           autoSkip: false,
           stepSize: 1,
-          max: player_data['team2_players'].length-1,
+          max: player_data_asg['team2_players'].length-1,
           min: 0,
           callback: function(val, index) {
-            playernames = player_data['team2_players'];
+            playernames = player_data_asg['team2_players'];
+            return playernames[val];
+          }
+        }
+      }]
+    }
+  }
+};
+
+var player_data_no_asg = {{data_no_asg|tojson}};
+  var datasets_arr_no_asg = [];
+  for (var link_idx in player_data_no_asg.links) {
+    var link = player_data_no_asg.links[link_idx];
+    console.log(link);
+    datasets_arr_no_asg.push({
+      label: link[2],
+      backgroundColor: window.chartColors[link[3]],
+      borderColor: window.chartColors[link[3]],
+      data: [link[0], link[1]],
+      fill: false
+    });
+  }
+var config_no_asg = {
+    type: 'line',
+    data: {
+      datasets: datasets_arr_no_asg
+    },
+    options: {
+    responsive: true,
+    title:{
+      display:false,
+    },
+    legend:{ display:false,},
+    tooltips: {
+      mode: 'point',
+      intersect: true,
+      callbacks: {
+                    label: function(tooltipItem, data) {
+                      //console.log(tooltipItem);
+                      label = tooltipItem.index;
+                      //console.log(label);
+                      const lineLabel = data.datasets[tooltipItem.datasetIndex].label;
+                      //console.log(lineLabel);
+                      const labelArray = lineLabel.split("--");
+                      if (label == 1) {
+                        return labelArray[0];//"test string 1";
+                      }
+                      else {
+                        return labelArray[1];//"test string 0";
+                      }
+                    }
+                },
+        itemSort: function(a, b) {
+           return b.datasetIndex - a.datasetIndex
+        },
+      displayColors: false,
+    },
+    hover: {
+      mode: 'nearest',
+      intersect: true
+    },
+    scaleShowValues: true,
+    scales: {
+      xAxes: [{
+        display: false,
+        scaleLabel: {
+          display: false,
+        }
+      }],
+      yAxes: [{
+        gridLines: {display:false, drawBorder: false},
+        id: 'A',
+        type: 'linear',
+        position: 'left',
+        ticks: {
+          // For a category axis, the val is the index so the lookup via getLabelForValue is needed
+          display: true,
+          autoSkip: false,
+          stepSize: 1,
+          max: player_data_no_asg['team1_players'].length-1,
+          min: 0,
+          callback: function(val, index) {
+            playernames = player_data_no_asg['team1_players'];
+            return playernames[val];
+          }
+        }
+      }, {
+        gridLines:{display:false, drawBorder: false},
+        id: 'B',
+        type: 'linear',
+        position: 'right',
+        ticks: {
+          display: true,
+          autoSkip: false,
+          stepSize: 1,
+          max: player_data_no_asg['team2_players'].length-1,
+          min: 0,
+          callback: function(val, index) {
+            playernames = player_data_no_asg['team2_players'];
             return playernames[val];
           }
         }
@@ -128,8 +242,17 @@
 };
 
 var ctx = document.getElementById("canvas").getContext("2d");
-var myLine = new Chart(ctx, config);
+var myLine = new Chart(ctx, config_asg);
+     
+var ctx2 = document.getElementById("canvas2").getContext("2d");
+var myLine2 = new Chart(ctx2, config_no_asg);
 
+let contentOff = document.querySelector('#content_off');
+let contentOn = document.querySelector('#content_on');
 
+document.querySelector('.switch input').addEventListener('change', e => { 
+contentOff.style.display = e.target.checked ? 'none' : 'block';
+contentOn.style.display = e.target.checked ? 'block' : 'none';
+});
   </script>
 </html>

@@ -14,68 +14,49 @@
 
     <h3>Shared Teammates</h3>
     <div id="content_on"> <!-- include all data -->
-      {% if data|length == 0 %} <!-- no teammates in common (therefore no team in common either)-->
-      <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have no teammates in common, at least according to the data currently available on this site.</p>
+      {% if data_len_asg == 0 %} <!-- no teammates in common (therefore no team in common either)-->
+        <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have no teammates in common, at least according to the data currently available on this site.</p>
 
-      {% elif team_data|length > 0 %} <!-- a team in common (and later teammates in common)-->
-  <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have played on the same team:</p>
+      {% elif team_data|length > 0 %} <!-- a team in common (and also therefore teammates in common)-->
+        <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have played on the same team:</p>
 
-    <table>
-        {% for term in team_data %}
-        <tr>
-            <td>{{term.team}} ({{term.league}})</td>
-            <td>({{term.year1}}-{{term.year2}})</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <p>They also have the following teammates in common:</p>
-    {% else %}  <!-- no team in common (but there will be teammates in common)-->
-    <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have not played on a team together, at least according to the data currently available on this site, however, they have the following teammates in common:</p>
-    {% endif %}
-    <table>
-        <th>
-            <td><b>played with {{playername1}}</b></td>
-            <td><b>played with {{playername2}}</b></td>
-        </th>
-        {% for row in data %}
-        <tr>
-            {% for val in row %}
-            <td>{{val}}</td>
+        <table>
+            {% for term in team_data %}
+            <tr>
+                <td>{{term.team}} ({{term.league_display_str}})</td>
+                <td>({{term.years_str}})</td>
+            </tr>
             {% endfor %}
-        {% endfor %}
-    </table>
+        </table>
+        <p>They also have the following teammates in common:</p>
+        {{data|safe}}
+    {% else %}  <!-- no team in common (but there will be teammates in common)-->
+        <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have not played on a team together, at least according to the data currently available on this site, however, they have the following teammates in common:</p>
+        {{data|safe}}
+    {% endif %}
+    
     </div>
     <div id="content_off"><!-- data without ASG -->
-      {% if data_no_asg|length == 0 %} <!-- no teammates in common (therefore no team in common either)-->
-      <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have no teammates in common, at least according to the data currently available on this site.</p>
+      {% if data_len_no_asg == 0 %} <!-- no teammates in common (therefore no team in common either)-->
+        <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have no teammates in common, at least according to the data currently available on this site.</p>
 
       {% elif team_data_no_asg|length > 0 %} <!-- a team in common (and later teammates in common)-->
-  <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have played on the same team:</p>
+        <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have played on the same team:</p>
 
-    <table>
-        {% for term in team_data_no_asg %}
-        <tr>
-            <td>{{term.team}} ({{term.league}})</td>
-            <td>({{term.year1}}-{{term.year2}})</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <p>They also have the following teammates in common:</p>
-    {% else %}  <!-- no team in common (but there will be teammates in common)-->
-    <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have not played on a team together, at least according to the data currently available on this site, however, they have the following teammates in common:</p>
-    {% endif %}
-    <table>
-        <th>
-            <td><b>played with {{playername1}}</b></td>
-            <td><b>played with {{playername2}}</b></td>
-        </th>
-        {% for row in data_no_asg %}
-        <tr>
-            {% for val in row %}
-            <td>{{val}}</td>
+        <table>
+            {% for term in team_data_no_asg %}
+            <tr>
+                <td>{{term.team}} ({{term.league_display_str}})</td>
+                <td>({{term.years_str}})</td>
+            </tr>
             {% endfor %}
-        {% endfor %}
-    </table>
+        </table>
+        <p>They also have the following teammates in common:</p>
+        {{data_no_asg|safe}}
+      {% else %}  <!-- no team in common (but there will be teammates in common)-->
+        <p><b>{{playername1}}</b> and <b>{{playername2}}</b> have not played on a team together, at least according to the data currently available on this site, however, they have the following teammates in common:</p>
+        {{data_no_asg|safe}}
+      {% endif %}
     </div>
 
     <a href="{{ url_for('home') }}">Return to main page</a>

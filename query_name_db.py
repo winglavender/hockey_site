@@ -36,7 +36,6 @@ class name_db():
         name_rows = self.name_links.loc[(self.name_links.norm_name == tgt_name) & (self.name_links[link_name] != "")]
         output = []
         for _, row in name_rows.iterrows():
-
             output.append({'player': row['canon_name'], 'link': row[link_name]})
         return output
 
@@ -52,6 +51,16 @@ class name_db():
         return link
             # anme_ = link.replace(".", "")
 
+    def get_name_len(self, player_id, db_type):
+        if db_type != "ep" and db_type != "nhl":
+            print("ERROR: specify valid link type for name_db ('ep' or 'nhl')")
+            return None
+        name_rows = self.name_links.loc[self.name_links[f"{db_type}_link"] == player_id]
+        if len(name_rows) == 0:
+            print(f"ERROR: no player with {db_type} id {player_id}")
+            return None
+        return name_rows.iloc[0].name_length
+    
     def get_name(self, player_id, db_type):
         if db_type != "ep" and db_type != "nhl":
             print("ERROR: specify valid link type for name_db ('ep' or 'nhl')")
