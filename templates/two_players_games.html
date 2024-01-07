@@ -125,7 +125,7 @@ td:empty::after{
                         <details>
                             <summary>{{season.opponents.count}} game{% if season.opponents.count != 1 %}s{% endif %} as opponents <i>({{season.opponents.record.wins}}-{{season.opponents.record.losses}})</i></summary>
                             <ul>
-                                {% for game_type in season.oppoents.split %}
+                                {% for game_type in season.opponents.split %}
                                 <li>
                                     <details>
                                         <summary>{{game_type.count}} {{game_type.type}} game{% if game_type.count != 1 %}s{% endif %} <i>({{game_type.record.wins}}-{{game_type.record.losses}})</i></summary>

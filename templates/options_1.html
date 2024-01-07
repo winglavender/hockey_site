@@ -12,8 +12,8 @@
     <form method="post" action="/options_result_1">
     <p>There are multiple players with the specified name. Please select one:</p>
     {% for player in data %}
-    <input type="radio" id={{player.link}} name="playerid" value="{{player.player}}#{{player.link}}" required>
-    <label for={{player.link}}>{{player.player}}</label><br>
+    <input type="radio" id={{player.playerId}} name="playerid" value="{{player.playerName}}#{{player.playerId}}" required>
+    <label for={{player.playerId}}>{{player.playerName}}</label><br>
     {% endfor %}
     <br>
     <input type="submit" name="submit" value="Submit">

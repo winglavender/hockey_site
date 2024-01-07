@@ -22,8 +22,8 @@
     <table>
         {% for player in row.teammates %}
         <tr>
-            <td>{{player.canon_name_y}}</td>
-            <td>{{player.team}} ({{player.league_display_str}}, {{player.years_str}})</td>
+            <td>{{player.playerName_y}}</td>
+            <td>{{player.description}}</td>
         </tr>
         {% endfor %}
     </table>
@@ -42,8 +42,8 @@
       <table>
           {% for player in row.teammates %}
           <tr>
-              <td>{{player.canon_name_y}}</td>
-              <td>{{player.team}} ({{player.league_display_str}}, {{player.years_str}})</td>
+              <td>{{player.playerName_y}}</td>
+              <td>{{player.description}}</td>
             </tr>
           {% endfor %}
       </table>

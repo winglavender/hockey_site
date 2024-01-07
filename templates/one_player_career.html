@@ -93,10 +93,15 @@
         dataTable.addColumn({ type: 'date', id: 'End' });
         for (var player_count in player_data) {
             var player = player_data[player_count]
-            dataTable.addRow([player["canon_name_y"], player["team_display_str"], player["tooltip_str"], new Date(player["overlap_start_year_js"], player["overlap_start_month_js"], player["overlap_start_day_js"]), new Date(player["overlap_end_year_js"], player["overlap_end_month_js"], player["overlap_end_day_js"])]);
+            dataTable.addRow([player["playerName_y"], player["team_display_str"], player["tooltip_str"], new Date(player["overlap_start_year_js"], player["overlap_start_month_js"], player["overlap_start_day_js"]), new Date(player["overlap_end_year_js"], player["overlap_end_month_js"], player["overlap_end_day_js"])]);
         }
         var chart = new google.visualization.Timeline(document.getElementById('timeline'));
-        chart.draw(dataTable);
+        chart.draw(dataTable, {
+        hAxis: {
+          minValue: new Date({{start_date.year}}, {{start_date.month}}, {{start_date.day}}),
+          maxValue: new Date({{end_date.year}}, {{end_date.month}}, {{end_date.day}})
+        }
+      });
         $(document).ready(function () {
              $(window).resize(function(){
          drawChart();

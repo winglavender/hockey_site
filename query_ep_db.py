@@ -6,7 +6,7 @@ import re
 import matplotlib as mpl
 from matplotlib.afm import AFM
 import os.path
-from season_calculator import SeasonCalculator
+from hockey_site.season_calculator_old import SeasonCalculator
 from datetime import date
 import numpy as np
 import csv
