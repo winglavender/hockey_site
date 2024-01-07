@@ -6,7 +6,7 @@ import numpy as np
 from sqlalchemy import create_engine, text as sql_text
 from normalize_name import normalize_name
 import sys
-sys.path.insert(1, '../hockey_db')
+# sys.path.insert(1, '../hockey_db')
 from season_calculator import SeasonCalculator
 from build_db import get_js_date_values, get_years_str, get_player_term_tooltip_str, get_tournament_leagues
 
