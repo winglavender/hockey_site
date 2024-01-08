@@ -25,13 +25,13 @@ else:
         config = yaml.safe_load(f)
     config['root_dir'] = root_dir
     SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
-    username="the username from the 'Databases' tab",
-    password="the password you set on the 'Databases' tab",
-    hostname="the database host address from the 'Databases' tab",
-    databasename="the database name you chose, probably yourusername$comments",
+    username="hockeyteammates",
+    password="",
+    hostname="hockeyteammates.mysql.pythonanywhere-services.com",
+    databasename="hockeyteammates$default",
     )
     app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
-    app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
+    app.config["SQLALCHEMY_POOL_RECYCLE"] = 280 # specifically for pythonanywhere, this needs to be less than 300 seconds 
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     engine = SQLAlchemy(app)
 print(root_dir)

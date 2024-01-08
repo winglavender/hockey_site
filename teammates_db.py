@@ -89,15 +89,21 @@ class teammates_db():
             overlaps = pd.read_sql_query(sql=sql_text(f"select team, league, league_display_str, start_date_x, end_date_x, playerId_x, color_x as color, start_date_y, end_date_y, t.playerId_y, overlap_start_date, overlap_end_date, overlap_len, overlap_start_year_js, overlap_start_month_js, overlap_start_day_js, overlap_end_year_js, overlap_end_month_js, overlap_end_day_js, num_seasons, years_str, team_display_str, sum_overlap_len, pn.playerName as playerName_y, name_length as name_length_y from teammates t join links l1 on t.playerId_x = l1.playerId join links l2 on t.playerId_y = l2.playerId join (select playerId_y, sum(overlap_len) as sum_overlap_len from teammates t where playerId_x = '{player1_id}' and playerId_y = '{player2_id}' group by playerId_y) as sum_table on t.playerId_y = sum_table.playerId_y join player_names pn on l2.playerName = pn.playerName where playerId_x = '{player1_id}' and t.playerId_y = '{player2_id}'"), con=self.db.engine, parse_dates=['start_date_x', 'end_date_x', 'start_date_y', 'end_date_y', 'overlap_start_date', 'overlap_end_date'])
         else:
             overlaps = pd.read_sql_query(sql=sql_text(f"select team, league, league_display_str, start_date_x, end_date_x, playerId_x, color_x as color, start_date_y, end_date_y, t.playerId_y, overlap_start_date, overlap_end_date, overlap_len, overlap_start_year_js, overlap_start_month_js, overlap_start_day_js, overlap_end_year_js, overlap_end_month_js, overlap_end_day_js, num_seasons, years_str, team_display_str, sum_overlap_len, pn.playerName as playerName_y, name_length as name_length_y from teammates t join links l1 on t.playerId_x = l1.playerId join links l2 on t.playerId_y = l2.playerId join (select playerId_y, sum(overlap_len) as sum_overlap_len from teammates t where playerId_x = '{player1_id}' group by playerId_y) as sum_table on t.playerId_y = sum_table.playerId_y join player_names pn on l2.playerName = pn.playerName where playerId_x = '{player1_id}'"), con=self.db.engine, parse_dates=['start_date_x', 'end_date_x', 'start_date_y', 'end_date_y', 'overlap_start_date', 'overlap_end_date'])
+        end = time.time()
+        print(f"read_sql_query elapsed time: {end-start}")
         # TODO precompute tooltip string except for canon name ? (so that I don't need to store tournament information in this script)
         overlaps['tooltip_str'] = overlaps.apply(lambda x: self.get_tooltip_str(x.playerName_y, x.team_display_str, x.years_str, x.league, x.num_seasons), axis=1) 
-        overlaps = overlaps[~overlaps['league'].isin(self.drop_leagues)]
+        overlaps = overlaps[~overlaps['league'].isin(self.drop_leagues)] # TODO put this in --process
         end = time.time()
-        print(f"elapsed time: {end-start}")
+        print(f"drop leagues elapsed time: {end-start}")
         # TODO should sorting be a separate function?
         # sort orders
         overlaps.sort_values(by=['overlap_start_date', 'playerName_y'], inplace=True)
+        end = time.time()
+        print(f"sort by overlap_sort_date elapsed time: {end-start}")
         overlaps_sort_date_no_asg = overlaps.loc[overlaps['league']!='nhl-asg']
+        end = time.time()
+        print(f"remove asg elapsed time: {end-start}")
         # get max name length 
         if len(overlaps) > 0:
             idx = overlaps['name_length_y'].idxmax()
@@ -109,17 +115,23 @@ class teammates_db():
             max_name_no_asg = overlaps_sort_date_no_asg.loc[idx]['playerName_y'] # without asg
         else:
             max_name_no_asg = "" # TODO I think this goes unused right? if there are no overlaps? #self.get_name_from_ep_link(player2_id)
+        end = time.time()
+        print(f"get max name length elapsed time: {end-start}")
         # finish sorting
         overlaps_sort_date = overlaps
         overlaps_sort_len = overlaps.sort_values(by=['sum_overlap_len', 'playerName_y'], ascending=False)
+        end = time.time()
+        print(f"sort by overlap length elapsed time: {end-start}")
         overlaps_sort_len_no_asg = overlaps_sort_len.loc[overlaps_sort_len['league']!='nhl-asg'] # no asg
+        end = time.time()
+        print(f"remove asg elapsed time: {end-start}")
         if to_dict:
             overlaps_sort_len_no_asg = overlaps_sort_len_no_asg.to_dict('records') 
             overlaps_sort_date_no_asg = overlaps_sort_date_no_asg.to_dict('records') 
             overlaps_sort_date = overlaps_sort_date.to_dict('records')
             overlaps_sort_len = overlaps_sort_len.to_dict('records')
         end = time.time()
-        print(f"elapsed time: {end-start}")
+        print(f"to_dict elapsed time: {end-start}")
         return overlaps_sort_date, max_name, max_name_no_asg, overlaps_sort_date_no_asg, overlaps_sort_len, overlaps_sort_len_no_asg
 
     # TODO should I add a tournament flag in the database so that I don't have to store which leagues are tournament leagues in the code?
