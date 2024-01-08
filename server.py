@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, session
+from flask_sqlalchemy import SQLAlchemy
 from teammates_db import teammates_db
 # from query_name_db import name_db
 # from query_ep_db import ep_db
@@ -23,6 +24,16 @@ else:
     with open('hockey_teammates/config.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['root_dir'] = root_dir
+    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
+    username="the username from the 'Databases' tab",
+    password="the password you set on the 'Databases' tab",
+    hostname="the database host address from the 'Databases' tab",
+    databasename="the database name you chose, probably yourusername$comments",
+    )
+    app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
+    app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    engine = SQLAlchemy(app)
 print(root_dir)
 
 # populate NHL team data
@@ -70,7 +81,7 @@ def one_player_career():
     if request.method == "POST":
         session.clear()
         target = request.form['target'].strip()
-        db = teammates_db(config)
+        db = teammates_db(config, engine)
         output = db.get_links_from_name(target)
         session["task"] = "one_player_career"
         # if num_results == 1:
@@ -98,7 +109,7 @@ def one_player_roster():
         player = request.form['player'].strip()
         team = request.form['team']
         season = request.form['season']
-        db = teammates_db(config)
+        db = teammates_db(config, engine)
         session["task"] = "one_player_roster"
         session["team"] = team
         session["season"] = season
@@ -123,7 +134,7 @@ def one_player_team_games():
         session.clear()
         player = request.form['player'].strip()
         team = request.form['team']
-        db = teammates_db(config)
+        db = teammates_db(config, engine)
         session["task"] = "one_player_team_games"
         session["team"] = team
         # num_results, target
@@ -149,7 +160,7 @@ def one_player_team_games():
 def two_players_results():
     if request.method == "POST":
         session.clear()
-        db = teammates_db(config)
+        db = teammates_db(config, engine)
         player1 = request.form['player1'].strip()
         output1 = db.get_links_from_name(player1)
         player2 = request.form['player2'].strip()
@@ -186,7 +197,7 @@ def two_players_results():
 def two_players_shared_teammates():
     if request.method == "POST":
         session.clear()
-        db = teammates_db(config)
+        db = teammates_db(config, engine)
         player1 = request.form['player1'].strip()
         output1 = db.get_links_from_name(player1)
         player2 = request.form['player2'].strip()
@@ -224,7 +235,7 @@ def two_players_games():
     if request.method == "POST":
         session.clear()
         session["task"] = "two_players_games"
-        db = teammates_db(config)
+        db = teammates_db(config, engine)
         player1 = request.form['player1'].strip()
         output1 = db.get_links_from_name(player1)
         player2 = request.form['player2'].strip()
@@ -263,7 +274,7 @@ def team_history():
         session.clear()
         team = request.form['team_hist']
         season = request.form['season_hist']
-        db = teammates_db(config)
+        db = teammates_db(config, engine)
         data = db.get_roster_history(team, season)
         return render_template('team_history.html', data=data, team=team, season=season)
     else:
@@ -279,7 +290,7 @@ def team_compare_rosters():
         if team1 == team2:
             return render_template('error_teams_same.html')
         season = request.form['season_pair']
-        db = teammates_db(config)
+        db = teammates_db(config, engine)
         data_asg, data_no_asg = db.get_two_rosters_overlap(team1, team2, season)
         return render_template('team_comparison.html', team1=team1, team2=team2, season=season, data_asg=data_asg, data_no_asg=data_no_asg)
     else:
@@ -301,7 +312,7 @@ def options_result_1():
             session["player2_id"] = tmp[1]
         if "player2_id" in session and session["player1_id"] == session["player2_id"]:
             return render_template(f"{session['task']}_same_player.html")
-        db = teammates_db(config)
+        db = teammates_db(config, engine)
         # names_db = name_db(config)
         # db = ep_db(names_db, config)
         # games_db = game_roster_db(names_db, config)
@@ -344,7 +355,7 @@ def options_result_2():
         session["player2_id"] = tmp2[1]
         if session["player1_id"] == session["player2_id"]:
             return render_template(f"{session['task']}_same_player.html")
-        db = teammates_db(config)
+        db = teammates_db(config, engine)
         # names_db = name_db(config)
         # db = ep_db(names_db, config)
         # games_db = game_roster_db(names_db, config)

@@ -6,15 +6,18 @@ import numpy as np
 from sqlalchemy import create_engine, text as sql_text
 from normalize_name import normalize_name
 import sys
-# sys.path.insert(1, '../hockey_db')
+sys.path.insert(0, '../hockey_db')
+print(sys.path)
 from season_calculator import SeasonCalculator
+# from hockey_db.build_db import get_js_date_values, get_years_str, get_player_term_tooltip_str, get_tournament_leagues
 from build_db import get_js_date_values, get_years_str, get_player_term_tooltip_str, get_tournament_leagues
 
 class teammates_db():
 
-    def __init__(self, config):
+    def __init__(self, config, engine):
         out_db = os.path.join(config['data_dir'], f"{config['filename_date']}.db")
-        self.engine = create_engine(f"sqlite:///{out_db}")
+        # self.engine = create_engine(f"sqlite:///{out_db}")
+        self.engine = engine
         self.latest_date = pd.to_datetime(config['timeline_end']) # TODO set to end of current season?
         self.current_date = pd.to_datetime(config['current_date']) # set to last scraped day of game data
         self.tournament_leagues = get_tournament_leagues() #{'og': (2,1), 'wjc-20': (1,1), 'wc': (6,1), 'wjc-18': (4,1), 'whc-17': (11,0), 'wcup': (9,0), 'nhl-asg': (2,1)} # first value is month and second value is 0 if the first year in a season should be used, 1 if the second year in the season should be used
