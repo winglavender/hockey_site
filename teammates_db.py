@@ -11,13 +11,13 @@ print(sys.path)
 from season_calculator import SeasonCalculator
 # from hockey_db.build_db import get_js_date_values, get_years_str, get_player_term_tooltip_str, get_tournament_leagues
 from build_db import get_js_date_values, get_years_str, get_player_term_tooltip_str, get_tournament_leagues
-
+# TODO if not local, from hockey_db.build_db import etc
 class teammates_db():
 
-    def __init__(self, config, engine):
+    def __init__(self, config, db):
         out_db = os.path.join(config['data_dir'], f"{config['filename_date']}.db")
         # self.engine = create_engine(f"sqlite:///{out_db}")
-        self.engine = engine
+        self.db = db
         self.latest_date = pd.to_datetime(config['timeline_end']) # TODO set to end of current season?
         self.current_date = pd.to_datetime(config['current_date']) # set to last scraped day of game data
         self.tournament_leagues = get_tournament_leagues() #{'og': (2,1), 'wjc-20': (1,1), 'wc': (6,1), 'wjc-18': (4,1), 'whc-17': (11,0), 'wcup': (9,0), 'nhl-asg': (2,1)} # first value is month and second value is 0 if the first year in a season should be used, 1 if the second year in the season should be used
@@ -57,7 +57,7 @@ class teammates_db():
         # use global latest date if none specified
         if not latest_date:
             latest_date = self.latest_date
-        rows = pd.read_sql_query(sql=sql_text(f"select * from skaters join links using(playerId) where skaters.playerId = '{player_id}' and start_date <= date('{latest_date}')"), con=self.engine.connect(), parse_dates=['start_date', 'end_date']) 
+        rows = pd.read_sql_query(sql=sql_text(f"select * from skaters join links using(playerId) where skaters.playerId = '{player_id}' and start_date <= date('{latest_date}')"), con=self.db.engine, parse_dates=['start_date', 'end_date']) 
         rows = rows.drop(['index'], axis=1, errors='ignore')
         rows['end_date'] = rows['end_date'].clip(None, latest_date) # TODO does this work?
         return rows
@@ -66,7 +66,7 @@ class teammates_db():
     def get_player_career(self, player_id, latest_date=None, to_dict=True):
         player_rows = self.get_terms_from_player_id(player_id, latest_date)
         player_rows = player_rows[~player_rows['league'].isin(self.drop_leagues)]
-        player_playoffs = pd.read_sql_query(sql=sql_text(f"select * from player_playoffs where link='{player_id}'"), con=self.engine.connect())
+        player_playoffs = pd.read_sql_query(sql=sql_text(f"select * from player_playoffs where link='{player_id}'"), con=self.db.engine)
         player_playoffs["league"] = "nhl_playoffs"
         player_playoffs["player"] = ""
         player_playoffs["team_display_str"] = "" 
@@ -86,9 +86,9 @@ class teammates_db():
     def get_overlapping_player_terms(self, player1_id, player2_id=None, to_dict=True):
         start = time.time()
         if player2_id: 
-            overlaps = pd.read_sql_query(sql=sql_text(f"select team, league, league_display_str, start_date_x, end_date_x, playerId_x, color_x as color, start_date_y, end_date_y, t.playerId_y, overlap_start_date, overlap_end_date, overlap_len, overlap_start_year_js, overlap_start_month_js, overlap_start_day_js, overlap_end_year_js, overlap_end_month_js, overlap_end_day_js, num_seasons, years_str, team_display_str, sum_overlap_len, pn.playerName as playerName_y, name_length as name_length_y from teammates t join links l1 on t.playerId_x = l1.playerId join links l2 on t.playerId_y = l2.playerId join (select playerId_y, sum(overlap_len) as sum_overlap_len from teammates t where playerId_x = '{player1_id}' and playerId_y = '{player2_id}' group by playerId_y) as sum_table on t.playerId_y = sum_table.playerId_y join player_names pn on l2.playerName = pn.playerName where playerId_x = '{player1_id}' and t.playerId_y = '{player2_id}'"), con=self.engine.connect(), parse_dates=['start_date_x', 'end_date_x', 'start_date_y', 'end_date_y', 'overlap_start_date', 'overlap_end_date'])
+            overlaps = pd.read_sql_query(sql=sql_text(f"select team, league, league_display_str, start_date_x, end_date_x, playerId_x, color_x as color, start_date_y, end_date_y, t.playerId_y, overlap_start_date, overlap_end_date, overlap_len, overlap_start_year_js, overlap_start_month_js, overlap_start_day_js, overlap_end_year_js, overlap_end_month_js, overlap_end_day_js, num_seasons, years_str, team_display_str, sum_overlap_len, pn.playerName as playerName_y, name_length as name_length_y from teammates t join links l1 on t.playerId_x = l1.playerId join links l2 on t.playerId_y = l2.playerId join (select playerId_y, sum(overlap_len) as sum_overlap_len from teammates t where playerId_x = '{player1_id}' and playerId_y = '{player2_id}' group by playerId_y) as sum_table on t.playerId_y = sum_table.playerId_y join player_names pn on l2.playerName = pn.playerName where playerId_x = '{player1_id}' and t.playerId_y = '{player2_id}'"), con=self.db.engine, parse_dates=['start_date_x', 'end_date_x', 'start_date_y', 'end_date_y', 'overlap_start_date', 'overlap_end_date'])
         else:
-            overlaps = pd.read_sql_query(sql=sql_text(f"select team, league, league_display_str, start_date_x, end_date_x, playerId_x, color_x as color, start_date_y, end_date_y, t.playerId_y, overlap_start_date, overlap_end_date, overlap_len, overlap_start_year_js, overlap_start_month_js, overlap_start_day_js, overlap_end_year_js, overlap_end_month_js, overlap_end_day_js, num_seasons, years_str, team_display_str, sum_overlap_len, pn.playerName as playerName_y, name_length as name_length_y from teammates t join links l1 on t.playerId_x = l1.playerId join links l2 on t.playerId_y = l2.playerId join (select playerId_y, sum(overlap_len) as sum_overlap_len from teammates t where playerId_x = '{player1_id}' group by playerId_y) as sum_table on t.playerId_y = sum_table.playerId_y join player_names pn on l2.playerName = pn.playerName where playerId_x = '{player1_id}'"), con=self.engine.connect(), parse_dates=['start_date_x', 'end_date_x', 'start_date_y', 'end_date_y', 'overlap_start_date', 'overlap_end_date'])
+            overlaps = pd.read_sql_query(sql=sql_text(f"select team, league, league_display_str, start_date_x, end_date_x, playerId_x, color_x as color, start_date_y, end_date_y, t.playerId_y, overlap_start_date, overlap_end_date, overlap_len, overlap_start_year_js, overlap_start_month_js, overlap_start_day_js, overlap_end_year_js, overlap_end_month_js, overlap_end_day_js, num_seasons, years_str, team_display_str, sum_overlap_len, pn.playerName as playerName_y, name_length as name_length_y from teammates t join links l1 on t.playerId_x = l1.playerId join links l2 on t.playerId_y = l2.playerId join (select playerId_y, sum(overlap_len) as sum_overlap_len from teammates t where playerId_x = '{player1_id}' group by playerId_y) as sum_table on t.playerId_y = sum_table.playerId_y join player_names pn on l2.playerName = pn.playerName where playerId_x = '{player1_id}'"), con=self.db.engine, parse_dates=['start_date_x', 'end_date_x', 'start_date_y', 'end_date_y', 'overlap_start_date', 'overlap_end_date'])
         # TODO precompute tooltip string except for canon name ? (so that I don't need to store tournament information in this script)
         overlaps['tooltip_str'] = overlaps.apply(lambda x: self.get_tooltip_str(x.playerName_y, x.team_display_str, x.years_str, x.league, x.num_seasons), axis=1) 
         overlaps = overlaps[~overlaps['league'].isin(self.drop_leagues)]
@@ -146,14 +146,14 @@ class teammates_db():
                     where league='NHL' and team='{team1}' 
                     and ((start_date <= '{season_start_date}' and end_date > '{season_start_date}') or (start_date > '{season_start_date}' and start_date <= '{season_end_date}'))
                 """
-        roster1 = pd.read_sql_query(sql=sql_text(r1_q), con=self.engine.connect()) 
+        roster1 = pd.read_sql_query(sql=sql_text(r1_q), con=self.db.engine) 
         r2_q = f"""
                     select distinct links.playerId, playerName as playerName_y 
                     from skaters join links on links.playerId=skaters.playerId
                     where league='NHL' and team='{team2}' 
                     and ((start_date <= '{season_start_date}' and end_date > '{season_start_date}') or (start_date > '{season_start_date}' and start_date <= '{season_end_date}'))
                 """
-        roster2 = pd.read_sql_query(sql=sql_text(r2_q), con=self.engine.connect()) 
+        roster2 = pd.read_sql_query(sql=sql_text(r2_q), con=self.db.engine) 
         q = f"""
                 with r1 as 
                 (
@@ -175,7 +175,7 @@ class teammates_db():
                 where r1t.overlap_start_date <= date('{season_end_date}')
             """ # TODO is the overlap_start_date filter correct here?
         # TODO the years_str returned here will be inaccurate - it was created before the season was selected so it could contain years into the future -- need to clip here and recompute years_str
-        rows = pd.read_sql_query(sql=sql_text(q), con=self.engine.connect()) 
+        rows = pd.read_sql_query(sql=sql_text(q), con=self.db.engine) 
         # set up player lists for each team: alphabetical order, placeholders to make the chart line up
         team1_names = list(roster1['playerName_x'].unique())
         team2_names = list(roster2['playerName_y'].unique())
@@ -263,7 +263,7 @@ class teammates_db():
                     left join skaters on roster.playerId=skaters.playerId
                     left join links on skaters.playerId=links.playerId where skaters.league='NHL' and skaters.start_date <= date('{season_dates[1]}')
             """
-        rows = pd.read_sql_query(sql=sql_text(q), con=self.engine.connect(), parse_dates=['start_date', 'end_date']) 
+        rows = pd.read_sql_query(sql=sql_text(q), con=self.db.engine, parse_dates=['start_date', 'end_date']) 
         # rows['start_date'] = pd.to_datetime(rows['start_date']) # TODO is there a way these values can be datetype in the database? instead of object?
         # rows['end_date'] = pd.to_datetime(rows['end_date'])
         rows['end_date'] = rows['end_date'].clip(None, season_dates[1]) # clip to the end of the relevant season
@@ -292,7 +292,7 @@ class teammates_db():
         season_start_date = season_dates[0]
         season_end_date = season_dates[1] # this is the season end date NOT including the offseason
         # get overlaps
-        overlaps = pd.read_sql_query(sql=sql_text(f"select t.team, t.league, start_date_x, end_date_x, playerId_x, color_x as color, start_date_y, end_date_y, t.playerId_y, overlap_start_date, overlap_end_date, overlap_len, overlap_start_year_js, overlap_start_month_js, overlap_start_day_js, overlap_end_year_js, overlap_end_month_js, overlap_end_day_js, num_seasons, t.years_str, league_display_str, t.team_display_str, sum_overlap_len, pn.playerName as playerName_y, name_length as name_length_y from teammates t join links l1 on t.playerId_x = l1.playerId join links l2 on t.playerId_y = l2.playerId join (select playerId_y, sum(overlap_len) as sum_overlap_len from teammates t where playerId_x = '{player_id}' group by playerId_y) as sum_table on t.playerId_y = sum_table.playerId_y join player_names pn on l2.playerName = pn.playerName join (select * from skaters where league='NHL' and team='{team}' and ((start_date <= date('{season_start_date}') and end_date > date('{season_start_date}')) or (start_date >= date('{season_start_date}') and start_date < date('{season_end_date}')))) as team_roster on team_roster.playerId = t.playerId_y where playerId_x = '{player_id}' order by pn.playerName"), con=self.engine.connect(), parse_dates=['start_date_x', 'end_date_x', 'start_date_y', 'end_date_y', 'overlap_start_date', 'overlap_end_date'])
+        overlaps = pd.read_sql_query(sql=sql_text(f"select t.team, t.league, start_date_x, end_date_x, playerId_x, color_x as color, start_date_y, end_date_y, t.playerId_y, overlap_start_date, overlap_end_date, overlap_len, overlap_start_year_js, overlap_start_month_js, overlap_start_day_js, overlap_end_year_js, overlap_end_month_js, overlap_end_day_js, num_seasons, t.years_str, league_display_str, t.team_display_str, sum_overlap_len, pn.playerName as playerName_y, name_length as name_length_y from teammates t join links l1 on t.playerId_x = l1.playerId join links l2 on t.playerId_y = l2.playerId join (select playerId_y, sum(overlap_len) as sum_overlap_len from teammates t where playerId_x = '{player_id}' group by playerId_y) as sum_table on t.playerId_y = sum_table.playerId_y join player_names pn on l2.playerName = pn.playerName join (select * from skaters where league='NHL' and team='{team}' and ((start_date <= date('{season_start_date}') and end_date > date('{season_start_date}')) or (start_date >= date('{season_start_date}') and start_date < date('{season_end_date}')))) as team_roster on team_roster.playerId = t.playerId_y where playerId_x = '{player_id}' order by pn.playerName"), con=self.db.engine, parse_dates=['start_date_x', 'end_date_x', 'start_date_y', 'end_date_y', 'overlap_start_date', 'overlap_end_date'])
         overlaps['overlap_end_date'] = pd.to_datetime(overlaps['overlap_end_date'])
         overlaps['overlap_start_date'] = pd.to_datetime(overlaps['overlap_start_date'])
         # split into before/during/after
@@ -327,7 +327,7 @@ class teammates_db():
         start = time.time()
         # get games this player played against team
         q = f"select *, case when winningTeam=game_player.team then 1 else 0 end as player1_win from game_player join games on game_player.gameId = games.gameId and games.gameDate < date('{self.current_date}') where playerId={player_id} and ((game_player.team='homeTeam' and games.awayTeam='{team}') or (game_player.team='awayTeam' and games.homeTeam='{team}')) order by gameDate"
-        games_against = pd.read_sql_query(sql=sql_text(q), con=self.engine.connect(), parse_dates=['gameDate'])
+        games_against = pd.read_sql_query(sql=sql_text(q), con=self.db.engine, parse_dates=['gameDate'])
         games_against['gameDate'] = games_against['gameDate'].astype(str)
         games_output = self.format_games_one_player(games_against)
         end = time.time()
@@ -443,7 +443,7 @@ class teammates_db():
             from g1 join g2 on g1.gameId = g2.gameId
             order by gameDate
         """
-        common_games = pd.read_sql(sql=sql_text(q), con=self.engine.connect(), parse_dates=['gameDate'])
+        common_games = pd.read_sql(sql=sql_text(q), con=self.db.engine, parse_dates=['gameDate'])
         common_games['gameDate'] = common_games['gameDate'].astype(str)
         common_games['team_name_1'] = common_games.apply(self.getGameTeam1, axis=1)
         common_games['team_name_2'] = common_games.apply(self.getGameTeam2, axis=1)
@@ -482,11 +482,11 @@ class teammates_db():
         return f"most recently {player_row.team} ({year1}-{year2})"
 
     # def get_name_from_ep_link(self, link):
-        # return pd.read_sql(sql=sql_text(f"select playerName from links where ep_link='{link}'"), con=self.engine.connect())
+        # return pd.read_sql(sql=sql_text(f"select playerName from links where ep_link='{link}'"), con=self.db.engine)
 
     def get_links_from_name(self, input_name):
         tgt_name = normalize_name(input_name)
-        possible_links = pd.read_sql_query(sql=sql_text(f'select playerId, link, links.playerName from norm_names join links on norm_names.playerName = links.playerName where norm_name="{tgt_name}" and playerId != ""'), con=self.engine.connect())
+        possible_links = pd.read_sql_query(sql=sql_text(f'select playerId, link, links.playerName from norm_names join links on norm_names.playerName = links.playerName where norm_name="{tgt_name}" and playerId != ""'), con=self.db.engine)
         return possible_links
 
     # TODO make table formatting prettier -- maybe light grey highlighting the cell backgrounds? 
