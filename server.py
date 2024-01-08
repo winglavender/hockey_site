@@ -8,6 +8,7 @@ import os
 import yaml
 from pathlib import Path
 root_dir = str(Path.cwd())
+import time
 
 app = Flask(__name__)
 if os.getenv('PYANYWHERE'):
@@ -78,17 +79,26 @@ def home():
 # one player: view teammates over career
 @app.route("/one_player_career", methods=["GET","POST"])
 def one_player_career():
+    start = time.time()
     if request.method == "POST":
+        end = time.time()
+        print(f"start method elapsed time: {end-start}")
         session.clear()
         target = request.form['target'].strip()
         db = teammates_db(config, engine)
         output = db.get_links_from_name(target)
+        end = time.time()
+        print(f"get id elapsed time: {end-start}")
         session["task"] = "one_player_career"
         # if num_results == 1:
         if len(output) == 1:
             # output is unique player link
             data_asg, longest_name_asg, longest_name_no_asg, data_no_asg, data_length_asg, data_length_no_asg = db.get_overlapping_player_terms(output.iloc[0]['playerId'])
+            end = time.time()
+            print(f"get overlapping player terms elapsed time: {end-start}")
             career_data, start_date, end_date = db.get_player_career(output.iloc[0]['playerId'])
+            end = time.time()
+            print(f"get career elapsed time: {end-start}")
             return render_template('one_player_career.html', data_asg=data_asg, data_no_asg=data_no_asg, data_length_asg=data_length_asg, data_length_no_asg=data_length_no_asg, career_data=career_data, playername1=output.iloc[0]['playerName'], display_name_asg=longest_name_asg, display_name_no_asg=longest_name_no_asg, start_date=start_date, end_date=end_date)
         elif len(output) == 0:
             # output is player name searched
