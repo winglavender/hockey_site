@@ -162,6 +162,11 @@ class teammates_db():
                 r2 as
                 (
                     {r2_q}
+                ), 
+                r1t as 
+                (
+                    select * from 
+                    r1 left join teammates on r1.playerId=teammates.playerId_x
                 )
                 select 
                     playerName_x,
@@ -170,7 +175,7 @@ class teammates_db():
                     league_display_str,
                     years_str
                 from 
-                r2 left join (r1 left join teammates on r1.playerId=teammates.playerId_x) r1t 
+                r2 left join r1t 
                     on r1t.playerId_y = r2.playerId 
                 where r1t.overlap_start_date <= date('{season_end_date}')
             """ # TODO is the overlap_start_date filter correct here?
