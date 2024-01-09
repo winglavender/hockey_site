@@ -324,9 +324,6 @@ def options_result_1():
         if "player2_id" in session and session["player1_id"] == session["player2_id"]:
             return render_template(f"{session['task']}_same_player.html")
         db = teammates_db(config, engine)
-        # names_db = name_db(config)
-        # db = ep_db(names_db, config)
-        # games_db = game_roster_db(names_db, config)
         latest_date = db.get_latest_game_date().date()
         if session["task"] == "one_player_career":
             data, longest_name_asg, longest_name_no_asg, data_no_asg, data_length, data_length_no_asg  = db.get_overlapping_player_terms(session["player1_id"])
@@ -367,10 +364,6 @@ def options_result_2():
         if session["player1_id"] == session["player2_id"]:
             return render_template(f"{session['task']}_same_player.html")
         db = teammates_db(config, engine)
-        # names_db = name_db(config)
-        # db = ep_db(names_db, config)
-        # games_db = game_roster_db(names_db, config)
-        # data = []
         if session["task"] == "two_players_results":
             data, _, _, data_no_asg, _, _ = db.get_overlapping_player_terms(session["player1_id"], session["player2_id"])
             return render_template(f'two_players_results.html', data=data, data_no_asg=data_no_asg, playername1=session.get("player1"), playername2=session.get("player2"))
