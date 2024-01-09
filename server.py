@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, session
+from sqlalchemy import create_engine, text as sql_text
 from flask_sqlalchemy import SQLAlchemy
 from teammates_db import teammates_db
 # from query_name_db import name_db
@@ -20,6 +21,8 @@ if local:
     with open('config.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['root_dir'] = root_dir + "/.."
+    out_db = os.path.join(config['data_dir'], f"{config['filename_date']}.db")
+    engine = create_engine(f"sqlite:///{out_db}")
 else:
     app.config.update(SECRET_KEY = os.getenv("SECRET_KEY"))
     with open('hockey_teammates/config.yaml', 'r') as f:
@@ -199,6 +202,8 @@ def two_players_results():
             return render_template('options_1.html', data=output2.to_dict('records'))
         else:
             # clarify both players
+            print(output1.to_dict('records'))
+            print(output2.to_dict('records'))
             return render_template('options_2.html', data1=output1.to_dict('records'), data2=output2.to_dict('records'))
     else:
         return render_template('error.html')
@@ -322,7 +327,7 @@ def options_result_1():
             session["player2"] = tmp[0]
             session["player2_id"] = tmp[1]
         if "player2_id" in session and session["player1_id"] == session["player2_id"]:
-            return render_template(f"{session['task']}_same_player.html")
+            return render_template(f"error_two_players_same.html")
         db = teammates_db(config, engine)
         latest_date = db.get_latest_game_date().date()
         if session["task"] == "one_player_career":
@@ -362,7 +367,7 @@ def options_result_2():
         session["player2"] = tmp2[0]
         session["player2_id"] = tmp2[1]
         if session["player1_id"] == session["player2_id"]:
-            return render_template(f"{session['task']}_same_player.html")
+            return render_template("error_two_players_same.html")
         db = teammates_db(config, engine)
         if session["task"] == "two_players_results":
             data, _, _, data_no_asg, _, _ = db.get_overlapping_player_terms(session["player1_id"], session["player2_id"])

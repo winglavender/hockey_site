@@ -14,12 +14,12 @@
     <b>Player 1</b><br>
     {% for player1 in data1 %}
     <input type="radio" id="p1#{{player1.playerId}}" name="playerid1" value="{{player1.playerName}}#{{player1.playerId}}" required>
-    <label for="p1#{{player1.playerId}}">{{player1.player}}</label><br>
+    <label for="p1#{{player1.playerId}}">{{player1.playerName}}</label><br>
     {% endfor %}
     <b>Player 2</b><br>
     {% for player2 in data2 %}
     <input type="radio" id="p2#{{player2.playerId}}" name="playerid2" value="{{player2.playerName}}#{{player2.playerId}}" required>
-    <label for="p2#{{player2.playerId}}">{{player2.player}}</label><br>
+    <label for="p2#{{player2.playerId}}">{{player2.playerName}}</label><br>
     {% endfor %}
     <br>
     <input type="submit" name="submit" value="Submit">
