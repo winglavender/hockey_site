@@ -33,6 +33,7 @@ else:
     )
     app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
     app.config["SQLALCHEMY_POOL_RECYCLE"] = 280 # specifically for pythonanywhere, this needs to be less than 300 seconds 
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {'pool_recycle': 280}
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     engine = SQLAlchemy(app)
 print(root_dir)
