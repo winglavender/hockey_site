@@ -340,7 +340,7 @@ def options_result_1():
             return render_template(f'one_player_team_games.html', playername=session.get("player1"),
                                        team=session.get("team"), data=data, latest_date=latest_date)        
         elif session["task"] == "two_players_results":
-            data, _, _, data_no_asg, _, _ = db.get_overlapping_player_terms(session["player1_id"], session["player1"], session["player2_id"], session["player2"])
+            data, _, _, data_no_asg, _, _ = db.get_overlapping_player_terms(session["player1_id"], session["player2_id"])
             return render_template(f'two_players_results.html', data=data, data_no_asg=data_no_asg, playername1=session.get("player1"), playername2=session.get("player2"))
         elif session["task"] == "two_players_shared_teammates":
             team_overlaps_sort_date, team_overlaps_sort_date_no_asg, teammates_asg, len_teammates_asg, teammates_no_asg, len_teammates_no_asg = db.get_two_players_shared_teammates(session["player1_id"], session["player1"], session["player2_id"], session["player2"])
