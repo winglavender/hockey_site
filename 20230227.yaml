@@ -1,0 +1,6 @@
+prev_file_date: '20240107'
+# filename_date: '20240227'
+current_date: '2024-02-27' # same as above but with hyphens
+timeline_end: '2024-06-30' # generally set to end of current/next season
+# data_dir: '/Users/alice/Dropbox/Projects/hockey_db_data/'
+data_dir: '/Users/alicelai/Dropbox/Projects/hockey_db_data/'

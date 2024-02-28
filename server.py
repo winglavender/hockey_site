@@ -2,9 +2,6 @@ from flask import Flask, render_template, request, session
 from sqlalchemy import create_engine, text as sql_text
 from flask_sqlalchemy import SQLAlchemy
 from teammates_db import teammates_db
-# from query_name_db import name_db
-# from query_ep_db import ep_db
-# from query_game_roster_db import game_roster_db
 import os
 import yaml
 from pathlib import Path
@@ -13,32 +10,31 @@ import time
 
 app = Flask(__name__)
 if os.getenv('PYANYWHERE'):
-    local = False
-else:
-    local = True
-if local:
-    app.config.from_pyfile('config.py')
-    with open('config.yaml', 'r') as f:
-        config = yaml.safe_load(f)
-    config['root_dir'] = root_dir + "/.."
-    out_db = os.path.join(config['data_dir'], f"{config['filename_date']}.db")
-    engine = create_engine(f"sqlite:///{out_db}")
-else:
+    print("running on pythonanywhere")
     app.config.update(SECRET_KEY = os.getenv("SECRET_KEY"))
     with open('hockey_teammates/config.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['root_dir'] = root_dir
     SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
-    username="hockeyteammates",
-    password="",
-    hostname="hockeyteammates.mysql.pythonanywhere-services.com",
-    databasename="hockeyteammates$default",
+    username=os.getenv("username"),# "hockeyteammates",
+    password=os.getenv("password"),
+    hostname=os.getenv("hostname"), #"hockeyteammates.mysql.pythonanywhere-services.com",
+    databasename=os.getenv("databasename") #"hockeyteammates$default",
     )
     app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
     app.config["SQLALCHEMY_POOL_RECYCLE"] = 280 # specifically for pythonanywhere, this needs to be less than 300 seconds 
     app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {'pool_recycle': 280}
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     engine = SQLAlchemy(app)
+else:
+    print("running locally")
+    app.config.from_pyfile('config.py')
+    with open('config.yaml', 'r') as f:
+        config = yaml.safe_load(f)
+    config['root_dir'] = root_dir + "/.."
+    config['filename_date'] = config['current_date'].replace("-", "")
+    out_db = os.path.join(config['data_dir'], f"{config['filename_date']}.db")
+    engine = create_engine(f"sqlite:///{out_db}")
 print(root_dir)
 
 # populate NHL team data
