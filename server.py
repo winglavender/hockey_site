@@ -15,7 +15,7 @@ if os.getenv('PYANYWHERE'):
     with open('hockey_teammates/config.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['root_dir'] = root_dir
-    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
+    SQLALCHEMY_DATABASE_URI = "mysql://{username}:{password}@{hostname}/{databasename}".format(
     username=os.getenv("username"),# "hockeyteammates",
     password=os.getenv("password"),
     hostname=os.getenv("hostname"), #"hockeyteammates.mysql.pythonanywhere-services.com",
