@@ -12,7 +12,7 @@ app = Flask(__name__)
 if os.getenv('PYANYWHERE'):
     print("running on pythonanywhere")
     app.config.update(SECRET_KEY = os.getenv("SECRET_KEY"))
-    with open('hockey_teammates/config.yaml', 'r') as f:
+    with open('hockey_site/config.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['root_dir'] = root_dir
     SQLALCHEMY_DATABASE_URI = "mysql://{username}:{password}@{hostname}/{databasename}".format(
