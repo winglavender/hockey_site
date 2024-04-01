@@ -4,17 +4,12 @@ import os.path
 from datetime import date
 import numpy as np
 from sqlalchemy import create_engine, text as sql_text
-from normalize_name import normalize_name
+from site_builder.normalize_name import normalize_name
 import sys
 
-if os.getenv('PYANYWHERE'):
-    sys.path.insert(0, '/home/hockeyteammates/hockey_db')
-    from hockey_db.build_db import get_js_date_values, get_years_str, get_player_term_tooltip_str, get_tournament_leagues
-else:
-    sys.path.insert(0, '../hockey_db')
-    from build_db import get_js_date_values, get_years_str, get_player_term_tooltip_str, get_tournament_leagues
-print(sys.path)
-from season_calculator import SeasonCalculator
+
+from site_builder.build_db import get_js_date_values, get_years_str, get_player_term_tooltip_str, get_tournament_leagues
+from site_builder.season_calculator import SeasonCalculator
 class teammates_db():
 
     def __init__(self, config, db):

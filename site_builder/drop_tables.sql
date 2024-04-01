@@ -1,0 +1,14 @@
+DROP TABLE IF EXISTS ep_raw_asg;
+DROP TABLE IF EXISTS ep_raw_intl;
+DROP TABLE IF EXISTS ep_raw_postseasons;
+DROP TABLE IF EXISTS ep_raw_transfers;
+DROP TABLE IF EXISTS game_player;
+DROP TABLE IF EXISTS games;
+DROP TABLE IF EXISTS links;
+DROP TABLE IF EXISTS norm_names;
+DROP TABLE IF EXISTS player_names;
+DROP TABLE IF EXISTS player_playoffs;
+DROP TABLE IF EXISTS players_nhl;
+DROP TABLE IF EXISTS scratches;
+DROP TABLE IF EXISTS skaters;
+DROP TABLE IF EXISTS teammates;
