@@ -1,6 +1,7 @@
 # inputs
 import yaml
 import os
+import sys
 
 if os.getenv('PYANYWHERE'):
     config_location = '/home/hockeyteammates/hockey_site/config.yaml'
@@ -22,7 +23,6 @@ scrape_start_year = 1990 # TODO 1917 someday
 
 # imports
 import time
-import sys
 import csv
 import json
 import concurrent.futures
