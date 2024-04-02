@@ -7,6 +7,8 @@ if os.getenv('PYANYWHERE'):
     data_dir = "/home/hockeyteammates/hockey_db_data/"
     root_dir = "/home/hockeyteammates/"
 else:
+    sys.path.insert(1, '../hockey_scraper')
+    import scraper
     config_location = '../hockey_site/config.yaml'
     data_dir = "/Users/alice/Dropbox/Projects/hockey_db_data/"
     root_dir = "/Users/alice/Dropbox/Projects/"
@@ -22,8 +24,6 @@ scrape_start_year = 1990 # TODO 1917 someday
 import time
 import sys
 import csv
-sys.path.insert(1, '../hockey_scraper')
-import scraper
 import json
 import concurrent.futures
 import pandas as pd
