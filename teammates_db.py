@@ -433,58 +433,37 @@ class teammates_db():
         
     def get_two_player_games(self, player1_id, player2_id):
         start = time.time()
-        # q = f"""
-        #     with g1 as 
-        #     (
-        #         select 
-        #             {",".join([f"gp1.{x1} as {x1}_1" for x1 in self.game_player_columns])},
-        #             {",".join([f"games.{x}" for x in self.game_columns])},
-        #             case when winningTeam=gp1.team then 1 else 0 end as player1_win
-        #         from game_player gp1 
-        #         join games on gp1.gameId = games.gameId and games.gameDate < date('{self.current_date}') where playerId={player1_id}
-        #     ),
-        #     g2 as 
-        #     (
-        #         select 
-        #             games.gameId,
-        #             {",".join([f"gp2.{x2} as {x2}_2" for x2 in self.game_player_columns])},
-        #             case when winningTeam=gp2.team then 1 else 0 end as player2_win
-        #         from game_player gp2 
-        #         join games on gp2.gameId = games.gameId and games.gameDate < date('{self.current_date}') where playerId={player2_id}
-        #     )
-        #     select 
-        #         *
-        #     from g1 join g2 on g1.gameId = g2.gameId
-        #     order by gameDate
-        # """
         q = f"""
+            with g1 as 
+            (
+                select 
+                    {",".join([f"gp1.{x1} as {x1}_1" for x1 in self.game_player_columns])},
+                    {",".join([f"games.{x}" for x in self.game_columns])},
+                    case when winningTeam=gp1.team then 1 else 0 end as player1_win
+                from game_player gp1 
+                join games on gp1.gameId = games.gameId and games.gameDate < date('{self.current_date}') where playerId={player1_id}
+            ),
+            g2 as 
+            (
+                select 
+                    games.gameId,
+                    {",".join([f"gp2.{x2} as {x2}_2" for x2 in self.game_player_columns])},
+                    case when winningTeam=gp2.team then 1 else 0 end as player2_win
+                from game_player gp2 
+                join games on gp2.gameId = games.gameId and games.gameDate < date('{self.current_date}') where playerId={player2_id}
+            )
             select 
-                games.gameId,
-                {",".join([f"gp1.{x1} as {x1}_1" for x1 in self.game_player_columns])},
-                {",".join([f"games.{x}" for x in self.game_columns])},
-                {",".join([f"gp2.{x2} as {x2}_2" for x2 in self.game_player_columns])},
-                case when winningTeam=gp2.team then 1 else 0 end as player2_win,
-                case when winningTeam=gp1.team then 1 else 0 end as player1_win 
-            from game_player gp1 
-            join games on gp1.gameId = games.gameId and games.gameDate < date('{self.current_date}') and gp1.playerId={player1_id}
-            join game_player gp2 on gp2.gameId = games.gameId and gp2.playerId={player2_id}
+                *
+            from g1 join g2 on g1.gameId = g2.gameId
             order by gameDate
         """
         common_games = pd.read_sql(sql=sql_text(q), con=self.db.engine, parse_dates=['gameDate'])
-        end = time.time()
-        print(f"1elapsed time: {end - start}")
         common_games['gameDate'] = common_games['gameDate'].astype(str)
-        end = time.time()
-        print(f"2elapsed time: {end - start}")
         common_games['team_name_1'] = common_games.apply(self.getGameTeam1, axis=1)
-        end = time.time()
-        print(f"3elapsed time: {end - start}")
         common_games['team_name_2'] = common_games.apply(self.getGameTeam2, axis=1)
-        end = time.time()
-        print(f"4elapsed time: {end - start}")
         games_output = self.format_games_two_player(common_games)
         end = time.time()
-        print(f"5elapsed time: {end - start}")
+        print(f"elapsed time: {end - start}")
         return games_output
 
 
