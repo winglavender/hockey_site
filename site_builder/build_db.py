@@ -871,6 +871,9 @@ if __name__ == "__main__":
     print(sys.argv)
     if len(sys.argv) == 1:
         print("pick an option: scrape, process, names_only")
+    elif sys.argv[1] == "--scrape_playoffs":
+        postseasons = scraper.get_postseasons()
+        postseasons.to_csv(os.path.join(data_dir, "ep_raw_postseasons.csv"))
     elif len(sys.argv) < 2 or sys.argv[1] == "--scrape":
         # STEP ZERO: copy old db to new db (removing the seasons that will be scraped fresh)
         if config['prev_file_date']:
