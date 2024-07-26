@@ -296,9 +296,6 @@ class teammates_db():
         # sort output by tenure time
         rows.sort_values(by=['tenure_sum', 'playerName'], inplace=True, ascending=False)
         return rows.to_dict('records')
-
-    # def get_js_date_values(self, date):
-        # return date.year, date.month-1, date.day
     
     def get_one_player_roster(self, player_id, team, season):
         # get seasons dates
@@ -406,7 +403,6 @@ class teammates_db():
                     continue
                 season_data["opponents"]["split"].append({"type": self.game_types[type_idx], "count": len(rows), "record": self.get_win_loss_record(rows), "games": rows.to_dict('records')})
             data['seasons'].append(season_data)
-        
         return data
     
     def get_win_loss_record(self, game_rows):
@@ -466,8 +462,6 @@ class teammates_db():
         print(f"elapsed time: {end - start}")
         return games_output
 
-
-
     # returns list of terms to specify whether the period START_YEAR to END_YEAR happens BEFORE/DURING/AFTER the specified season
     def is_before_after_during_season(self, season, year1, month1, day1, year2, month2, day2):
         start_date = pd.to_datetime(f"{year1}/{month1}/{day1}")
@@ -494,9 +488,6 @@ class teammates_db():
         year1 = pd.to_datetime(player_row.start_date).year
         year2 = pd.to_datetime(player_row.end_date).year
         return f"most recently {player_row.team} ({year1}-{year2})"
-
-    # def get_name_from_ep_link(self, link):
-        # return pd.read_sql(sql=sql_text(f"select playerName from links where ep_link='{link}'"), con=self.db.engine)
 
     def get_links_from_name(self, input_name):
         tgt_name = normalize_name(input_name)
