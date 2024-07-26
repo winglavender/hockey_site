@@ -12,4 +12,5 @@ def normalize_name(name):
     name = name.replace(".", "") # remove periods from "J.T. Brown" but we don't want to remove all punctuation e.g. "O'Connor"
     return name
 
-print(normalize_name("Nicklas Nordgren (born 1979)"))
+if __name__ == "__main__":
+    print(normalize_name("Nicklas Nordgren (born 1979)"))

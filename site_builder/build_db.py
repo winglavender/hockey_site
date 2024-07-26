@@ -75,7 +75,6 @@ def scrape_page(url):
         page = None
     return url, page
 
-# sys.path.insert(1, '../hockey_site')
 from site_builder.season_calculator import SeasonCalculator
 from site_builder.normalize_name import normalize_name
 
@@ -87,11 +86,10 @@ with open(os.path.join(data_dir, "ahl_affiliates.json")) as f:
 today = datetime.strptime(config['current_date'], '%Y-%m-%d').date()
 today_str = config['current_date'].replace("-","")
 season_calc = SeasonCalculator(today, {'root_dir': root_dir}) 
-print(today)
 today_season, _ = season_calc.get_season_from_date(today)
 seasons_to_scrape = []
 end_year_final = int(today_season.split('-')[1])
-print(config['prev_file_date'])
+
 if not config['prev_file_date']: # we want to scrape all seasons from 2000-2001 to present
     for start_year in range(scrape_start_year, end_year_final): 
         end_year = start_year+1
@@ -101,21 +99,17 @@ else: # we only want to scrape starting in the season containing prev_file_date
     for start_year in range(int(last_update_season.split("-")[0]), end_year_final):
         end_year = start_year+1
         seasons_to_scrape.append(f"{start_year}-{end_year}")
-print(f"Scraping seasons: {seasons_to_scrape}")
+
 
 def get_tournament_leagues(): # this is a function so we can call it from the side code teammates_db.py
     tournament_leagues = {'WJAC-19': (12, 0), 'OGQ': (9, 0), 'OG': (2,1), 'wjc-20': (1,1), 'wc': (6,1), 'wjc-18': (4,1), 'WCup': (9,0), 'nhl-asg': (2,1), 'whc-17': (11,0),} # first value is month and second value is 0 if the first year in a season should be used, 1 if the second year in the season should be used
     return tournament_leagues
     
 tournament_leagues = get_tournament_leagues()
-
-# TODO fix names to match NHL display
-# tournament_leagues = {'og': (2,1), 'wjc-20': (1,1), 'wc': (6,1), 'wjc-18': (4,1), 'whc-17': (11,0), 'wcup': (9,0), 'nhl-asg': (2,1)} # first value is month and second value is 0 if the first year in a season should be used, 1 if the second year in the season should be used
-# league_strings = {'nhl': 'NHL', 'og': 'Olympics', 'khl': 'KHL', 'ahl': 'AHL', 'WC-A': 'Worlds', 'WC': 'Worlds', 'ohl': 'OHL', 'whl': 'WHL', 'qmjhl': 'QMJHL', 'ushl': 'USHL', 'usdp': 'USDP', 'ncaa': 'NCAA', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', 'wcup': 'World Cup', 'shl': 'SHL', 'elitserien': 'Elitserien', 'mhl': 'MHL', 'liiga': 'Liiga', 'u20-sm-liiga': 'U20 SM Liiga', 'u18-sm-sarja': 'U18 SM Sarja', 'j20-superelit': 'J20 SuperElit', 'j18-allsvenskan': 'J18 Allsvenskan', 'russia': 'Russia', 'russia3': 'Russia3', 'ushs-prep': 'USHS Prep', 'nhl-asg': 'NHL ASG'}
 league_strings = {'OG': 'Olympics', 'OGQ': 'Olympics Qualifiers', 'wc': 'Worlds', 'wjc-20': 'World Juniors', 'WCup': 'World Cup', 'nhl-asg': 'NHL ASG', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', }
 nhl_leagues_to_drop = {'WC', 'WC-A', 'WJC-A', 'WJ18-A', 'WJC-20', 'M-Cup', 'Champions HL'}
-# FUNCTIONS
 
+# FUNCTIONS
 def get_team_display_string(league_str, team_str):
     if league_str == 'Olympics':
         return f"{team_str} Olympics"
@@ -348,10 +342,13 @@ def scrape_nhl_skaters(engine, teams_by_season, seasons_to_scrape, old_players_d
     player_terms_df['season'] = player_terms_df['season'].apply(season_id_to_name)
     if old_players_df is not None:
         player_terms_df = pd.concat([player_terms_df, old_players_df], axis='rows')
-        player_terms_df = player_terms_df.drop_duplicates() 
+        player_terms_df.sort_values(by=['games_played'], inplace=True)
+        # current season will appear with varying numbers of games played as the season progresses, so we can't use games_played to drop duplicates
+        player_terms_df.drop_duplicates(subset=['playerId', 'season', 'league', 'team'], keep='last', inplace=True) 
+        # player_terms_df = player_terms_df.drop_duplicates() 
     player_terms_df.to_sql(name="players_nhl", index=False, con=engine)
 
-def scrape_ep(engine, old_ep_raw_intl=None): # TODO we're doing the same operations to three separate tables here -- clean up code
+def scrape_ep(engine, old_ep_raw_intl=None): 
     leagues = ["wc", "wjc-20", "wjc-18", "whc-17"]
     postseasons = pd.read_csv(os.path.join(data_dir, "ep_raw_postseasons.csv"))
     # get ASG data
@@ -370,15 +367,6 @@ def scrape_ep(engine, old_ep_raw_intl=None): # TODO we're doing the same operati
     transfers.date = pd.to_datetime(transfers.date)
     transfers['player'] = transfers['player'].str.replace(r"\(.*\)", "", regex=True)
     transfers['player'] = transfers['player'].str.strip()
-    # correct links before we join data
-    # with open(os.path.join(data_dir, "ep_link_corrections.txt")) as in_file: 
-    #     reader = csv.DictReader(in_file)
-    #     for row in reader:
-    #         skaters.loc[skaters['link'] == row['incorrect_link'], 'link'] = row['correct_link']
-    #         if old_ep_raw_intl is not None:
-    #             old_ep_raw_intl.loc[old_ep_raw_intl['link'] == row['incorrect_link'], 'link'] = row['correct_link']
-    #         asg_data.loc[asg_data['link'] == row['incorrect_link'], 'link'] = row['correct_link']
-    #         transfers.loc[transfers['link'] == row['incorrect_link'], 'link'] = row['correct_link']
     # combine previous and new skater data
     if old_ep_raw_intl is not None:
         skaters = pd.concat([skaters, old_ep_raw_intl], axis='rows')
@@ -711,10 +699,6 @@ def find_duplicates(nhl_db_players, ep_transfers, ep_asg, ep_intl): #data_dir, e
             player_id = tmp[1].strip()
             if player_id != "":
                 disambiguated_links.add(player_id)
-    # nhl_db_players = pd.read_sql_query(sql=sql_text("select * from players_nhl"), con=engine.connect()) 
-    # ep_transfers = pd.read_sql(sql=sql_text('select * from ep_clean_transfers'), con=engine.connect())
-    # ep_asg = pd.read_sql(sql=sql_text('select * from ep_clean_asg'), con=engine.connect())
-    # ep_intl = pd.read_sql(sql=sql_text('select * from ep_clean_intl'), con=engine.connect())
     ep_players = pd.concat([ep_transfers[['link', 'player']], ep_asg[['link', 'player']], ep_intl[['link', 'player']]])
     unique_people_links_nhl = nhl_db_players['playerId'].unique()
     unique_people_links_ep = ep_players['link'].unique()
@@ -722,10 +706,8 @@ def find_duplicates(nhl_db_players, ep_transfers, ep_asg, ep_intl): #data_dir, e
     unique_people_names_ep = []
     for player_id in unique_people_links_nhl:
         unique_people_names_nhl.append(nhl_db_players.loc[nhl_db_players['playerId'] == player_id].iloc[0]['playerName'])
-        #unique_people_names_nhl = pd.concat([unique_people_names_nhl,nhl_db_players.loc[nhl_db_players.playerId == link].iloc[0].playerName])
     for link in unique_people_links_ep:
         unique_people_names_ep.append(ep_players.loc[ep_players['link'] == link].iloc[0]['player'])
-        #unique_people_names_ep = pd.concat([unique_people_names_ep,ep_db_players.loc[ep_db_players.link == link].iloc[0].player])
     # NHL DB
     norm_names = [normalize_name(name) for name in unique_people_names_nhl]
     norm_names_seen = {}
@@ -788,7 +770,6 @@ def get_id_from_ep_url(ep_url):
     tmp = ep_url.split('/')
     id = tmp[-2]
     return id
-
 
 def build_name_db(engine): 
     normalized_names = pd.DataFrame(columns=['norm_name', 'canon_name'])
@@ -882,7 +863,6 @@ def get_name_parts(name):
 
 def get_string_width(input_string):
     string_no_accents = unidecode(input_string)
-    # width, _ = afm.string_width_height(string_no_accents)
     width = font.getlength(string_no_accents)
     return width
 
@@ -890,18 +870,17 @@ if __name__ == "__main__":
     start = time.time()
     out_db = os.path.join(data_dir, f"{today_str}.db")
     engine = create_engine(f"sqlite:///{out_db}")
-    print(engine)
-    print(sys.argv)
     if len(sys.argv) == 1:
         print("pick an option: scrape, process, names_only")
     elif sys.argv[1] == "--scrape_playoffs":
         postseasons = scraper.get_postseasons()
         postseasons.to_csv(os.path.join(data_dir, "ep_raw_postseasons.csv"))
     elif len(sys.argv) < 2 or sys.argv[1] == "--scrape":
+        print(f"Scraping seasons: {seasons_to_scrape} up to {today}")
         # STEP ZERO: copy old db to new db (removing the seasons that will be scraped fresh)
         if config['prev_file_date']:
             prev_db = os.path.join(data_dir, f"{config['prev_file_date']}.db")
-            print(prev_db)
+            print(f"Previous database: {prev_db}")
             prev_engine = create_engine(f"sqlite:///{prev_db}")
             old_players_df, old_ep_raw_intl = copy_db(seasons_to_scrape, prev_engine, engine) # have to keep old_players_df around to drop duplicates before I write to db again, because I can't filter using any date
         else:
@@ -970,7 +949,6 @@ if __name__ == "__main__":
         worlds_df = pd.read_sql(sql=sql_text('select * from ep_clean_intl join links using (link)'), con=engine.connect())
         worlds_df = worlds_df[worlds_df['playerId'] != ''] # drop Worlds terms for players we don't have matching NHL site playerIds for
         players_df = pd.concat([worlds_df, nhl_players_df, asg_df], axis=0, ignore_index=True) # add intl roster data to skaters table
-        # players_df = pd.concat([players_df, asg_df], axis=0, ignore_index=True) # add ASG data to skaters table
         # drop superfluous Worlds and M-Cup rows
         players_df = players_df[~players_df['league'].isin(nhl_leagues_to_drop)]
         players_df = players_df.drop_duplicates(subset=['playerId', 'playerName', 'season', 'team']) # to drop semi-redundant playoff rows (e.g. Connor McDavid Marlboros, but also the same row where Marlboros are in league "Other")
