@@ -88,12 +88,18 @@ today_str = config['current_date'].replace("-","")
 season_calc = SeasonCalculator(today, {'root_dir': root_dir}) 
 today_season, _ = season_calc.get_season_from_date(today)
 seasons_to_scrape = []
+nhl_seasons_to_scrape = []
 end_year_final = int(today_season.split('-')[1])
 
-if not config['prev_file_date']: # we want to scrape all seasons from 2000-2001 to present
-    for start_year in range(scrape_start_year, end_year_final): 
-        end_year = start_year+1
-        seasons_to_scrape.append(f"{start_year}-{end_year}")
+# set up nhl player scrape seasons (all seasons from 1990-91 to present)
+for start_year in range(scrape_start_year, end_year_final): 
+    end_year = start_year+1
+    nhl_seasons_to_scrape.append(f"{start_year}-{end_year}")
+if not config['prev_file_date']: # we want to scrape all seasons from 1990-91 to present
+    seasons_to_scrape = nhl_seasons_to_scrape.copy()
+    # for start_year in range(scrape_start_year, end_year_final): 
+        # end_year = start_year+1
+        # seasons_to_scrape.append(f"{start_year}-{end_year}")
 else: # we only want to scrape starting in the season containing prev_file_date
     last_update_season, _ = season_calc.get_season_from_date(pd.to_datetime(config['prev_file_date']))
     for start_year in range(int(last_update_season.split("-")[0]), end_year_final):
@@ -178,7 +184,7 @@ def copy_db(seasons_to_scrape, prev_engine, engine):
     games_to_drop_df = games_df[games_df['seasonName'].isin(seasons_to_scrape)]
     scratches_df = pd.read_sql(sql=sql_text("select * from scratches"), con=prev_engine.connect())
     game_player_df = pd.read_sql(sql=sql_text("select * from game_player"), con=prev_engine.connect())
-    players_df = pd.read_sql(sql_text("select * from players_nhl"), con=prev_engine.connect()) # just going to drop player data based on duplicates because there's no other way to filter it
+    # players_df = pd.read_sql(sql_text("select * from players_nhl"), con=prev_engine.connect()) # just going to drop player data based on duplicates because there's no other way to filter it
     # EP site data -- we fully scrape transfers and ASG data even for a partial season scrape, so the international league data is all that we need to copy/filter
     ep_raw_intl_df = pd.read_sql(sql=sql_text("select * from ep_raw_intl"), con=prev_engine.connect()) # this is raw rather than clean because this is the scraping stage, we'll process later regardless
     ep_raw_intl_df = ep_raw_intl_df.loc[~ep_raw_intl_df['season'].isin(seasons_to_scrape)]
@@ -190,7 +196,7 @@ def copy_db(seasons_to_scrape, prev_engine, engine):
     games_df.to_sql(name="games", con=engine, index=False)
     scratches_df.to_sql(name="scratches", con=engine, index=False)
     game_player_df.to_sql(name="game_player", con=engine, index=False)
-    return players_df, ep_raw_intl_df    
+    return ep_raw_intl_df    
 
 def get_team_name_from_id(team_json, teams_info):
     team_lookup = teams_info.loc[teams_info['id']==team_json['id']]
@@ -293,11 +299,11 @@ def season_id_to_name(season_id):
     return season_name
 
 # get all players team-season terms from NHL site
-def scrape_nhl_skaters(engine, teams_by_season, seasons_to_scrape, old_players_df=None):
+def scrape_nhl_skaters(engine, teams_by_season):#, old_players_df=None):
     # get all players on NHL rosters for all specified seasons
     roster_player_urls = set()
     team_season_roster_urls = []
-    for season_to_scrape in seasons_to_scrape:
+    for season_to_scrape in nhl_seasons_to_scrape:
         season_id = int(season_to_scrape.replace("-", ""))
         if season_id not in teams_by_season:
             print(f"{season_id} not found")
@@ -320,6 +326,7 @@ def scrape_nhl_skaters(engine, teams_by_season, seasons_to_scrape, old_players_d
                 roster_player_urls.add(f"https://api-web.nhle.com/v1/player/{player['id']}/landing")
     # now get all team terms for those players
     roster_player_urls = list(roster_player_urls)
+    print('https://api-web.nhle.com/v1/player/8476876/landing' in roster_player_urls)
     player_terms = []
     threads = min(MAX_THREADS, len(roster_player_urls))
     with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
@@ -330,7 +337,8 @@ def scrape_nhl_skaters(engine, teams_by_season, seasons_to_scrape, old_players_d
                 continue
             player_id = player_url.split("/")[5]
             for term in player_json['seasonTotals']:
-                # print(term)
+                if player_url=='https://api-web.nhle.com/v1/player/8476876/landing':
+                    print(term)
                 if 'gamesPlayed' in term:
                     games_played = term['gamesPlayed']
                 else:
@@ -340,12 +348,12 @@ def scrape_nhl_skaters(engine, teams_by_season, seasons_to_scrape, old_players_d
                 player_terms.append((player_id, f"{player_json['firstName']['default']} {player_json['lastName']['default']}", term['season'], term['leagueAbbrev'], term['teamName']['default'], games_played))
     player_terms_df = pd.DataFrame(player_terms, columns=['playerId', 'playerName', 'season', 'league', 'team', 'games_played']) 
     player_terms_df['season'] = player_terms_df['season'].apply(season_id_to_name)
-    if old_players_df is not None:
-        player_terms_df = pd.concat([player_terms_df, old_players_df], axis='rows')
-        player_terms_df.sort_values(by=['games_played'], inplace=True)
-        # current season will appear with varying numbers of games played as the season progresses, so we can't use games_played to drop duplicates
-        player_terms_df.drop_duplicates(subset=['playerId', 'season', 'league', 'team'], keep='last', inplace=True) 
-        # player_terms_df = player_terms_df.drop_duplicates() 
+    # if old_players_df is not None:
+    #     player_terms_df = pd.concat([player_terms_df, old_players_df], axis='rows')
+    #     player_terms_df.sort_values(by=['games_played'], inplace=True)
+    #     # current season will appear with varying numbers of games played as the season progresses, so we can't use games_played to drop duplicates
+    #     player_terms_df.drop_duplicates(subset=['playerId', 'season', 'league', 'team'], keep='last', inplace=True) 
+    #     # player_terms_df = player_terms_df.drop_duplicates() 
     player_terms_df.to_sql(name="players_nhl", index=False, con=engine)
 
 def scrape_ep(engine, old_ep_raw_intl=None): 
@@ -363,7 +371,7 @@ def scrape_ep(engine, old_ep_raw_intl=None):
     skaters['player'] = skaters['player'].str.replace(r"\(.*\)", "", regex=True)
     skaters['player'] = skaters['player'].str.strip()
      # scrape transfer data and save to raw db
-    transfers = scraper.get_transfers("nhl", earliest_transfer_date)
+    transfers = scraper.get_transfers(earliest_transfer_date, max_page=2)
     transfers.date = pd.to_datetime(transfers.date)
     transfers['player'] = transfers['player'].str.replace(r"\(.*\)", "", regex=True)
     transfers['player'] = transfers['player'].str.strip()
@@ -381,12 +389,14 @@ def process_player_terms(player_terms, transfers, postseasons, test_id=None):
     # process raw data into app format and save to new db
     all_rows = []
     all_playoffs = []
+    all_unused_transfers = []
     # build player timelines using NHL site data
     for player_id in player_terms['playerId'].unique():
         if test_id and player_id != test_id:
             continue
         player_rows = player_terms.loc[player_terms['playerId'] == player_id]
-        career_rows, playoffs_rows = build_player_timeline(player_rows, transfers, postseasons)
+        career_rows, playoffs_rows, unused_transfers = build_player_timeline_new(player_rows, transfers, postseasons)
+        all_unused_transfers.extend(unused_transfers)
         all_rows.extend(career_rows)
         all_playoffs.extend(playoffs_rows)
         if test_id:
@@ -411,6 +421,9 @@ def process_player_terms(player_terms, transfers, postseasons, test_id=None):
     # create teammate intersection table
     teammates = build_teammates_df(processed_players)
     teammates.to_sql('teammates', engine, if_exists='replace', index=False)
+    # create unused transfers table for fixing by hand
+    all_unused_transfers = pd.DataFrame(all_unused_transfers, columns=['date', 'from_team', 'to_team', 'link', 'player', 'playerId', 'playerName'])
+    all_unused_transfers.to_sql('unused_transfers', engine, index=False)
 
 def get_player_term_tooltip_str(team_display_str, years_str):
     return f"{team_display_str}<br>{years_str}"
@@ -527,6 +540,94 @@ def id_adjacent_team_rows(team_rows):
         rows_tmp.drop(['index'], axis=1, errors='ignore')
         adj_team_rows.append(rows_tmp)
     return adj_team_rows
+
+def get_team_subwords(team):
+    return team.split() + [team]
+
+def build_player_timeline_new(rows, transfers, postseasons):
+    rows['start_date'] = 0
+    rows['end_date'] = 0
+    player_id = rows.iloc[0]['playerId']
+    player_timeline = []
+    player_trade_candidates = transfers.loc[transfers['playerId']==player_id] 
+    player_trade_candidates['orig_transfer'] = True
+    # expand trade candidates with AHL teams
+    ahl_rows = []
+    for _, row in player_trade_candidates.iterrows():
+        from_team_alts = [row['from_team']]
+        to_team_alts = [row['to_team']]
+        if row['from_team'] in ahl_affiliates:
+            for ahl_team in ahl_affiliates[row['from_team']]:
+                from_team_alts.append(ahl_team)
+        if row['to_team'] in ahl_affiliates:
+            for ahl_team in ahl_affiliates[row['to_team']]:
+                to_team_alts.append(ahl_team)
+        for from_team in from_team_alts:
+            for to_team in to_team_alts:
+                if from_team == row['from_team'] and to_team == row['to_team']:
+                    continue # don't add a duplicate trade
+                ahl_rows.append([row['date'], from_team, to_team, row['link'], row['player'], row['playerId'], row['playerName'], False]) 
+    player_trade_candidates = pd.concat([player_trade_candidates, pd.DataFrame(ahl_rows, columns=['date', 'from_team', 'to_team', 'link', 'player', 'playerId', 'playerName', 'orig_transfer'])])
+    player_trade_candidates['to_team_words'] = player_trade_candidates['to_team'].apply(get_team_subwords)
+    player_trade_candidates['from_team_words'] = player_trade_candidates['from_team'].apply(get_team_subwords)
+    # condense adjacent seasons for the same team
+    for league in rows['league'].unique():
+        league_rows = rows.loc[rows['league'] == league]
+        for team in league_rows['team'].unique():
+            # TODO check usntdp here
+            team_rows = rows.loc[(rows['team'] == team) & (rows['league'] == league)]
+            # check for tournament special cases: no merging, each row becomes its own row in the timeline
+            if league in tournament_leagues:
+                seasons = team_rows['season'].tolist()
+                for _, season in enumerate(seasons):
+                    season_start, season_end, _ = season_calc.get_season_dates(season)
+                    # adjust for tournaments
+                    tournament_start_date, tournament_end_date = convert_tournament_dates(league, season_start, season_end)
+                    player_timeline.append([team, league, tournament_start_date, tournament_end_date, player_id])
+                continue
+            adjacent_team_rows = id_adjacent_team_rows(team_rows)
+            # for a list of adjacent seasons on a roster, we will add at least 1 tenure row to the player timeline
+            for adj_season_rows in adjacent_team_rows:
+                # select all trades that occurred in this time period
+                term_start_date = season_calc.get_season_dates(adj_season_rows.iloc[0]['season'])[0]
+                # term_start_season = adj_season_rows.iloc[0].season
+                term_end_date_soft = season_calc.get_season_dates(adj_season_rows.iloc[-1]['season'])[1]
+                # term_end_date = season_calc.get_season_dates(adj_season_rows.iloc[-1]['season'])[2]
+                # prev_term_offseason_start = season_calc.get_season_dates(season_calc.get_prev_season(adj_season_rows.iloc[0]['season']))[1]
+                # create a new tenure row (without checking trades)
+                player_timeline.append([team, league, term_start_date, term_end_date_soft, player_id, adj_season_rows.iloc[0].season, adj_season_rows.iloc[-1].season])
+    # now consider trades TODO this will need the most refinement maybe
+    unused_transfers = []
+    player_timeline = pd.DataFrame(player_timeline, columns=['team', 'league', 'term_start_date', 'term_end_date', 'player_id', 'first_season', 'last_season'])
+    player_trade_candidates['to_team_words'] = player_trade_candidates['to_team'].apply(get_team_subwords)
+    player_trade_candidates['from_team_words'] = player_trade_candidates['from_team'].apply(get_team_subwords)
+    for _, row in player_trade_candidates.iterrows():
+        # TODO we're assuming the trade team string is longer (from EP) so it needs to be split into words
+        # TODO drop any words with "." as in "Tor. Marlboros?"
+        trade_season, trade_in_season = season_calc.get_season_from_date(row.date)
+        if not trade_in_season: # find offseason trade
+            trade_season_next = season_calc.get_next_season(trade_season)
+            from_row = player_timeline.loc[(player_timeline['team'].isin(row.from_team_words)) & (player_timeline['last_season']==trade_season)]
+            to_row = player_timeline.loc[(player_timeline['team'].isin(row.to_team_words)) & (player_timeline['first_season']==trade_season_next)]
+            if len(from_row) == 1 and len(to_row) == 1:
+                player_timeline.loc[(player_timeline['team'].isin(row.from_team_words)) & (player_timeline['last_season']==trade_season), 'term_end_date'] = row['date'] - pd.to_timedelta(1, unit='d')
+                player_timeline.loc[(player_timeline['team'].isin(row.to_team_words)) & (player_timeline['first_season']==trade_season_next), 'term_start_date'] = row['date'] 
+                continue 
+        if trade_in_season: # find in-season trade
+            from_row = player_timeline.loc[(player_timeline['team'].isin(row.from_team_words)) & (player_timeline['last_season']==trade_season)]
+            to_row = player_timeline.loc[(player_timeline['team'].isin(row.to_team_words)) & (player_timeline['first_season']==trade_season)]
+            if len(from_row) == 1 and len(to_row) == 1:
+                player_timeline.loc[(player_timeline['team'].isin(row.from_team_words)) & (player_timeline['last_season']==trade_season), 'term_end_date'] = row['date'] - pd.to_timedelta(1, unit='d')
+                player_timeline.loc[(player_timeline['team'].isin(row.to_team_words)) & (player_timeline['first_season']==trade_season), 'term_start_date'] = row['date'] 
+                continue
+        # this trade didn't match a pair of teams, only add if this was an original transfer (not one from AHL team expansion options)
+        if row['orig_transfer']:
+            unused_transfers.append(row)
+    player_timeline.drop(['first_season', 'last_season'], axis=1, inplace=True) # TODO maybe keep these columns around? could be useful
+    # playoffs 
+    player_timeline = player_timeline.values.tolist()
+    playoffs = get_player_playoffs(postseasons, player_timeline, player_id)
+    return player_timeline, playoffs, unused_transfers
     
 def build_player_timeline(rows, transfers, postseasons):
     rows['start_date'] = 0
@@ -608,6 +709,7 @@ def build_player_timeline(rows, transfers, postseasons):
                             current_start_date = trade['date']
                             currently_on_team = True
                         elif team == trade['to_team'] and currently_on_team:
+                            # This catches Vinny because there's a weird Bakersfield->Oilers transaction in a year where he didn't actually end up on the Oilers? 
                             # Tuukka Rask case: was UFA, not signed, rejoined this team in the middle of the season
                             # we need to add the last tenure (we know it exists and hasn't already been added because currently_on_team is True)
                             # TODO actually Tuukka Rask doesn't fall into this category because of the **** lockout, who does?
@@ -646,6 +748,10 @@ def build_player_timeline(rows, transfers, postseasons):
                         else:
                             term_end = term_end_date_soft
                         player_timeline.append([team, league, current_start_date, term_end, player_id])
+    playoffs = get_player_playoffs(postseasons, player_timeline, player_id)
+    return player_timeline, playoffs, None
+
+def get_player_playoffs(postseasons, player_timeline, player_id):
     # playoffs
     playoff_queries = []
     for term in player_timeline:
@@ -682,7 +788,7 @@ def build_player_timeline(rows, transfers, postseasons):
         else:
             color = "ebb11e" # made playoffs but didn't win Cup color # TODO change the color to something else?
         playoffs.append([player_id, year, tooltip_str, color])
-    return player_timeline, playoffs
+    return playoffs
 
 def find_duplicates(nhl_db_players, ep_transfers, ep_asg, ep_intl): #data_dir, ep_db, nhl_db, links_filename, out_filename):
     # read previous links file
@@ -866,6 +972,78 @@ def get_string_width(input_string):
     width = font.getlength(string_no_accents)
     return width
 
+def preprocessing(engine):
+    # TODO temp read data
+    nhl_players_df = pd.read_sql_query(sql=sql_text("select * from players_nhl"), con=engine.connect())
+    # fix NHL data errors
+    with open(os.path.join(data_dir, "nhl_errors.txt")) as in_file: 
+        reader = csv.DictReader(in_file)
+        for row in reader:
+            nhl_players_df.loc[(nhl_players_df['playerId'] == row['playerId']) & (nhl_players_df[row['field']]== row['incorrect_value']), row['field']] = row['value']
+    # fix EP link errors
+    with open(os.path.join(data_dir, "ep_link_corrections.txt")) as in_file: 
+        worlds_df = pd.read_sql(sql=sql_text('select * from ep_raw_intl'), con=engine.connect())
+        transfers_df = pd.read_sql_query(sql=sql_text("select * from ep_raw_transfers"), con=engine.connect(), parse_dates=['date'])
+        asg_df = pd.read_sql(sql=sql_text('select * from ep_raw_asg'), con=engine.connect())
+        reader = csv.DictReader(in_file)
+        for row in reader:
+            worlds_df.loc[worlds_df['link'] == row['incorrect_link'], 'link'] = row['correct_link']
+            asg_df.loc[asg_df['link'] == row['incorrect_link'], 'link'] = row['correct_link']
+            transfers_df.loc[transfers_df['link'] == row['incorrect_link'], 'link'] = row['correct_link']   
+        transfers_df.to_sql('ep_clean_transfers', engine, index=False, if_exists='replace')
+        worlds_df.to_sql('ep_clean_intl', engine, index=False, if_exists='replace')
+        asg_df.to_sql('ep_clean_asg', engine, index=False, if_exists='replace')
+    # normalize team names
+    with open(os.path.join(data_dir, "team_mapping.json")) as in_file:
+        team_mapping = json.load(in_file)
+        for league in team_mapping:
+            for team_name in team_mapping[league]:
+                team_name_replace = team_mapping[league][team_name]
+                nhl_players_df.loc[(nhl_players_df['league']==league) & (nhl_players_df['team']==team_name), 'team'] = team_name_replace
+    # write the correction
+    nhl_players_df.to_sql(name="players_nhl", if_exists='replace', index=False, con=engine)
+    postseasons = pd.read_sql_query(sql=sql_text("select * from ep_raw_postseasons"), con=engine.connect())
+    # TODO drop names from the EP/NHL data tables?
+    # TODO should this name step happen after we drop asg players we don't have ids for?
+    # STEP FOUR: unify names (will want to repeat this step based on the outputs of the missing nhl/ep links)
+    build_name_db(engine)#, players_df, transfers, asg_terms)
+    # all "join links" should happen after the name db is constructed
+    transfers_df = pd.read_sql_query(sql=sql_text("select * from ep_clean_transfers join links using (link)"), con=engine.connect(), parse_dates=['date'])
+    transfers_df = transfers_df[transfers_df['playerId'] != ''] # drop transfer terms for players we don't have matching NHL site playerIds for
+    asg_df = pd.read_sql(sql=sql_text('select * from ep_clean_asg join links using (link)'), con=engine.connect())
+    asg_df = asg_df[asg_df['playerId'] != ''] # drop ASG terms for players we don't have matching NHL site playerIds for
+    asg_df = asg_df.drop(['index', 'level_0'], axis=1, errors='ignore')
+    worlds_df = pd.read_sql(sql=sql_text('select * from ep_clean_intl join links using (link)'), con=engine.connect())
+    worlds_df = worlds_df[worlds_df['playerId'] != ''] # drop Worlds terms for players we don't have matching NHL site playerIds for
+    players_df = pd.concat([worlds_df, nhl_players_df, asg_df], axis=0, ignore_index=True) # add intl roster data to skaters table
+    # drop superfluous Worlds and M-Cup rows
+    players_df = players_df[~players_df['league'].isin(nhl_leagues_to_drop)]
+    players_df = players_df.drop_duplicates(subset=['playerId', 'playerName', 'season', 'team']) # to drop semi-redundant playoff rows (e.g. Connor McDavid Marlboros, but also the same row where Marlboros are in league "Other")
+    return players_df, nhl_players_df, transfers_df, asg_df, worlds_df, postseasons # TODO can't processing_players just read from db instead of passing these dfs?
+
+def match_transfer_teams(transfers_df, nhl_players_df):
+    # get all teams from EP and NHL sites
+    transfer_teams = pd.DataFrame(list(set(transfers_df['from_team'].tolist() + transfers_df['to_team'].tolist())),columns=['ep_team_name'])
+    print(f"{len(transfer_teams)} transfer teams")
+    roster_teams = pd.DataFrame(list(set(nhl_players_df['team'].tolist())), columns=['roster_team'])
+    print(f"{len(roster_teams)} roster teams")
+    # replace with established matches
+    team_matches = pd.read_csv(os.path.join(data_dir, "nhldotcom_norm_team_names.csv"))
+    transfer_teams = pd.merge(transfer_teams, team_matches, how='left', on=['ep_team_name'])
+    # 1: match on specified team name mapping from csv
+    join_teams = pd.merge(transfer_teams, roster_teams, how='left', left_on=['nhl_team_name'], right_on=['roster_team'])
+    # 2: match on exact string match between the two sites
+    join_teams = pd.merge(join_teams, roster_teams, how='left', left_on=['ep_team_name'], right_on=['roster_team'])
+    join_teams.to_csv(os.path.join(data_dir, 'transfer_matched_team_names.csv'))
+    # join_teams = join_teams.loc[(join_teams['roster_team_x']=='') & (join_teams['roster_team_y']=='')]
+    join_teams = join_teams.loc[(join_teams['roster_team_x'].isna()) & (join_teams['roster_team_y'].isna())]
+    from_teams = pd.merge(join_teams, transfers_df, how='left', left_on=['ep_team_name'], right_on=['from_team'])
+    from_teams.to_csv(os.path.join(data_dir, 'transfer_from_unmatched_team_names.csv'))
+    to_teams = pd.merge(join_teams, transfers_df, how='left', left_on=['ep_team_name'], right_on=['to_team'])
+    to_teams.to_csv(os.path.join(data_dir, 'transfer_to_unmatched_team_names.csv'))
+
+
+
 if __name__ == "__main__":
     start = time.time()
     out_db = os.path.join(data_dir, f"{today_str}.db")
@@ -877,109 +1055,47 @@ if __name__ == "__main__":
         postseasons.to_csv(os.path.join(data_dir, "ep_raw_postseasons.csv"))
     elif len(sys.argv) < 2 or sys.argv[1] == "--scrape":
         print(f"Scraping seasons: {seasons_to_scrape} up to {today}")
-        # STEP ZERO: copy old db to new db (removing the seasons that will be scraped fresh)
+        # copy old db to new db (removing the seasons that will be scraped fresh)
         if config['prev_file_date']:
             prev_db = os.path.join(data_dir, f"{config['prev_file_date']}.db")
             print(f"Previous database: {prev_db}")
             prev_engine = create_engine(f"sqlite:///{prev_db}")
-            old_players_df, old_ep_raw_intl = copy_db(seasons_to_scrape, prev_engine, engine) # have to keep old_players_df around to drop duplicates before I write to db again, because I can't filter using any date
+            old_ep_raw_intl = copy_db(seasons_to_scrape, prev_engine, engine) # have to keep old_players_df around to drop duplicates before I write to db again, because I can't filter using any date
         else:
-            old_players_df = None
             old_ep_raw_intl = None
-        # STEP ONE: NHL website
-        # scrape game data
+        # scrape NHL website game data
         game_urls, teams_info, teams_by_season = get_game_urls(seasons_to_scrape)
-        # scrape roster data
-        scrape_nhl_skaters(engine, teams_by_season, seasons_to_scrape, old_players_df)
+        # scrape NHL website roster data
+        scrape_nhl_skaters(engine, teams_by_season)#, seasons_to_scrape)# old_players_df)
         # scrape player stats for all games, write to db
         scrape_game_pages(game_urls, teams_info, engine)
         end = time.time()
         print(f"elapsed time: {timedelta(seconds=end - start)}")
-        # STEP TWO: scrape EP website for roster data (and process)
+        # scrape EP website for transfers & roster data
         scrape_ep(engine, old_ep_raw_intl)
         end = time.time()
         print(f"elapsed time: {timedelta(seconds=end - start)}")
     if sys.argv[1] == '--process':
         print("Processing db")
-        # TODO temp read data
-        nhl_players_df = pd.read_sql_query(sql=sql_text("select * from players_nhl"), con=engine.connect())
-        # fix NHL data errors
-        with open(os.path.join(data_dir, "nhl_errors.txt")) as in_file: 
-            reader = csv.DictReader(in_file)
-            for row in reader:
-                nhl_players_df.loc[(nhl_players_df['playerId'] == row['playerId']) & (nhl_players_df[row['field']]== row['incorrect_value']), row['field']] = row['value']
-        # fix EP link errors
-        with open(os.path.join(data_dir, "ep_link_corrections.txt")) as in_file: 
-            worlds_df = pd.read_sql(sql=sql_text('select * from ep_raw_intl'), con=engine.connect())
-            transfers_df = pd.read_sql_query(sql=sql_text("select * from ep_raw_transfers"), con=engine.connect(), parse_dates=['date'])
-            asg_df = pd.read_sql(sql=sql_text('select * from ep_raw_asg'), con=engine.connect())
-            reader = csv.DictReader(in_file)
-            for row in reader:
-                worlds_df.loc[worlds_df['link'] == row['incorrect_link'], 'link'] = row['correct_link']
-                asg_df.loc[asg_df['link'] == row['incorrect_link'], 'link'] = row['correct_link']
-                transfers_df.loc[transfers_df['link'] == row['incorrect_link'], 'link'] = row['correct_link']   
-            transfers_df.to_sql('ep_clean_transfers', engine, index=False)
-            worlds_df.to_sql('ep_clean_intl', engine, index=False)
-            asg_df.to_sql('ep_clean_asg', engine, index=False)
-        # normalize team names
-        with open(os.path.join(data_dir, "team_mapping.json")) as in_file:
-            team_mapping = json.load(in_file)
-            for league in team_mapping:
-                for team_name in team_mapping[league]:
-                    team_name_replace = team_mapping[league][team_name]
-                    nhl_players_df.loc[(nhl_players_df['league']==league) & (nhl_players_df['team']==team_name), 'team'] = team_name_replace
-        # write the correction
-        nhl_players_df.to_sql(name="players_nhl", if_exists='replace', index=False, con=engine)
-
-        postseasons = pd.read_sql_query(sql=sql_text("select * from ep_raw_postseasons"), con=engine.connect())
-
-
-        # TODO drop names from the EP/NHL data tables?
-        # TODO should this name step happen after we drop asg players we don't have ids for?
-        # STEP FOUR: unify names (will want to repeat this step based on the outputs of the missing nhl/ep links)
-        name_links = build_name_db(engine)#, players_df, transfers, asg_terms)
-        # all "join links" should happen after the name db is constructed
-
-
-        transfers_df = pd.read_sql_query(sql=sql_text("select * from ep_clean_transfers join links using (link)"), con=engine.connect(), parse_dates=['date'])
-        transfers_df = transfers_df[transfers_df['playerId'] != ''] # drop transfer terms for players we don't have matching NHL site playerIds for
-        asg_df = pd.read_sql(sql=sql_text('select * from ep_clean_asg join links using (link)'), con=engine.connect())
-        asg_df = asg_df[asg_df['playerId'] != ''] # drop ASG terms for players we don't have matching NHL site playerIds for
-        asg_df = asg_df.drop(['index', 'level_0'], axis=1, errors='ignore')
-        worlds_df = pd.read_sql(sql=sql_text('select * from ep_clean_intl join links using (link)'), con=engine.connect())
-        worlds_df = worlds_df[worlds_df['playerId'] != ''] # drop Worlds terms for players we don't have matching NHL site playerIds for
-        players_df = pd.concat([worlds_df, nhl_players_df, asg_df], axis=0, ignore_index=True) # add intl roster data to skaters table
-        # drop superfluous Worlds and M-Cup rows
-        players_df = players_df[~players_df['league'].isin(nhl_leagues_to_drop)]
-        players_df = players_df.drop_duplicates(subset=['playerId', 'playerName', 'season', 'team']) # to drop semi-redundant playoff rows (e.g. Connor McDavid Marlboros, but also the same row where Marlboros are in league "Other")
+        players_df, nhl_players_df, transfers_df, asg_df, worlds_df, postseasons = preprocessing(engine)
+        # output unmatched EP transfer teams
+        # match_transfer_teams(transfers_df, nhl_players_df)
+        # sys.exit(0)
         # output candidate duplicate names
-        find_duplicates(nhl_players_df, transfers_df, asg_df, worlds_df)
-        # STEP FIVE: process player terms
-        player_terms = process_player_terms(players_df, transfers_df, postseasons)#, name_links)# test_id='8475169')
-        end = time.time()
-        print(f"elapsed time: {timedelta(seconds=end - start)}")
-
-    # elif sys.argv[1] == "--find_duplicates":
-    #     # name_links = build_name_db(engine)#, players_df, transfers, asg_terms)
-    #     find_duplicates(engine)
-
-    elif sys.argv[1] == "--names_only":
-        # TODO drop names from the EP/NHL data tables?
-        # STEP FOUR: unify names (will want to repeat this step based on the outputs of the missing nhl/ep links)
-        build_name_db(engine)
-        end = time.time()
-        print(f"elapsed time: {timedelta(seconds=end - start)}")
-
-        # STEP FIVE: process player terms
-        player_terms = process_player_terms()# TODO get players, transfers, postseasons by reading db here
+        find_duplicates(nhl_players_df, transfers_df, asg_df, worlds_df) 
+        
+        
+        # process player terms
+        player_terms = process_player_terms(players_df, transfers_df, postseasons)
         end = time.time()
         print(f"elapsed time: {timedelta(seconds=end - start)}")
 
     elif sys.argv[1] == '--test':
         playerId=sys.argv[2]
-        players_df = pd.read_sql_query(sql=sql_text("select * from players_nhl"), con=engine.connect())
-        players_df = players_df[~players_df['league'].isin(nhl_leagues_to_drop)]
-        players_df = players_df.drop_duplicates(subset=['playerId', 'playerName', 'season', 'team']) # to drop semi-redundant playoff rows (e.g. Connor McDavid Marlboros, but also the same row where Marlboros are in league "Other")
-        transfers = pd.read_sql_query(sql=sql_text("select * from ep_raw_transfers join links using (link)"), con=engine.connect(), parse_dates=['date'])
-        postseasons = pd.read_sql_query(sql=sql_text("select * from ep_raw_postseasons"), con=engine.connect())
-        player_terms = process_player_terms(players_df, transfers, postseasons, test_id=playerId)
+        # players_df = pd.read_sql_query(sql=sql_text("select * from players_nhl"), con=engine.connect())
+        # players_df = players_df[~players_df['league'].isin(nhl_leagues_to_drop)]
+        # players_df = players_df.drop_duplicates(subset=['playerId', 'playerName', 'season', 'team']) # to drop semi-redundant playoff rows (e.g. Connor McDavid Marlboros, but also the same row where Marlboros are in league "Other")
+        # transfers = pd.read_sql_query(sql=sql_text("select * from ep_raw_transfers join links using (link)"), con=engine.connect(), parse_dates=['date'])
+        # postseasons = pd.read_sql_query(sql=sql_text("select * from ep_raw_postseasons"), con=engine.connect())
+        players_df, nhl_players_df, transfers_df, asg_df, worlds_df, postseasons = preprocessing(engine)
+        player_terms = process_player_terms(players_df, transfers_df, postseasons, test_id=playerId)

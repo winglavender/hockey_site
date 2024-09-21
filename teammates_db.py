@@ -254,6 +254,43 @@ class teammates_db():
                     relationship_type = "gray" # gray out links for guys who appear on both rosters
                 connections.append((idx1, idx2, out_str, relationship_type))
         return connections
+    
+    def get_roster_history_range(self, team, start_season, end_season):
+        start_season_dates = self.season_calc.get_season_dates(start_season)
+        start_season_start_date = start_season_dates[0]
+        end_season_dates = self.season_calc.get_season_dates(end_season)
+        end_season_end_date = end_season_dates[1]
+        # get all tenures (player, term) that overlap with these seasons
+        q = f"""
+                select 
+                    distinct skaters.playerId, team, league, start_date, end_date,
+                        start_year_js, start_month_js, start_day_js,
+                        end_year_js, end_month_js, end_day_js, team_display_str,
+                        tooltip_str, playerName
+                from skaters left join links on skaters.playerId=links.playerId
+                    where league='NHL' and team='{team}' 
+                    and (('{start_season_start_date}' between start_date and end_date) or (start_date between '{start_season_start_date}' and '{end_season_end_date}'))
+                
+            """
+        rows = pd.read_sql_query(sql=sql_text(q), con=self.db.engine, parse_dates=['start_date', 'end_date']) 
+        # get tenure time with the particular team
+        rows['tenure_length_years'] = rows['end_date'] - rows['start_date']
+        rows['tenure_length_years'] = round(rows['tenure_length_years']/pd.Timedelta('365 days')).astype(int)
+        # clip to the specified seasons (this determines the plot range not the tooltip strings)
+        rows['orig_start_date'] = rows['start_date']
+        rows['start_date'] = rows['start_date'].clip(start_season_start_date, None) 
+        rows['end_date'] = rows['end_date'].clip(None, end_season_end_date)
+        rows[['start_year_js', 'start_month_js', 'start_day_js']] = rows.apply(lambda x: get_js_date_values(x.start_date), axis=1, result_type='expand')
+        rows[['end_year_js', 'end_month_js', 'end_day_js']] = rows.apply(lambda x: get_js_date_values(x.end_date), axis=1, result_type='expand')
+        # sum and sort by tenure length
+        tenure_rows = rows.groupby(['playerId'])['tenure_length_years'].sum().reset_index()
+        tenure_rows.rename(columns={"tenure_length_years": "tenure_sum"}, inplace=True)
+        rows = rows.merge(tenure_rows, how='left', on='playerId')
+        rows['playerName'] = rows['playerName'] + " (" + rows['tenure_sum'].astype(str) + " y)"
+        # sort output by tenure time
+        # rows.sort_values(by=['tenure_sum', 'playerName'], inplace=True, ascending=False)
+        rows.sort_values(by=['orig_start_date', 'playerName'], inplace=True, ascending=True)
+        return rows.to_dict('records')
         
     # TODO not sure the cutoff here makes sense if it's the beginning of the new season?? guys who left at the end of last season vs guys who are still on the roster now? count as the same? 
     def get_roster_history(self, team, season):
@@ -278,8 +315,6 @@ class teammates_db():
                     left join links on skaters.playerId=links.playerId where skaters.league='NHL' and skaters.start_date <= date('{season_dates[1]}')
             """
         rows = pd.read_sql_query(sql=sql_text(q), con=self.db.engine, parse_dates=['start_date', 'end_date']) 
-        # rows['start_date'] = pd.to_datetime(rows['start_date']) # TODO is there a way these values can be datetype in the database? instead of object?
-        # rows['end_date'] = pd.to_datetime(rows['end_date'])
         rows['end_date'] = rows['end_date'].clip(None, season_dates[1]) # clip to the end of the relevant season
         # update other fields based on new end date
         rows[['end_year_js', 'end_month_js', 'end_day_js']] = rows.apply(lambda x: get_js_date_values(x.end_date), axis=1, result_type='expand')

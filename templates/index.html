@@ -184,6 +184,32 @@ function reset_options() {
     </fieldset>
     </form><br>
 
+    <h4>Roster Over Seasons</h4>
+       <form method="post" action="/team_history_range">
+    <fieldset>
+    <p>View the timeline of players on a team over multiple seasons</p>
+        <label for="team_hist_range">Team:</label>
+            <select name="team_hist_range" id="team_hist_range">
+                {% for team in nhl_team_data.team_order %}
+                <option value="{{team}}">{{team}}</option>
+                {% endfor %}
+            </select>&nbsp;&nbsp;
+        <label for="season_hist_range_start">Start season:</label>
+            <select name="season_hist_range_start" id="season_hist_range_start">
+                {% for season in nhl_team_data.team1_seasons %}
+                <option value="{{season}}">{{season}}</option>
+                {% endfor %}
+            </select>&nbsp;&nbsp;
+        <label for="season_hist_range_end">End season:</label>
+            <select name="season_hist_range_end" id="season_hist_range_end">
+                {% for season in nhl_team_data.team1_seasons %}
+                <option value="{{season}}">{{season}}</option>
+                {% endfor %}
+            </select>&nbsp;&nbsp;
+       <input type="submit" name="submit" value="Submit" id="submit5">
+    </fieldset>
+    </form><br>
+
         <h4>Roster Comparison</h4>
       <form method="post" action="/team_compare_rosters">
     <fieldset>
@@ -256,6 +282,22 @@ function reset_options() {
         });
         document.querySelector('[name=team_hist]').addEventListener('backbutton', function(e) {
             season_hist.innerHTML = seasons[this.value].reduce((acc, elem) => `${acc}<option value="${elem}">${elem}</option>`, "");
+        });
+
+        const season_hist_range_start = document.querySelector('[name=season_hist_range_start]');
+        document.querySelector('[name=team_hist_range]').addEventListener('change', function(e) {
+            season_hist_range_start.innerHTML = seasons[this.value].reduce((acc, elem) => `${acc}<option value="${elem}">${elem}</option>`, "");
+        });
+        document.querySelector('[name=team_hist_range]').addEventListener('backbutton', function(e) {
+            season_hist_range_start.innerHTML = seasons[this.value].reduce((acc, elem) => `${acc}<option value="${elem}">${elem}</option>`, "");
+        });
+
+        const season_hist_range_end = document.querySelector('[name=season_hist_range_end]');
+        document.querySelector('[name=team_hist_range]').addEventListener('change', function(e) {
+            season_hist_range_end.innerHTML = seasons[this.value].reduce((acc, elem) => `${acc}<option value="${elem}">${elem}</option>`, "");
+        });
+        document.querySelector('[name=team_hist_range]').addEventListener('backbutton', function(e) {
+            season_hist_range_end.innerHTML = seasons[this.value].reduce((acc, elem) => `${acc}<option value="${elem}">${elem}</option>`, "");
         });
 
         const season_pair = document.querySelector('[name=season_pair]');

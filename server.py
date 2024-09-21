@@ -291,6 +291,25 @@ def team_history():
         return render_template('team_history.html', data=data, team=team, season=season)
     else:
         return render_template('error.html')
+    
+# team: view roster history range
+@app.route("/team_history_range", methods=["GET", "POST"])
+def team_history_range():
+    if request.method == "POST":
+        session.clear()
+        team = request.form['team_hist_range']
+        start_season = request.form['season_hist_range_start']
+        print(start_season)
+        end_season = request.form['season_hist_range_end']
+        start_season_start = int(start_season.split("-")[0])
+        end_season_start = int(end_season.split("-")[0])
+        if end_season_start < start_season_start:
+            return render_template('error_prev_season.html')
+        db = teammates_db(config, engine)
+        data = db.get_roster_history_range(team, start_season, end_season)
+        return render_template('team_history_range.html', data=data, team=team, start_season=start_season, end_season=end_season)
+    else:
+        return render_template('error.html')
 
 # team: compare rosters
 @app.route("/team_compare_rosters", methods=["GET", "POST"])
