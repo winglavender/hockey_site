@@ -3,17 +3,20 @@ import yaml
 import os
 import sys
 import numpy as np
+from pathlib import Path
+root_dir = str(Path.cwd())#.parents[0])
 
-if os.getenv('PYANYWHERE'):
-    config_location = '/home/hockeyteammates/hockey_site/config.yaml'
-    data_dir = "/home/hockeyteammates/hockey_db_data/"
-    root_dir = "/home/hockeyteammates/"
-else:
+data_dir = os.path.join(root_dir, 'data')
+db_dir = os.path.join(Path(root_dir).parents[0], 'hockey_db_data')
+config_location = os.path.join(root_dir, 'config.yaml')
+if not os.getenv('PYANYWHERE'):
+    # config_location = '/home/hockeyteammates/hockey_site/config.yaml'
+     # "/home/hockeyteammates/hockey_site/data/"
+# else:
     sys.path.insert(1, '../hockey_scraper')
     import scraper
-    config_location = '../hockey_site/config.yaml'
-    data_dir = "/Users/alice/Dropbox/Projects/hockey_db_data/"
-    root_dir = "/Users/alice/Dropbox/Projects/"
+    # config_location = '../hockey_site/config.yaml'
+    # data_dir = "/Users/alice/Dropbox/Projects/hockey_site/data/"
 with open(config_location, 'r') as f:
     config = yaml.safe_load(f)
 if 'prev_file_date' not in config:
@@ -78,7 +81,7 @@ def scrape_page(url):
 from site_builder.season_calculator import SeasonCalculator
 from site_builder.normalize_name import normalize_name
 
-# AHL affiliates
+# AHL affiliates 
 with open(os.path.join(data_dir, "ahl_affiliates.json")) as f:
     ahl_affiliates = json.load(f)
 
@@ -89,7 +92,7 @@ verified_trades['date'] = pd.to_datetime(verified_trades['date'])
 # establish list of seasons to scrape (relevant for both scraping operations)
 today = datetime.strptime(config['current_date'], '%Y-%m-%d').date()
 today_str = config['current_date'].replace("-","")
-season_calc = SeasonCalculator(today, {'root_dir': root_dir}) 
+season_calc = SeasonCalculator(today, os.path.join(data_dir, 'nhl_season_dates.txt')) 
 today_season, _ = season_calc.get_season_from_date(today)
 seasons_to_scrape = []
 nhl_seasons_to_scrape = []
@@ -1142,8 +1145,9 @@ def match_transfer_teams(transfers_df, nhl_players_df):
 
 if __name__ == "__main__":
     start = time.time()
-    out_db = os.path.join(data_dir, f"{today_str}.db")
+    out_db = os.path.join(db_dir, f"{today_str}.db")
     engine = create_engine(f"sqlite:///{out_db}")
+    print(out_db)
     if len(sys.argv) == 1:
         print("pick an option: scrape, process, names_only")
     elif sys.argv[1] == "--scrape_playoffs":
@@ -1153,7 +1157,7 @@ if __name__ == "__main__":
         print(f"Scraping seasons: {seasons_to_scrape} up to {today}")
         # copy old db to new db (removing the seasons that will be scraped fresh)
         if config['prev_file_date']:
-            prev_db = os.path.join(data_dir, f"{config['prev_file_date']}.db")
+            prev_db = os.path.join(db_dir, f"{config['prev_file_date']}.db")
             print(f"Previous database: {prev_db}")
             prev_engine = create_engine(f"sqlite:///{prev_db}")
             old_ep_raw_intl = copy_db(seasons_to_scrape, prev_engine, engine) # have to keep old_players_df around to drop duplicates before I write to db again, because I can't filter using any date

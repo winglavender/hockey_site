@@ -1,0 +1,3018 @@
+{
+    "Örebro HK": [
+        ["Orebro"]
+    ],
+    "Villacher SV": [
+        ["Villach"]
+    ],
+    "Fehérvár AV19": [
+        ["Szekesfehervar"]
+    ],
+    "St. Louis AAA Blues 16U AAA": [
+        ["St. Louis AAA Blues U16"],
+        ["St.L. AAA Blues", "Minor-MO", "Chris Wideman"]
+    ], 
+    "St. Louis AAA Blues 18U AAA": [
+        ["St.L. AAA Blues", "MAHL"],
+        ["St.L. AAA Blues", "Minor-MO", "Scott Mayfield"],
+        ["St. Louis Amateur Blues U18"]
+    ],
+    "St. Louis AAA Blues 14U AAA": [
+        ["St. Louis Blues Bantam Major AAA"]
+    ],
+    "Blue Devils Weiden": [
+        ["1. EV Weiden"],
+        ["Weiden"]
+    ],
+    "Borås HC": [
+        ["Boras"]
+    ],
+    "Arvika HC": [
+        ["Arvika"]
+    ],
+    "Caledonia Corvairs": [
+        ["Caledonia"]
+    ],
+    "Airdrie Xtreme U15 AAA": [
+        ["Airdrie", "AMBHL"],
+        ["Airdrie", "AAHA"]
+    ],
+    "UFA Bisons U18 AAA": [
+        ["Airdrie", "AMHL"],
+        ["Airdrie CFR Bisons U18 AAA"],
+        ["UFA Bisons"]
+    ],
+    "AC Avalanche U16 AAA": [
+        ["AC Avalanche Minor Midget AAA"]
+    ],
+    "Okotoks Oilers": [
+        ["Okotoks", "AJHL"]
+    ],
+    "Okotoks Oilers U15 AAA": [
+        ["Okotoks Oilers Bantam AAA"]
+    ],
+    "Okotoks Oilers U18 AA": [
+        ["Okotoks", "AMHA"]
+    ],
+    "Calgary Bisons U15 AAA": [
+        ["Calgary Bisons Bantam AAA"],
+        ["Cgy. Bisons"]
+    ],
+    "CBHA Hawks U18 AA": [
+        ["Cgy. Blackhawks"]
+    ],
+    "CBHA Rangers U16 AAA": [
+        ["Cgy. Rangers", "Minor-AB"]
+    ],
+    "Calgary Rangers U18 AAA": [
+        ["Cgy. Rangers", "CBHL"]
+    ],
+    "Calgary Bruins": [
+        ["Cgy. Bruins"]
+    ],
+    "Calgary Chinooks": [
+        ["Cgy. Chinooks"]
+    ],
+    "Calgary College": [
+        ["Cgy. College"]
+    ],
+    "Calgary Flames": [
+        ["Cgy. Flames"]
+    ],
+    "Calgary Hawks": [
+        ["Cgy. Hawks"]
+    ],
+    "Calgary Mustangs": [
+        ["Cgy. Mustangs"]
+    ],
+    "Calgary Stampeders": [
+        ["Cgy. Stampeders"]
+    ],
+    "Calgary Titans": [
+        ["Cgy. Titans"]
+    ],
+    "Medicine Hat Tigers": [
+        ["Medicine Hat", "WHL"]
+    ],
+    "Salt Lake Golden Eagles": [
+        ["Salt Lake", "IHL"]
+    ],
+    "Capital District Islanders": [
+        ["Capital District", "AHL"]
+    ],
+    "Providence Bruins": [
+        ["Providence", "AHL"]
+    ],
+    "Québec Rafales": [
+        ["Quebec", "IHL"]
+    ],
+    "Binghamton Devils": [
+        ["Binghamton"]
+    ],
+    "Utica Comets": [
+        ["Utica"]
+    ],
+    "Växjö Lakers HC": [
+        ["Vaxjo"]
+    ],
+    "Växjö Lakers HC J20": [
+        ["Vaxjo Jr."]
+    ],
+    "Växjö Lakers HC J18": [
+        ["Vaxjo U18"]
+    ],
+    "Brynäs IF": [
+        ["Brynas"]
+    ],
+    "Frölunda HC": [
+        ["Frolunda"]
+    ],
+    "Frölunda HC J18": [
+        ["Frolunda U18"]
+    ],
+    "Frölunda HC J20": [
+        ["Frolunda Jr."]
+    ],
+    "Västra Frölunda HC": [
+        ["V.Frolunda"]
+    ],
+    "Västra Frölunda HC J18": [
+        ["V.Frolunda U18"]
+    ],
+    "Västra Frölunda HC J20": [
+        ["V.Frolunda Jr."]
+    ],
+    "Färjestad BK": [
+        ["Farjestad"]
+    ],
+    "Färjestad BK J18": [
+        ["Farjestad U18"]
+    ],
+    "Färjestad BK J20": [
+        ["Farjestad Jr."]
+    ],
+    "Calgary Canucks": [
+        ["Cgy. Canucks", "AJHL"], 
+        ["Cgy. Canucks", "AMHL", "Doug Houda"]
+    ],
+    "Calgary Canucks U18 AAA": [
+        ["Cgy. Canucks", "AMHL", "Bryan McCabe"]
+    ],
+    "Calgary Canucks U15 AAA": [
+        ["Cgy. Canucks", "ABHL"]
+    ],
+    "Peoria Rivermen": [
+        ["Peoria"]
+    ],
+    "Dinamo Riga": [
+        ["Riga", "USSR"],
+        ["Dynamo Riga"]
+    ],
+    "Pardaugava Riga": [
+        ["Riga", "CIS"]
+    ],
+    "Pardaugava Riga-2": [
+        ["Riga", "Latvia"]
+    ],
+    "Alianse Riga": [
+        ["Riga/Alianse"]
+    ],
+    "EHC Biel-Bienne": [
+        ["Biel"],
+        ["Biel-Bienne"]
+    ],
+    "EV Landsberg": [
+        ["Landsberg"]
+    ],
+    "Revier Löwen Oberhausen": [
+        ["Oberhausen"]
+    ],
+    "Berlin Capitals": [
+        ["Berlin Cap."]
+    ],
+    "Soviet Union U20": [
+        ["Soviet Union", "WJC-A"]
+    ],
+    "ASK Ogre": [
+        ["Ogre"]
+    ],
+    "Asplöven HC": [
+        ["Asploven"]
+    ],
+    "Luleå HF": [
+        ["Lulea"]
+    ],
+    "Luleå HF J20": [
+        ["Lulea Jr."]
+    ],
+    "Luleå HF J18": [
+        ["Lulea U18"]
+    ],
+    "AIK Härnösand": [
+        ["Harnosand"]
+    ],
+    "AIK Härnösand J20": [
+        ["Harnosand Jr."]
+    ],
+    "Borlänge HF": [
+        ["Borlange"]
+    ],
+    "Brynäs IF J18": [
+        ["Brynas U18"]
+    ],
+    "Brynäs IF J20": [
+        ["Brynas Jr."]
+    ],
+    "Dübendorf U20": [
+        ["Dubendorf Jr."]
+    ],
+    "GC/Küsnacht U20": [
+        ["Kusnacht Jr."]
+    ],
+    "Düsseldorfer EG": [
+        ["Dusseldorf"]
+    ],
+    "EC Bad Tölz": [
+        ["Bad Tolz"]
+    ],
+    "Eisbären Berlin": [
+        ["Eisbaren Berlin"]
+    ],
+    "EC Bad Tölz U18": [
+        ["Bad Tolz Jr."]
+    ],
+    "Nürnberg Ice Tigers": [
+        ["Nurnberg"]
+    ],
+    "Eisbären Juniors Berlin U20": [
+        ["Eisb. Jrs. Berlin"],
+        ["Eisb. Jrs. Berl. Jr."]
+    ],
+    "Elgin Middlesex Chiefs U16 AAA": [
+        ["Elgin-Mid. Chiefs"],
+        ["Elgin Middlesex Chi. Mn Mdgt AAA"],
+        ["Elgin-Middlesex"],
+        ["Elgin-Middl. MM"]
+    ],
+    "Elgin Middlesex Canucks U15 AAA": [
+        ["Elgin-Middl. Bant."]
+    ],
+    "Elgin Middlesex Chiefs U15 AAA": [
+        ["Elgin-Middl. Bm"]
+    ],
+    "London Jr. Knights Gold U16 AAA": [
+        ["Lon. Knights MM"],
+        ["London Jr. Knights Gold Min Mdgt"]
+    ],
+    "London Jr. Knights U18 AAA": [
+        ["Lon. Knights Mid."],
+        ["London Jr. Knights Midget AAA"],
+        ["Lon. Jr. Knights"]
+    ],
+    "London Knights": [
+        ["London", "OHL"],
+        ["London", "BH-Cup"],
+        ["London", "Britain"],
+        ["London", "BISL"]
+    ],
+    "Toronto Marlies": [
+        ["Toronto", "AHL"]
+    ],
+    "Enköpings SK": [
+        ["Enkopings"]
+    ],
+    "GC/Küsnacht II U20": [
+        ["Kusnacht Jr."]
+    ],
+    "IF Björklöven": [
+        ["Bjorkloven"]
+    ],
+    "IF Björklöven J18": [
+        ["Bjorkloven U18"]
+    ],
+    "IF Björklöven U20": [
+        ["Bjorkloven Jr."]
+    ],
+    "IFK Täby HC J18": [
+        ["Taby U18"]
+    ],
+    "Jämtlands HF": [
+        ["Jamtland"]
+    ],
+    "Jämtlands HF J20": [
+        ["Jamtland Jr."]
+    ],
+    "Kärpät": [
+        ["Karpat"]
+    ],
+    "Kärpät U20": [
+        ["Karpat Jr."]
+    ],
+    "Kärpät U18": [
+        ["Karpat U18"]
+    ],
+    "Kölner Haie": [
+        ["Koln"]
+    ],
+    "Kölner EC U20": [
+        ["Koln Jr."]
+    ],
+    "Kölner EC II": [
+        ["Koln 2"]
+    ],
+    "Köping HC": [
+        ["Koping"]
+    ],
+    "IF Mölndal Hockey": [
+        ["Molndal"]
+    ],
+    "IF Mölndal Hockey J20": [
+        ["Molndal Jr."]
+    ],
+    "IF Mölndal Hockey J18": [
+        ["Molndal U18"]
+    ],
+    "Linköping HC": [
+        ["Linkoping"]
+    ],
+    "Linköping HC J20": [
+        ["Linkoping Jr."]
+    ],
+    "Linköping HC J18": [
+        ["Linkoping U18"]
+    ],
+    "Malmö Redhawks": [
+        ["Malmo"]
+    ],
+    "Malmö Redhawks J20": [
+        ["Malmo Jr."]
+    ],
+    "Malmö Redhawks J18": [
+        ["Malmo U18"]
+    ],
+    "Rögle BK": [
+        ["Rogle"]
+    ],
+    "Rögle BK J20": [
+        ["Rogle Jr."]
+    ],
+    "Rögle BK J18": [
+        ["Rogle U18"]
+    ],
+    "Skövde IK": [
+        ["Skovde"]
+    ],
+    "Skövde IK J20": [
+        ["Skovde Jr."]
+    ],
+    "Skövde IK J18": [
+        ["Skovde U18"]
+    ],
+    "Södertälje SK": [
+        ["Sodertalje"]
+    ],
+    "Södertälje SK J20": [
+        ["Sodertalje Jr."]
+    ],
+    "Södertälje SK J18": [
+        ["Sodertalje U18"]
+    ],
+    "Östervåla IF": [
+        "Ostervala"
+    ],
+    "Skellefteå AIK": [
+        ["Skelleftea"]
+    ],
+    "Skellefteå AIK J20": [
+        ["Skelleftea Jr."]
+    ],
+    "Skellefteå AIK J18": [
+        ["Skelleftea U18"]
+    ],
+    "Timrå IK": [
+        ["Timra"], ["Timra IK"]
+    ],
+    "Timrå IK J20": [
+        ["Timra Jr."]
+    ],
+    "Timrå IK J18 2": [
+        ["Timra U18"]
+    ],
+    "Tranås AIF": [
+        ["Tranas"]
+    ],
+    "Västerås IK": [
+        ["Vasteras"]
+    ],
+    "Västerås IK J20": [
+        ["Vasteras Jr."]
+    ],
+    "Västerås IK J18": [
+        ["Vasteras U18"]
+    ],
+    "HC Vita Hästen": [
+        ["Vita Hasten"]
+    ],
+    "UJK": [
+        ["Jaa-Kotkat"]
+    ],
+    "Väsby IK": [
+        ["Vasby"],
+        ["Brödernas/Väsby"]
+    ],
+    "Väsby IK U20": [
+        ["Vasby Jr."]
+    ],
+    "Ässät": [
+        ["Assat"]
+    ],
+    "Ässät U20": [
+        ["Assat Jr."]
+    ],
+    "Ässät U18": [
+        ["Assat U18"]
+    ],
+    "Abbotsford Hawks": [
+        ["Abbots. Hawks"]
+    ],
+    "AZ Havirov U20": [
+        ["AZ Havirov Jr."]
+    ],
+    "Almtuna IS J20": [
+        ["Almtuna Jr."]
+    ],
+    "Ambrì-Piotta U20": [
+        ["Ambri Jr."]
+    ],
+    "HC Ambrì-Piotta": [
+        ["Ambri"],
+        ["Ambrì-Piotta"]
+    ],
+    "Ambrì-Piotta U17": [
+        ["Ambri U17"]
+    ],
+    "Wings HC Arlanda": [
+        ["Arlanda"]
+    ],
+    "Arlanda HC J20": [
+        ["Arlanda Jr."]
+    ],
+    "Arlanda HC J18": [
+        ["Arlanda U18"]
+    ],
+    "Arlington Catholic High": [
+        ["Arlington Cath."]
+    ],
+    "Frisk Asker": [
+        ["Asker"],
+        ["Frisk-Asker"]
+    ],
+    "Frisk Asker U20": [
+        ["Asker Jr."]
+    ],
+    "Atlanta Fire 16U AA": [
+        ["Atl. Fire U16"]
+    ],
+    "Avtomobilist Jr.": [
+        ["Avtomobilist Jr."]
+    ],
+    "Basses-Laurentides Conquérants": [
+        ["Basses-Lau. Conquérants"]
+    ],
+    "Biel-Bienne U20": [
+        ["Biel Jr."]
+    ],
+    "Biel-Bienne": [
+        ["Biel"]
+    ],
+    "Biel-Bienne U17": [
+        ["Biel U17"]
+    ],
+    "Bloomington Jefferson High": [
+        ["Bloomington-Jeff."]
+    ],
+    "BK Mlada Boleslav U20": [
+        ["Bodes Jr."]
+    ],
+    "HC Sparta Praha U20": [
+        ["Sparta Jr."]
+    ],
+    "HK Dukla Trencin": [
+        ["Trencin"]
+    ],
+    "HK Dukla Trencin U20": [
+        ["Trencin Jr."]
+    ],
+    "Boston Advantage 16U AAA": [
+        ["Bos. Adv. U16"]
+    ],
+    "Boston Advantage 18U AAA": [
+        ["Bos. Adv. U18"]
+    ],
+    "Boston Little Bruins": [
+        ["Bos. Little Bruins"]
+    ],
+    "Saint John Flames": [
+        ["Saint John"]
+    ],
+    "Univ. of New Hampshire": [
+        ["New Hampshire"]
+    ],
+    "Hershey Bears": [
+        ["Hershey"]
+    ],
+    "Cincinnati Cyclones": [
+        ["Cincinnati"]
+    ],
+    "B.C. Icemen": [
+        ["Binghamton"]
+    ],
+    "Augusta Lynx": [
+        ["Augusta"]
+    ],
+    "Manitoba Moose": [
+        ["Manitoba"]
+    ],
+    "Bossier-Shreveport Mudbugs": [
+        ["Bossier-Shreve."]
+    ],
+    "New Hampshire Jr. Monarchs": [
+        ["N.H. Jr. Monarchs"]
+    ],
+    "Des Moines Buccaneers": [
+        ["Des Moines"]
+    ],
+    "San Antonio Rampage": [
+        ["San Antonio"]
+    ],
+    "Stockton Thunder": [
+        ["Stockton"]
+    ],
+    "Wheeling Nailers": [
+        ["Wheeling"]
+    ],
+    "Botkyrka HC J18": [
+        ["Botkyrka U18"]
+    ],
+    "Botkyrka HC J20": [
+        ["Botkyrka Jr."]
+    ],
+    "Botkyrka HC": [
+        ["Botkyrka"]
+    ],
+    "HV71 J18": [
+        ["HV 71 U18"]
+    ],
+    "HV71 J20": [
+        ["HV 71 Jr."]
+    ],
+    "HV71": [
+        ["HV 71"]
+    ],
+    "Cleveland Monsters": [
+        ["Cleveland"]
+    ],
+    "Brampton Battalion U16 AAA": [
+        ["Brampton Battalion Min. Mdgt AAA"]
+    ],
+    "Erie Otters": [
+        ["Erie"]
+    ],
+    "Fort Wayne Komets": [
+        ["Fort Wayne"]
+    ],
+    "Toledo Walleye": [
+        ["Toledo"]
+    ],
+    "Reading Royals": [
+        ["Reading"]
+    ],
+    "Metallurg Magnitogorsk": [
+        ["Magnitogorsk"]
+    ],
+    "Torpedo Nizhny Novgorod": [
+        ["Nizhny Novgorod"]
+    ],
+    "Chaika Nizhny Novgorod": [
+        ["Niz. Novgorod Jr."]
+    ],
+    "Torpedo Nizhny Novgorod-2": [
+        ["Nizh. Novgorod 2"]
+    ],
+    "Admiral Vladivostok": [
+        ["Vladivostok"]
+    ],
+    "Portland Pirates": [
+        ["Portland", "AHL"]
+    ],
+    "Chicago Wolves": [
+        ["Chicago", "UHL"]
+    ],
+    "Buffalo Jr. Sabres": [
+        ["Buf. Jr. Sabres"]
+    ],
+    "Buffalo Saints": [
+        ["Buf. Saints"]
+    ],
+    "Lake Erie Monsters": [
+        ["Lake Erie"]
+    ],
+    "Chicoutimi Saguenéens": [
+        ["Chicoutimi"]
+    ],
+    "CAC Canadians U18 AAA": [
+        ["CAC Cdns."],
+        ["Edm. CAC"],
+        ["G.D. Canadians"]
+    ],
+    "CAC Canadians U15 AAA": [
+        ["CAC Canadians Bantam AAA"]
+    ],
+    "Univ. of Wisconsin": [
+        ["U. of Wisconsin"],
+        ["U. Of Wisconsin"]
+    ],
+    "Spruce Grove Saints": [
+        ["Spruce Grove"]
+    ],
+    "Cambridge Hawks U16 AAA": [
+        ["Camb. Hawks Mid."]
+    ],
+    "Cardigan Mountain School": [
+        ["Cardigan Mtn."]
+    ],
+    "Central Ontario Wolves U16 AAA": [
+        ["Central Ontario Wolv. Bantam AAA"]
+    ],
+    "Calgary Bronks": [
+        ["Cgy. Bronks"]
+    ],
+    "Chaux-de-Fonds U20": [
+        ["Chaux-de-Fonds Jr."]
+    ],
+    "Elemash Elektrostal": [
+        ["Elektrostal"]
+    ],
+    "CSKA Moskva": [
+        ["Cska"],
+        ["CSKA"]
+    ],
+    "Syracuse Crunch": [
+        ["Syracuse"]
+    ],
+    "Severstal Cherepovets": [
+        ["Cherepovets"]
+    ],
+    "Atlant Mytishchi U20": [
+        ["Mytischi Jr."]
+    ],
+    "Ak Bars Kazan": [
+        ["Kazan"]
+    ],
+    "Spartak Moskva": [
+        ["Spartak"]
+    ],
+    "HK Sochi": [
+        ["Sochi"]
+    ],
+    "HK Ryazan": [
+        ["Ryazan-VDV"]
+    ],
+    "Yunost Minsk": [
+        ["Yunost"]
+    ],
+    "Chicago Fury 18U AAA": [
+        ["Chi. Fury U-18"]
+    ],
+    "Chicago Mission 13U AAA": [
+        ["Chi. Mission", "T1EHL"]
+    ],
+    "Chicago Mission 14U AAA": [
+        ["Chi. Mission Ban."]
+    ],
+    "Chicago Mission 16U AAA": [
+        ["Chi. Mission", "HPHL"],
+        ["Chi. Mission U-16"]
+    ],
+    "Chicago Mission 18U AAA": [
+        ["Chi. Mission U18"]
+    ],
+    "HC Chrudim U20": [
+        ["Chrudim Jr."]
+    ],
+    "HC Chrudim": [
+        ["Chrudim"]
+    ],
+    "Cleveland Barons 14U AAA": [
+        ["Cleveland Barons Bantam Major"]
+    ],
+    "Cleveland Barons 16U AAA": [
+        ["Cle. Barons U16"]
+    ],
+    "Soo Greyhounds": [
+        ["Sault Ste. Marie"]
+    ],
+    "Hartford Wolf Pack": [
+        ["Hartford"]
+    ],
+    "Grand Rapids Griffins": [
+        ["Grand Rapids"]
+    ],
+    "Colorado Thunderbirds 14U AAA": [
+        ["Col. T-Birds U14"],
+        ["Col. T-birds Ban."]
+    ],
+    "Colorado Thunderbirds 16U AAA": [
+        ["Col. T-birds U16"],
+        ["Col. Thunderbirds"] 
+    ],
+    "Portland Winterhawks": [
+        ["Portland", "WHL"]
+    ],
+    "Iowa Wild": [
+        ["Iowa", "AHL"] 
+    ],
+    "Green Bay Gamblers": [
+        ["Green Bay"]
+    ],
+    "Chicago Steel": [
+        ["Chicago", "USHL"]
+    ],
+    "Chicago Hounds": [
+        ["Chicago", "UHL"] 
+    ],
+    "Univ. of Nebraska-Omaha": [
+        ["Nebraska-Omaha"]
+    ],
+    "Rockford IceHogs": [
+        ["Rockford"]
+    ],
+    "Texas Stars": [
+        ["Texas"]
+    ],
+    "Charlotte Checkers": [
+        ["Charlotte"]
+    ],
+    "Collège Antoine-Girouard": [
+        ["Coll. Antoine-Girouard"]
+    ],
+    "Moncton Wildcats": [
+        ["Moncton"]
+    ],
+    "Halifax Mooseheads": [
+        ["Halifax"]
+    ],
+    "Lehigh Valley Phantoms": [
+        ["Lehigh Valley"]
+    ],
+    "Calgary Flames U15 AAA": [
+        ["Calgary Flames Bantam AAA"]
+    ],
+    "NWCAA Stampeders U16 AAA": [
+        ["NWCAA Stampeders Minor Midget"]
+    ],
+    "Tri-City Americans": [
+        ["Tri-City", "WHL"]
+    ],
+    "Prince Albert Raiders": [
+        ["Prince Albert", "WHL"]
+    ],
+    "Dallas Ice Jets 14U AA": [
+        ["Dal. Ice Jets"]
+    ],
+    "Compuware 14U AAA": [
+        ["Det. Compuware", "MWEHL"],
+        ["Compuware Bantam Major AAA"]
+    ],
+    "Compuware 16U AAA": [
+        ["Det. Compuware", "T1EHL"]
+    ],
+    "Plymouth Whalers": [
+        ["Plymouth"]
+    ],
+    "Norfolk Admirals": [
+        ["Norfolk"]
+    ],
+    "San Diego Gulls": [
+        ["San Diego"]
+    ],
+    "Dallas Stars Elite 16U AAA": [
+        ["Dallas Stars U16"],
+        ["Dal. Stars MM"]
+    ],
+    "Bakersfield Condors": [
+        ["Bakersfield"]
+    ],
+    "Michigan State Univ.": [
+        ["Michigan State"]
+    ],
+    "Oklahoma City Barons": [
+        ["Oklahoma City"]
+    ],
+    "Compuware 18U AAA": [
+        ["Det. Comp. U-18"]
+    ],
+    "Univ. of Michigan": [
+        ["U. of Michigan"],
+        ["U. Of Michigan"]
+    ],
+    "Victory Honda 13U AAA": [
+        ["Victory Honda Bantam Minor AAA"]
+    ],
+    "Little Caesars 14U AAA": [
+        ["Little Caesars Bantam Major AAA"]
+    ],
+    "Honeybaked 16U AAA": [
+        ["Honeybaked U16"],
+        ["Det. H-Baked U16"]
+    ],
+    "Honeybaked 18U AAA": [
+        ["Det. H-Baked U18"]
+    ],
+    "Sioux Falls Stampede": [
+        ["Sioux Falls"]
+    ],
+    "Ohio State Univ.": [
+        ["Ohio State"]
+    ],
+    "Detroit Jr. Red Wings": [
+        ["Det. Jr. Falcons"],
+        ["Det. Jr. Red Wings"]
+    ],
+    "Milwaukee Admirals": [
+        ["Milwaukee"]
+    ],
+    "Chesapeake Icebreakers": [
+        ["Chesapeake"]
+    ],
+    "Detroit Vipers": [
+        ["Detroit", "IHL"]
+    ],
+    "Jackson Bandits": [
+        ["Jackson"]
+    ],
+    "Victory Honda 14U AAA": [
+        ["Det. Vic. Honda", 8477990, "2010-2011"],
+        ["Victory Honda Bantam Major AAA"]
+    ],
+    "Victory Honda 16U AAA": [
+        ["Victory Honda U16"]
+    ],
+    "Victory Honda 18U AAA": [
+        ["Det. V. Honda U18"],
+        ["Det. Victory Honda"]
+    ],
+    "Little Caesars 16U AAA": [
+        ["Det. L.C. U16"]
+    ],
+    "Oakland Jr. Grizzlies 18U AAA": [
+        ["Oak. Grizzlies U18"]
+    ],
+    "Greenville Swamp Rabbits": [
+        ["Greenville"]
+    ],
+    "Orlando Solar Bears": [
+        ["Orlando"]
+    ],
+    "Tucson Roadrunners": [
+        ["Tucson"]
+    ],
+    "Maine Mariners": [
+        ["Maine"]
+    ], 
+    "Detroit Olympia": [
+        ["Det. Olympia"]
+    ],
+    "Toronto Marlboros": [
+        ["Toronto", "OHA-Jr."]
+    ],
+    "Indiana Ice": [
+        ["Indiana", "USHL"]
+    ],
+    "Ontario Reign": [
+        ["Ontario"]
+    ],
+    "Univ. of Notre Dame": [
+        ["U. of Notre Dame"],
+        ["U. Of Notre Dame"]
+    ],
+    "Diskos U20": [
+        ["Diskos Jr."]
+    ],
+    "JYP": [
+        ["Jyp"]
+    ],
+    "MODO Hockey": [
+        ["MoDo Hockey"]
+    ],
+    "Bois-Francs Cascades Bantam AAA": [
+        ["Bois-Francs Cascades M15 AAA"]
+    ],
+    "Marie-Rivier Canimex Espoir": [
+        ["Marie-Rivier Canimex M17 Espoir"]
+    ],
+    "Shawinigan Cataractes": [
+        ["Shawinigan"]
+    ],
+    "ZSC U17": [
+        ["Zurich U17"]
+    ],
+    "GCK Lions U20": [
+        ["GCK Zurich Jr."],
+        ["GCK/ZSC Zurich Jr."]
+    ],
+    "GC Küsnacht Lions": [
+        ["GCK Zurich"],
+        ["GC Zurich"],
+        ["GC/Küsnacht"]
+    ],
+    "EHC Visp": [
+        ["Visp"]
+    ],
+    "Rouyn-Noranda Huskies": [
+        ["Rouyn-Noranda"]
+    ],
+    "St. John's IceCaps": [
+        ["St. John's"]
+    ],
+    "ZSC Lions": [
+        ["ZSC"],
+        ["Zurich"]
+    ],
+    "Dynamo Moskva U18": [
+        ["Dyn.Moscow U18"]
+    ],
+    "Guelph Storm": [
+        ["Guelph"]
+    ],
+    "Bridgeport Sound Tigers": [
+        ["Bridgeport"] 
+    ],
+    "Bridgeport Islanders": [
+        ["Bridgeport"] 
+    ],
+    "East Grand Forks High": [
+        ["E. Grand Forks"]
+    ],
+    "Team Sanford Power": [
+        ["Great Plains"]
+    ],
+    "Wichita Falls Wildcats": [
+        ["Wichita Falls"]
+    ],
+    "Omaha Lancers": [
+        ["Omaha", "USHL"]
+    ],
+    "Univ. of North Dakota": [
+        ["North Dakota"]
+    ],
+    "Eastern Ontario Wild U16 AAA": [
+        ["E. Ont. Wild MM"]
+    ],
+    "Eastern Ontario Wild U18 AAA": [
+        ["E. Ont. Wild Mid."]
+    ],
+    "Hawkesbury Hawks": [
+        ["Hawkesbury"]
+    ],
+    "Belleville Bulls": [
+        ["Belleville", "OHL"]
+    ],
+    "Belleville Senators": [
+        ["Belleville", "AHL"]
+    ],
+    "Rochester Americans": [
+        ["Rochester"]
+    ],
+    "Moncton Golden Flames": [
+        ["Moncton"]
+    ],
+    "EC Graz": [
+        ["Graz"]
+    ],
+    "Tallahassee Tiger Sharks": [
+        ["Tallahassee"]
+    ],
+    "Denver Grizzlies": [
+        ["Denver"]
+    ],
+    "Edmonton Crusaders": [
+        ["Edm. Crusaders"]
+    ],
+    "Edmonton Freeze": [
+        ["Edm. Freeze"]
+    ],
+    "Edmonton Jaycees": [
+        ["Edm. Jaycees"]
+    ],
+    "Edmonton Legion": [
+        ["Edm. Legion"]
+    ],
+    "Edmonton Mercurys": [
+        ["Edm. Mercurys"]
+    ],
+    "Edmonton Scott Pump": [
+        ["Edm. Scott Pump"]
+    ],
+    "Edmonton Shamrocks": [
+        ["Edm. Shamrocks"]
+    ],
+    "Edmonton Wireline": [
+        ["Edm. Wireline"]
+    ],
+    "Northern Alberta U15 Prep": [
+        ["Northern Alberta Xtreme U15 Prep"]
+    ],
+    "Northern Alberta X-Treme Prep": [
+        ["Northern Alberta Xtreme U18 Prep"]
+    ],
+    "Edmonton Oil Kings": [
+        ["Edmonton Oil Kings"]
+    ],
+    "Sherwood Park Crusaders": [
+        ["Sherwood Park"]
+    ],
+    "Seattle Thunderbirds": [
+        ["Seattle"]
+    ],
+    "Jungadler Mannheim U18": [
+        ["Mannheim Jr."],
+        ["Heil./Mann. Jr."]
+    ],
+    "Mannheimer ERC II": [
+        ["Mannheimer"]
+    ],
+    "Eisbären Juniors Berlin U18": [
+        ["Eisb. Jrs. Berl. Jr."]
+    ],
+    "Eisbären Juniors Berlin": [
+        ["Eisb. Jrs. Berlin"]
+    ],
+    "Straubing Tigers": [
+        ["Straubing"]
+    ],
+    "Krefeld Pinguine": [
+        ["Krefeld"]
+    ],
+    "EC Kassel Huskies": [
+        ["Kassel"]
+    ],
+    "Crocodiles Hamburg": [
+        ["Hamburg Croc."]
+    ],
+    "Hamburg Freezers": [
+        ["Hamburg"]
+    ],
+    "Esbjerg U20": [
+        ["Esbjerg Jr."]
+    ],
+    "Yugra Khanty-Mansiysk": [
+        ["Khanty-Mansiysk"]
+    ],
+    "Esbjerg Energy": [
+        ["Esbjerg"]
+    ],
+    "Juniors Essamika Riga": [
+        ["Essamika Jr."]
+    ],
+    "Lukko U20": [
+        ["Lukko Jr."]
+    ],
+    "Acadie-Bathurst Titan": [
+        ["Acadie-Bathurst"]
+    ],
+    "Odense Bulldogs": [
+        ["Odense"]
+    ],
+    "HK Riga 2000": [
+        ["Riga 2000"]
+    ],
+    "HC Fribourg-Gottéron": [
+        ["Fribourg"],
+        ["Gottéron"]
+    ],
+    "Moskitos Essen": [
+        ["Essen"]
+    ],
+    "ESC Moskitos Essen U20": [
+        ["Essen Jr."]
+    ],
+    "HC Plzeň": [
+        ["Plzen"],
+        ["HC Plzen"]
+    ],
+    "Neftekhimik Nizhnekamsk": [
+        ["Nizhnekamsk"]
+    ],
+    "HC Energie Karlovy Vary": [
+        ["Karlovy Vary"]
+    ],
+    "HC Slovan Ústečtí Lvi": [
+        ["Usti n. L."]
+    ],
+    "HC Slovan Bratislava": [
+        ["Bratislava"],
+        ["Slov. Bratislava"]
+    ],
+    "HK Poprad": [
+        ["Poprad"]
+    ],
+    "Fayetteville-Manlius High": [
+        ["Fayette.-Manlius"]
+    ],
+    "Syracuse Jr. Stars": [
+        ["Syracuse", "EmJHL"]
+    ],
+    "FoPS U20": [
+        ["FoPS Jr."]
+    ],
+    "Univ. of Denver": [
+        ["U. of Denver"]
+    ],
+    "Prince George Spruce Kings": [
+        ["Prince George"]
+    ],
+    "Northern Michigan Univ.": [
+        ["Northern Mich."]
+    ],
+    "Utah Grizzlies": [
+        ["Utah", "ECHL"]
+    ],
+    "Idaho Steelheads": [
+        ["Idaho", "ECHL"]
+    ],
+    "Victoria Salmon Kings": [
+        ["Victoria Salmon Kings"]
+    ],
+    "Frederikshavn U20": [
+        ["Frederikshavn Jr."]
+    ], 
+    "San Jose Barracuda": [
+        ["San Jose", "AHL"]
+    ],
+    "Frederikshavn White Hawks": [
+        ["Frederikshavn", "Denmark"]
+    ],
+    "Genève-Servette HC": [
+        ["Geneve"],
+        ["Genève-Servette"]
+    ],
+    "HC Sierre": [
+        ["Sierre"]
+    ],
+    "Frisk Asker U19": [
+        ["Frisk Jr."] 
+    ],
+    "Frisk Asker U16": [
+        ["Frisk U18"]
+    ],
+    "Connecticut Whale": [
+        ["Connecticut", "AHL"]
+    ],
+    "Kamloops Blazers": [
+        ["Kamloops"]
+    ],
+    "Grasshoppers U20": [
+        ["Zurich/Kusn Jr."],
+        ["GC Zurich Jr."]
+    ],
+    "Grasshopper Club Zürich": [
+        ["Grasshopper"]
+    ],
+    "Cape Breton Screaming Eagles": [
+        ["Cape Breton"]
+    ],
+    "Omaha Ak-Sar-Ben Knights": [
+        ["Omaha", "AHL"]
+    ],
+    "Quad City Flames": [
+        ["Quad City"]
+    ],
+    "Philadelphia Phantoms": [
+        ["Philadelphia", "AHL"]
+    ],
+    "HC Davos": [
+        ["Davos"]
+    ],
+    "EV Zug": [
+        ["Zug"]
+    ],
+    "Gentofte U20": [
+        ["Gentofte Jr."]
+    ],
+    "IC Gentofte": [
+        ["Gentofte"]
+    ],
+    "St. Cloud State Univ.": [
+        ["St. Cloud State"]
+    ],
+    "Lac St-Louis Royals Espoir": [
+        ["Lac St-Louis Royals Espoir AA"]
+    ],
+    "Gilmour Academy": [
+        ["Gilmour Acad."]
+    ],
+    "Cedar Rapids RoughRiders": [
+        ["Cedar Rapids"]
+    ],
+    "Providence College": [
+        ["Providence", "NCAA"],
+        ["Providence", "H-East"]
+    ],
+    "Philadelphia L. Flyers 13U AAA": [
+        ["Philadelphia L. Flyers Bntm Min"]
+    ],
+    "Philadelphia L. Flyers 14U AAA": [
+        ["Philadelphia L. Flyers Bntm Maj"]
+    ],
+    "Philadelphia L. Flyers 16U AAA": [
+        ["Philadelphia L. Flyers 16U"]
+    ],
+    "Gloucester Catholic High": [
+        ["Gloucester Cath."]
+    ],
+    "Team Comcast 18U AAA": [
+        ["Team Comcast"]
+    ],
+    "Dubuque Fighting Saints": [
+        ["Dubuque"]
+    ],
+    "Red River High": [
+        ["Gr. Forks R.R.R."]
+    ],
+    "Grand Forks Central High": [
+        ["Grand Forks C.K."]
+    ],
+    "Lincoln Stars": [
+        ["Lincoln"]
+    ],
+    "Guelph Jr. Storm U15 AAA": [
+        ["Guelph Jr. Storm Bantam AAA"]
+    ],
+    "Elmira Sugar Kings": [
+        ["Elmira"]
+    ],
+    "Sudbury Wolves": [
+        ["Sudbury"]
+    ],
+    "Worcester IceCats": [
+        ["Worcester"]
+    ],
+    "Guelph Jr. Storm U16 AAA": [
+        ["Guelph Jr. Storm Minor Mdgt AAA"]
+    ],
+    "Waterloo Wolves U18 AAA": [
+        ["Waterloo", "Minor-ON"],
+        ["Wat. Wolves Mid."]
+    ],
+    "Waterloo Siskins": [
+        ["Waterloo", "ON-Jr.B"]
+    ],
+    "Ottawa 67's": [
+        ["Ottawa", "OHL"]
+    ],
+    "Listowel Cyclones": [
+        ["Listowel"]
+    ],
+    "Gatineau Olympiques": [
+        ["Gatineau"]
+    ],
+    "Oshawa Generals": [
+        ["Oshawa"]
+    ],
+    "Hamilton Tiger Cubs": [
+        ["Ham. Tiger Cubs"]
+    ],
+    "Hannover Scorpions": [
+        ["Hannover"]
+    ],
+    "Hannover Indians": [
+        ["Hannover Ind."]
+    ],
+    "HC Havlíčkův Brod U16": [
+        ["BK Havlickuv Brod U16"]
+    ],
+    "HC Havlíčkův Brod U18": [
+        ["Havl. Brod U18"]
+    ],
+    "HC Havlíčkův Brod U20": [
+        ["Havl. Brod Jr."]
+    ],
+    "BK Havlickuv Brod U18": [
+        ["Havl. Brod U17"]
+    ],
+    "Bílí Tygři Liberec U20": [
+        ["Liberec Jr."],
+        ["Bili Tygri Liberec U20"]
+    ],
+    "Bílí Tygři Liberec": [
+        ["Liberec"],
+        ["Bili Tygri Liberec"]
+    ],
+    "HC Benátky nad Jizerou": [
+        ["Benatky"]
+    ],
+    "South Carolina Stingrays": [
+        ["South Carolina", "ECHL"]
+    ],
+    "HC Slavia Praha U18": [
+        ["Slavia U17"]
+    ],
+    "HC Slavia Praha U20": [
+        ["Slavia Jr."]
+    ],
+    "HC Slavia Praha": [
+        ["Slavia"]
+    ],
+    "Kelowna Rockets": [
+        ["Kelowna"]
+    ],
+    "Richmond Generals 16U AA": [
+        ["Richmond Generals 16U"]
+    ],
+    "Halifax Hawks U18 AAA": [
+        ["Hfx. Hawks"]
+    ],
+    "Beauport Harfangs": [
+        ["Beauport"]
+    ],
+    "Laval Titan Collège Français": [
+        ["Laval", "QMJHL"]
+    ],
+    "Hull Olympiques": [
+        ["Hull"]
+    ],
+    "Fredericton Canadiens": [
+        ["Fredericton"]
+    ],
+    "Lowell Lock Monsters": [
+        ["Lowell"]
+    ],
+    "St. John's Maple Leafs": [
+        ["St. John's", "AHL"]
+    ],
+    "EC Salzburg": [
+        ["Salzburg"]
+    ],
+    "Rødovre Mighty Bulls": [
+        ["Rodovre"]
+    ],
+    "Holy Family Catholic": [
+        ["Holy Family Cath."]
+    ],
+    "Mountfield HK U18": [
+        ["Hr. Kralove U18"]
+    ],
+    "Mountfield HK U20": [
+        ["Hr. Kralove Jr."],
+        ["HK Hradec Kralove U20"]
+    ],
+    "Mountfield HK": [
+        ["Hr. Kralove"],
+        ["HK Hradec Kralove"]
+    ],
+    "HC Stadion Litoměřice": [
+        ["Litomerice"]
+    ],
+    "Saginaw Spirit": [
+        ["Saginaw"]
+    ],
+    "HC Hvezda Praha U20": [
+        ["Hvezda Praha Jr."]
+    ],
+    "Prince George Cougars": [
+        ["Prince George"]
+    ],
+    "HC Sparta Praha": [
+        ["Sparta"]
+    ],
+    "Indiana Jr. Ice 16U AAA": [
+        ["Ind. Jr. Ice U16"],
+        ["Indiana Jr. Ice 16U"]
+    ],
+    "Windsor Spitfires": [
+        ["Windsor"]
+    ],
+    "Kitchener Rangers": [
+        ["Kitchener"]
+    ],
+    "Corpus Christi Ice Rays": [
+        ["Corpus Christi"]
+    ],
+    "Tri-City Storm": [
+        ["Tri-City", "USHL"] 
+    ],
+    "Janesville Jets": [
+        ["Janesville"]
+    ],
+    "HD Jesenice Mladi U20": [
+        ["Jesenice Jr."]
+    ],
+    "HD Jesenice Mladi U18": [
+        ["Jesenice U18"]
+    ],
+    "HK Kranjska Gora": [
+        ["Kranjska Gora"]
+    ],
+    "Mora IK": [
+        ["Mora"]
+    ],
+    "Jonstorps IF J18": [
+        ["Jonstorp U18"]
+    ],
+    "Jonstorps IF J20": [
+        ["Jonstorp Jr."]
+    ],
+    "Pittsburgh Jr. Penguins": [
+        ["Jr. Penguins"]
+    ],
+    "Barrie Colts": [
+        ["Barrie"]
+    ],
+    "Lørenskog": [
+        ["Lorenskog"]
+    ],
+    "Lørenskog U18": [
+        ["Lorenskog U18"]
+    ],
+    "Lørenskog U20": [
+        ["Lorenskog Jr."]
+    ],
+    "Ozolnieki/Juniors": [
+        ["Ozolnieki-Juniors"]
+    ],
+    "HK Ogre": [
+        ["Orge"]
+    ],
+    "HK Juniors Riga": [
+        ["Riga Jr."],
+        ["Juniors Riga Jr."]
+    ],
+    "Florida Everblades": [
+        ["Florida", "ECHL"]
+    ],
+    "GKS Tychy": [
+        ["Tychy"]
+    ],
+    "Welland Cougars": [
+        ["Welland"]
+    ],
+    "Raleigh IceCaps": [
+        ["Raleigh"]
+    ],
+    "Greater Kingston Gaels U16 AAA": [
+        ["King. Jr. Front."],
+        ["King. Jr. Frontenacs"]
+    ],
+    "Kingston Voyageurs": [
+        ["Kingston", "OJHL"] 
+    ],
+    "Wilkes-Barre/Scranton Penguins": [
+        ["Wilkes-Barre"]
+    ],
+    "Greater Kingston Frontenacs U16 AAA": [
+        ["Greater Kingston Fr. Mn Mdgt AAA"]
+    ],
+    "Greater Kingston Gaels U15 AAA": [
+        ["Greater Kingston Frontenacs Bntm"]
+    ],
+    "CIHA Voyageurs U16 AAA": [
+        ["CIHA Voyageurs Minor Midget AAA"]
+    ],
+    "CIHA Voyageurs U18 AAA": [
+        ["CIHA Voyageurs Midget AAA"]
+    ],
+    "Kingston Frontenacs": [
+        ["Kingston", "OHL"] 
+    ],
+    "Greater Kingston Predators U16 AAA": [
+        ["King. Predators"]
+    ],
+    "Dornbirner EC": [
+        ["Dornbirn"]
+    ],
+    "Kitchener Jr. Rangers U16 AAA": [
+        ["Kit. Jr. Rangers"]
+    ],
+    "Kitchener Dutchmen": [
+        ["Kitchener"]
+    ],
+    "Kitchener Lions": [
+        ["Kit. Lions"]
+    ],
+    "Black Wings Linz": [
+        ["EHC Linz"],
+        ["Linz"]
+    ],
+    "Mississauga Steelheads": [
+        ["Mississauga"]
+    ],
+    "EC-KAC U20": [
+        ["Klagenfurt Jr."]
+    ],
+    "EC-KAC": [
+        ["Klagenfurt"]
+    ],
+    "UMass": [
+        ["Massachusetts"],
+        ["Univ. of Massachusetts"],
+        ["U. Mass-Amherst"]
+    ],
+    "Rapperswil-Jona Lakers": [
+        ["Rapperswil"]
+    ],
+    "Krefelder EV 1981 U20": [
+        ["Krefeld Jr."]
+    ],
+    "EV Duisburg": [
+        ["Duisburg"]
+    ],
+    "Draci Liptovsky Mikulas U18": [
+        ["L. Mikulas U18"]
+    ],
+    "Draci Liptovsky Mikulas U20": [
+        ["L. Mikulas Jr."]
+    ],
+    "HK 32 Liptovsky Mikulas": [
+        ["L. Mikulas"]
+    ],
+    "HC La Chaux-de-Fonds": [
+        ["Chaux-de-Fonds"]
+    ],
+    "Deux-Rives Dauphins U15 AA": [
+        ["Deux-Rives Pee-Wee"]
+    ],
+    "Wilkes-Barre Knights 14U AAA": [
+        ["Wilkes-Barre Knights Bantam Maj"],
+        ["Wilkes Barre Bant."]
+    ],
+    "Lac St-Louis Tigres Espoir": [
+        ["Lac St-L. Tigres"],
+        ["Lac St-Louis Lions Black M17 Esp"]
+    ],
+    "Charlottetown Islanders": [
+        ["Charlottetown"]
+    ],
+    "Lambton Jr. Sting U16 AAA": [
+        ["Lambton Jr. Sting Mn Mdgt AAA"]
+    ],
+    "Sarnia Sting": [
+        ["Sarnia"]
+    ],
+    "Langenthal U20": [
+        ["Langenthal Jr."]
+    ],
+    "Zug U20": [
+        ["Zug Jr."]
+    ],
+    "SC Langenthal": [
+        ["Langenthal"]
+    ],
+    "Abbotsford Canucks": [
+        ["Abbotsford"] 
+    ],
+    "SC Bern": [
+        ["Bern"]
+    ],
+    "CBL Ouest M15 AA": [
+        ["Laurentides Conq. West Bantam AA"],
+        ["Laurentides Conq. West U15 AA"]
+    ],
+    "CBL Est M15 AA": [
+        ["Laurentides Conq. East Bantam AA"]
+    ],
+    "Collège Esther-Blondin Phénix": [
+        ["Esther-Blondin"]
+    ],
+    "Rimouski Océanic": [
+        ["Rimouski"]
+    ],
+    "HC Ajoie": [
+        ["Ajoie"]
+    ],
+    "Dynamo Moskva-2": [
+        ["Dyn'o Moscow 2"]
+    ],
+    "Lethbridge Golden Hawks U15 AAA": [
+        ["Lethbridge Golden Hawks Btm AAA"]
+    ],
+    "LAA Hurricanes U16 AAA": [
+        ["Leth. Hurricanes"]
+    ],
+    "Lethbridge Y Men U18 AAA": [
+        ["Lethbridge", "AMHL"]
+    ],
+    "Prizma Riga U20": [
+        ["Prizma Jr."] 
+    ],
+    "HK Lido Nafta Riga U20": [
+        ["Lido Nafta Jr."]
+    ],
+    "Prizma Riga": [
+        ["Prizma '83"]
+    ],
+    "Dynamo Moskva": [
+        ["Dynamo Moscow"]
+    ],
+    "Lloydminster Blazers U15 AA": [
+        ["Lloydminster Blazers Bantam AA"]
+    ],
+    "Lloydminster Heat U15 AAA": [
+        ["Lloydminster"]
+    ],
+    "Lloydminster Rage U16 AAA": [
+        ["Lloydminster Rage Min. Mdgt AAA"]
+    ],
+    "Lloydminster Bobcats U18 AAA": [
+        ["Lloydminster", "AMHL"]
+    ],
+    "Lloydminster Bobcats": [
+        ["Lloydminster", "AJHL"]
+    ],
+    "Everett Silvertips": [
+        ["Everett"]
+    ],
+    "Merrimack College": [
+        ["Merrimack"]
+    ],
+    "London Legionnaires": [
+        ["Lon. Legion"]
+    ],
+    "London Jr. Knights U15 AAA": [
+        ["London Jr. Knights Bantam AAA"]
+    ],
+    "St. Thomas Stars": [
+        ["St. Thomas"]
+    ],
+    "NV River Rats 18U AAA": [
+        ["Neponset Valley River Rats U18"]
+    ],
+    "Houston Aeros": [
+        ["Houston"]
+    ],
+    "Stjernen Hockey": [
+        ["Stjernen"]
+    ],
+    "Viking Hockey U18": [
+        ["Viking U18"]
+    ],
+    "Stavanger Oilers": [
+        ["Stavanger"]
+    ],
+    "Stavanger Oilers U20": [
+        ["Stavanger Jr."]
+    ],
+    "Los Angeles Jr. Kings 14U AAA": [
+        ["Los Angeles Jr. Kings Bantam AAA"]
+    ],
+    "Los Angeles Jr. Kings 16U AAA": [
+        ["Los Angeles Jr. Kings U16"],
+        ["L.A. Jr. Kings"]
+    ],
+    "Québec Remparts": [
+        ["Québec", "QMJHL"],
+        ["Que. Remparts"],
+        ["Quebec", "QMJHL"]
+    ],
+    "St. John's Capitals": [
+        ["St. John's Caps"]
+    ],
+    "Port-aux-Basques Mariners": [
+        ["Port-aux-Basques"]
+    ],
+    "Sherbrooke Canadiens": [
+        ["Sherbrooke"]
+    ],
+    "Saint-Georges-de-Beauce": [
+        ["St-Georges"]
+    ],
+    "Mohawk Valley Prowlers": [
+        ["Mohawk Valley"]
+    ],
+    "Québec Aces": [
+        ["Quebec Aces"]
+    ],
+    "Saint-Hyacinthe Cousin": [
+        ["Saint-Hyacinthe"]
+    ],
+    "Madison Memorial High": [
+        ["Madison Mem."]
+    ],
+    "Madison Capitols": [
+        ["Madison", "USHL"]
+    ],
+    "Baltimore Skipjacks": [
+        ["Baltimore"]
+    ],
+    "Los Angeles Ice Dogs": [
+        ["Los Angeles"]
+    ],
+    "Long Beach Ice Dogs": [
+        ["Long Beach"]
+    ],
+    "Malden Catholic High": [
+        ["Malden Cath."]
+    ],
+    "Boston Univ.": [
+        ["Boston University"]
+    ],
+    "HK Maribor": [
+        ["Maribor"]
+    ],
+    "HK Maribor U20": [
+        ["Maribor Jr."]
+    ],
+    "HC České Budějovice U20": [
+        ["C. Budejovice Jr."]
+    ],
+    "Olimpija Ljubljana": [
+        ["Ljubljana"]
+    ],
+    "Amur Khabarovsk": [
+        ["Khabarovsk"]
+    ],
+    "Grizzly Adams Wolfsburg": [
+        ["Wolfsburg"],
+        ["Grizzlys Wolfsburg"]
+    ],
+    "Frankfurt Lions": [
+        ["Frankfurt Lions"]
+    ],
+    "Mauricie Estacades M17 AAA": [
+        ["Mauricie Est."]
+    ],
+    "Trois-Rivières Estacades": [
+        ["Trois-Rivieres"]
+    ],
+    "Blainville-Boisbriand Armada": [
+        ["Blainville-Bois."]
+    ],
+    "HK Michalovce U20": [
+        ["Michalovce Jr."]
+    ],
+    "HC VTJ MEZ Michalovce": [
+        ["Michalovce"]
+    ],
+    "Hammarby IF": [
+        ["Hammarby"]
+    ],
+    "SaiPa": [
+        ["Saipa"]
+    ],
+    "Sibir Novosibirsk": [
+        ["Novosibirsk"]
+    ],
+    "Barys Astana": [
+        ["Astana"]
+    ],
+    "Brother Rice High": [
+        ["Brother Rice"]
+    ],
+    "Jokerit U20": [
+        ["Jokerit Jr."]
+    ],
+    "Minnesota Wilderness": [
+        ["Min. Wilderness"]
+    ],
+    "Univ. of Minnesota-Duluth": [
+        ["U. Minn-Duluth"]
+    ],
+    "Rytiri Kladno U18": [
+        ["Kladno U17"]
+    ],
+    "Univ. of Minnesota": [
+        ["U. Of Minnesota"],
+        ["U. of Minnesota"]
+    ],
+    "HC Kladno": [
+        ["Kladno"]
+    ],
+    "HK Kralupy nad Vltavou": [
+        ["Kralupy"]
+    ],
+    "HK Slany": [
+        ["Slany"]
+    ],
+    "HC Kladno U20": [
+        ["Kladno Jr."] 
+    ],
+    "HC Mladá Boleslav": [
+        ["Ml. Bolesav"]
+    ],
+    "Rytíři Kladno": [
+        ["Rytiri Kladno"]
+    ],
+    "Västra Frölunda HC U16": [
+        ["Frölunda HC U16"]
+    ],
+    "Univ. of Vermont": [
+        ["U. Of Vermont"]
+    ],
+    "Montréal-Bourassa Collège": [
+        ["Montréal-Bourassa Collège Fr."],
+        ["Mtl-Bourassa"],
+        ["Mtl.-Bourassa"]
+    ],
+    "HC Most U20": [
+        ["Most Jr."]
+    ],
+    "HC Litvínov U20": [
+        ["Litvinov Jr."]
+    ],
+    "HC Litvínov": [
+        ["Litvinov"],
+        ["HC Litvinov"]
+    ],
+    "HC Vítkovice": [
+        ["Vitkovice"],
+        ["HC Vitkovice"]
+    ],
+    "Khimik Voskresensk": [
+        ["Voskresensk"]
+    ],
+    "Avtomobilist Yekaterinburg": [
+        ["Avtomobilist"]
+    ],
+    "Mt. Pearl Junior Blades": [
+        ["Mt. Pearl Jr. Blades"]
+    ],
+    "Montréal Rocket": [
+        ["Montreal", "QMJHL"]
+    ],
+    "École Édouard-Montpetit Prédateurs": [
+        ["Ecole Montpetit"]
+    ],
+    "Montréal Prédateurs": [
+        ["Mtl. Predators"]
+    ],
+    "Val-d'Or Foreurs": [
+        ["Val-d'Or"]
+    ],
+    "Collège Charles-Lemoyne Riverains": [
+        ["Charles-Lemoyne"]
+    ],
+    "HC Lugano": [
+        ["Lugano"]
+    ],
+    "Buran Voronezh": [
+        ["Voronezh"]
+    ],
+    "Nelson Maple Leafs": [
+        ["Nelson Leafs"]
+    ],
+    "Kelowna Buckaroos": [
+        ["Kelowna", "BCJHL"]
+    ],
+    "Northern Arizona University": [
+        ["N. Arizona"]
+    ],
+    "North Bay Trappers U18 AAA": [
+        ["N. Bay Trappers"]
+    ],
+    "North Bay Centennials": [
+        ["North Bay"]
+    ],
+    "Indianapolis Ice": [
+        ["Indianapolis"]
+    ],
+    "SCL Tigers": [
+        ["Langnau"]
+    ],
+    "North Yarmouth Academy": [
+        ["N. Yarmouth"]
+    ],
+    "Univ. of Maine": [
+        ["U. Of Maine"]
+    ],
+    "New England Jr. Whalers": [
+        ["N.E. Jr. Whalers"]
+    ],
+    "Adler Mannheim": [
+        ["Mannheim"]
+    ],
+    "Niagara Falls Canucks U16 AAA": [
+        ["N.F. Canucks"]
+    ],
+    "Evansville IceMen": [
+        ["Evansville"]
+    ],
+    "Binghamton Senators": [
+        ["Binghamton"] 
+    ],
+    "New Jersey Colonials 14U AAA": [
+        ["N.J. Colonials"]
+    ],
+    "New Jersey Rockets": [
+        ["N.J. Rockets"],
+        ["N.J. Rockets U19"]
+    ],
+    "New Jersey Devils Youth 16U AAA": [
+        ["N.J. Devils Youth"],
+        ["New Jersey Devils Youth 16U"]
+    ],
+    "Cornell Univ.": [
+        ["Cornell"]
+    ],
+    "North Bay Battalion": [
+        ["North Bay"]
+    ],
+    "New York 14th Precinct": [
+        ["NY 14th Pct."]
+    ],
+    "New York Westsiders": [
+        ["NY Westsiders"]
+    ],
+    "New York Jr. Rangers": [
+        ["NY Jr. Rangers"]
+    ],
+    "Miami Univ. (Ohio)": [
+        ["Miami U."]
+    ],
+    "New England Jr. Falcons 14U AA": [
+        ["New England Jr. Falcons Bantam"]
+    ],
+    "Middlesex Islanders 14U AAA": [
+        ["Middlesex Islanders Bntm"]
+    ],
+    "Shattuck St. Mary's 14U AAA": [
+        ["Shattuck St. Mary's Bantam T1"]
+    ],
+    "Sioux City Musketeers": [
+        ["Sioux City"]
+    ],
+    "Chilliwack Chiefs": [
+        ["Chilliwack"]
+    ],
+    "New Jersey Jr. Titans 13U AAA": [
+        ["New Jersey Jr. Titans Bantam Min"]
+    ],
+    "New Jersey Jr. Titans 14U AAA": [
+        ["New Jersey Jr. Titans Bantam Maj"]
+    ],
+    "New Jersey Hitmen": [
+        ["Jersey"]
+    ],
+    "Nickel City Sons U14 AAA": [
+        ["Nickel City Sons Minor Bantam"]
+    ],
+    "Nickel City Sons U15 AAA": [
+        ["Nickel City Sons Bantam AAA"]
+    ],
+    "Sudbury Nickel Capital Wolves": [
+        ["Sudbury Nickel Capitals U18 AAA"],
+        ["Sud. Wolves Mid."]
+    ],
+    "Sudbury Wolves Minor Midget AAA": [
+        ["Sudbury Nickel Capitals U18 AAA"]
+    ],
+    "Jacksonville Icemen": [
+        ["Jacksonville"]
+    ],
+    "Kansas City Blades": [
+        ["Kansas City"]
+    ],
+    "Avangard Omsk": [
+        ["Omsk"]
+    ],
+    "North Shore WC U15 A1": [
+        ["North Shore W.C."]
+    ],
+    "Vancouver NW Giants U18 AAA": [
+        ["Van. NW Giants"]
+    ],
+    "North St. Paul High": [
+        ["North St. Paul"]
+    ],
+    "Sibir Novosibirsk-2": [
+        ["Novosibirsk 2"]
+    ],
+    "Sibirskie Snaipery Novosibirsk": [
+        ["Novosibirsk Jr."]
+    ],
+    "SKA St. Petersburg": [
+        ["St. Petersburg"]
+    ],
+    "Oakland Jr. Grizzlies 16U AAA": [
+        ["Oak. Grizzlies U16"],
+        ["Oakland Jr. Grizzlies U16"]
+    ],
+    "Muskegon Lumberjacks": [
+        ["Muskegon"]
+    ],
+    "Waterloo Black Hawks": [
+        ["Waterloo"]
+    ],
+    "Oakland Jr. Grizzlies 13U AAA": [
+        ["Oakland Jr. Grizzlies Bantam Mnr"]
+    ],
+    "Oakland Jr. Grizzlies 14U AAA": [
+        ["Oakland Jr. Grizzlies Bantam AAA"]
+    ],
+    "Ohio Blue Jackets 14U AAA": [
+        ["Ohio Blue Jackets Bantam Major"]
+    ],
+    "Ohio Blue Jackets 16U AAA": [
+        ["Ohio B-Jack. U16"]
+    ],
+    "Ohio Blue Jackets 18U AAA": [
+        ["Ohio B-Jack. Midg."]
+    ],
+    "Pembina Valley Hawks U15 AAA": [
+        ["Pembina Valley Hawks Bantam AAA"]
+    ],
+    "Pembina Valley Hawks U18 AAA": [
+        ["Pembina Valley"]
+    ],
+    "Omaha AAA Lancers 16U": [
+        ["Om. Lancers U16"]
+    ],
+    "Oshawa Generals U16 AAA": [
+        ["Osh. Generals"]
+    ],
+    "Whitby Fury": [
+        ["Whitby"]
+    ],
+    "HC Ostrava U20": [
+        ["Ostrava Jr."]
+    ],
+    "HC Vítkovice U20": [
+        ["Vitkovice Jr."]
+    ],
+    "Kootenay Ice": [
+        ["Kootenay"]
+    ],
+    "Ottawa Senators U14 AAA": [
+        ["Ottawa Senators Minor Bantam AAA"]
+    ],
+    "Ottawa Senators U15 AAA": [
+        [""]
+    ],
+    "Ottawa Senators U16 AAA": [
+        ["Ott. Senators"],
+        ["Ottawa Senators Minor Midget AAA"],
+        ["Ott. Senators M.M."]
+    ],
+    "Cumberland Grads": [
+        ["Cumberland"]
+    ],
+    "Ottawa Valley Titans U16 AAA": [
+        ["Ott. Valley Titans"],
+        ["Ottawa Valley"]
+    ],
+    "Pembroke Lumber Kings": [
+        ["Pembroke"]
+    ],
+    "Quinnipiac Univ.": [
+        ["Quinnipiac"]
+    ],
+    "Ottawa Sting U14 AA": [
+        ["Ottawa Sting Minor Bantam AA"]
+    ],
+    "Ottawa Sting U15 AA": [
+        ["Ottawa Sting Bantam AA"]
+    ],
+    "Ottawa Jr. 67s U16 AAA": [
+        ["Ottawa Jr. 67s Minor Midget AAA"]
+    ],
+    "Ottawa Jr. 67s U18 AAA": [
+        ["Ottawa Jr. 67s Midget AAA"]
+    ],
+    "Gloucester Rangers": [
+        ["Rockland Nationals"]
+    ],
+    "Long Island Gulls 18U AAA": [
+        ["Long Island Gulls 18U"]
+    ],
+    "New Jersey Junior Titans": [
+        ["New Jersey Jr. Titans"]
+    ],
+    "PF Changs 16U AAA": [
+        ["P.F. Chang's"]
+    ],
+    "PF Changs 18U AAA": [
+        ["P.F. Chang's U-18"]
+    ],
+    "MODO Hockey J18": [
+        ["MODO U18"]
+    ],
+    "MODO Hockey J20": [
+        ["MODO Jr."]
+    ],
+    "Philadelphia Little Flyers": [
+        ["Phi. Little Flyers"]
+    ],
+    "St. John's Fog Devils": [
+        ["St. John's", "QMJHL"] 
+    ],
+    "Montréal Juniors": [
+        ["Montreal", "QMJHL"]
+    ],
+    "HC Thurgau": [
+        ["Thurgau"]
+    ],
+    "Philadelphia Revolution": [
+        ["Phi. Revolution"]
+    ],
+    "Drummondville Voltigeurs": [
+        ["Drummondville"]
+    ],
+    "Elmira Jackals": [
+        ["Elmira"]
+    ],
+    "Wyoming Seminary Prep": [
+        ["Wyoming Prep"]
+    ],
+    "Barys Nur-Sultan": [
+        ["Barys Astana"]
+    ],
+    "Hamilton Red Wings": [
+        ["Hamilton", "CCHL"],
+        ["Hamilton", "ON-Jr.A"]
+    ],
+    "Nepean Raiders": [
+        ["Nepean"]
+    ],
+    "Lake Superior State Univ.": [
+        ["Lake Superior"]
+    ],
+    "Colgate Univ.": [
+        ["Colgate"]
+    ],
+    "Kalamazoo Wings": [
+        ["Kalamazoo"]
+    ],
+    "Phoenix Jr. Coyotes 14U AAA": [
+        ["Phoenix Jr. Coyotes Bantam AAA"]
+    ],
+    "Phoenix Jr. Coyotes 16U AAA": [
+        ["Phoenix Jr. Coyotes U16"]
+    ],
+    "Calgary Hitmen": [
+        ["Calgary", "WHL"]
+    ],
+    "Pittsburgh Forge": [
+        ["Pittsburgh", "NAHL"]
+    ],
+    "Dartmouth College": [
+        ["Dartmouth"]
+    ],
+    "EHC München": [
+        ["EHC München"]
+    ],
+    "Pursuit of Excellence U15 Prep": [
+        ["PoE Acad. Bant."],
+        ["Pursuit of Ex. H.A."],
+        ["Pursuit of Excellence Bantm Prep"]
+    ],
+    "Okan. Rockets": [
+        ["Okanagan Rockets U18 AAA"]
+    ],
+    "Yorkton Harvest U18 AAA": [
+        ["Yorkton"]
+    ],
+    "HC Presov U20": [
+        ["Presov Jr."]
+    ],
+    "PHK Prešov": [
+        ["Presov"]
+    ],
+    "Red Deer Rebels": [
+        ["Red Deer"]
+    ],
+    "Strait Pirates": [
+        ["Pt. Hawkesbury"]
+    ],
+    "RPI (Rensselaer Polytech. Inst.)": [
+        ["Rpi"]
+    ],
+    "Nova Scotia Voyageurs": [
+        ["Nova Scotia"]
+    ],
+    "Pursuit of Excellence 18U AAA": [
+        ["Pursuit of Ex. Acad."]
+    ],
+    "Victoria Cougars": [
+        ["Vic. Cougars"]
+    ],
+    "Rapid City Rush": [
+        ["Rapid City"]
+    ],
+    "Québec Canadian Tire": [
+        ["Que. Cdn Tire"]
+    ],
+    "Québec Jr. Aces": [
+        ["Quebec Aces", "QJHL"]
+    ],
+    "SC Herisau U15": [
+        ["Herisau U15"]
+    ],
+    "SC Herisau U17": [
+        ["Herisau U17"]
+    ],
+    "Pikes Oberthurgau U17": [
+        ["Pikes U17"]
+    ],
+    "Pikes EHC Oberthurgau II": [
+        ["Pikes II"]
+    ],
+    "SC Rapperswil-Jona Lakers U17": [
+        ["Rapperswil U17"]
+    ],
+    "SC Rapperswil U20": [
+        ["Rapperswil Jr."]
+    ],
+    "Onaping Falls Huskies U15 AAA": [
+        ["Onaping Falls Huskies"]
+    ],
+    "Laredo Bucks": [
+        ["Laredo"]
+    ],
+    "Worcester Sharks": [
+        ["Worcester", "AHL"]
+    ],
+    "Regina Pat Canadians U18 AAA": [
+        ["Reg. Caps"],
+        ["Regina Cdns."],
+        ["Regina Pat Cdns."]
+    ],
+    "Regina Pats": [
+        ["Regina", "WHL"]
+    ], 
+    "Louisiana IceGators": [
+        ["Louisiana", "ECHL"]
+    ],
+    "Michigan K-Wings": [
+        ["Michigan", "IHL"]
+    ],
+    "Kassel Huskies": [
+        ["Kassel"]
+    ],
+    "Regina Pat Blues": [
+        ["Regina Blues"]
+    ],
+    "Fredericton Express": [
+        ["Fredericton"]
+    ],
+    "Québec Nordiques": [
+        ["Quebec Nordiques"]
+    ],
+    "Kiekkoreipas U16": [
+        ["Pelicans U16"]
+    ],
+    "Kiekkoreipas U18": [
+        ["K-Reipas U18"]
+    ],
+    "Reipas Lahti U20": [
+        ["K-Reipas Jr."]
+    ],
+    "Reipas Lahti": [
+        ["Reipas"]
+    ],
+    "HIFK": [
+        ["Hifk"]
+    ],
+    "Lowell Devils": [
+        ["Lowell"]
+    ],
+    "Rødovre U20": [
+        ["Rodovre Jr."]
+    ],
+    "Rødovre SIK": [
+        ["Rodovre"]
+    ],
+    "Starbulls Rosenheim U18": [
+        ["Rosenheim Jr."]
+    ],
+    "Starbulls Rosenheim": [
+        ["Rosenheim"]
+    ],
+    "South Connecticut Selects": [
+        ["S. Connecticut"]
+    ],
+    "Avon Old Farms School": [
+        ["Avon Old Farms"]
+    ],
+    "San Diego Jr. Gulls 16U AA": [
+        ["S.D. Gulls"]
+    ],
+    "St. Michael's Buzzers": [
+        ["St. Mike's B's"],
+        ["St. Michael's", "OPJHL"]
+    ],
+    "Toronto St. Michael's Majors": [
+        ["St. Michael's", "OHL"]
+    ],
+    "Sparta Sarpsborg": [
+        ["Sparta", "Norway"],
+        ["Sarpsborg"]
+    ],
+    "Sparta Sarpsborg 2": [
+        ["Sarpsborg 2"]
+    ],
+    "Cape Breton Oilers": [
+        ["Cape Breton", "AHL"]
+    ],
+    "Vilki OP": [
+        ["Vilki Riga"]
+    ],
+    "Molot-Prikamie Perm": [
+        ["Perm"]
+    ],
+    "IK Nyköping Hockey": [
+        ["Nykoping"]
+    ],
+    "HK Gomel": [
+        ["Gomel"]
+    ],
+    "Fischtown Pinguins": [
+        ["Bremerhaven"]
+    ],
+    "HK Concept Riga": [
+        ["SMScredit.lv"]
+    ],
+    "Sparta Sarpsborg U19": [
+        ["Sarpsborg Jr."]
+    ],
+    "Saskatoon Blues U18 AAA": [
+        ["Sask. Blues"]
+    ],
+    "Saskatoon Blades": [
+        ["Saskatoon", "WHL"]
+    ],
+    "Saskatoon Generals U15 AA": [
+        ["Sask. Generals"]
+    ],
+    "Saskatoon Blazers U18 AAA": [
+        ["Sask. Blazers"]
+    ],
+    "Saskatoon Contacts U18 AAA": [
+        ["Sask. Contacts"]
+    ],
+    "Saskatoon Outlaws U15 AA": [
+        ["Saskatoon Outlaws Bantam AA"],
+        ["Sask. Outlaws"]
+    ],
+    "Saskatoon Legion": [
+        ["Sask. Legion"]
+    ],
+    "Swift Current Broncos": [
+        ["Swift Current"]
+    ],
+    "Metallurg Novokuznetsk": [
+        ["Novokuznetsk"]
+    ],
+    "Salavat Yulaev Ufa": [
+        ["Ufa"]
+    ],
+    "Saskatoon Royals": [
+        ["Sask. Royals"]
+    ],
+    "Humboldt Broncos": [
+        ["Humboldt"]
+    ],
+    "Newcastle Vipers": [
+        ["Newcastle"]
+    ],
+    "Wichita Thunder": [
+        ["Wichita"]
+    ],
+    "Sault Ste. Marie North Stars U18": [
+        ["Sault Ste. Marie North Stars"]
+    ],
+    "Sault Ste. Marie North Stars": [
+        ["Soo", "GNML"]
+    ],
+    "SC Riessersee": [
+        ["Riessersee"]
+    ],
+    "HCB Ticino Rockets": [
+        ["Bellinzona Rockets"]
+    ],
+    "Selects Academy 16U AAA": [
+        ["Selects Acad. U16"]
+    ],
+    "Selects Academy 18U AAA": [
+        ["Selects Acad. U18"]
+    ],
+    "Séminaire St-François Blizzard": [
+        ["Sem. St-Francois"]
+    ],
+    "Baie-Comeau Drakkar": [
+        ["Baie-Comeau"]
+    ],
+    "Shattuck St. Mary's 16U AAA": [
+        ["Shattuck St. Mary's U16"]
+    ],
+    "Shattuck St. Mary's 18U Prep": [
+        ["Shat.-St. Mary's"]
+    ],
+    "HK Skalica U20": [
+        ["Skalica Jr."]
+    ],
+    "Cincinnati Mighty Ducks": [
+        ["Cincinnati", "AHL"] 
+    ],
+    "HC Oceláři Třinec": [
+        ["Trinec"]
+    ],
+    "HC Kometa Brno": [
+        ["Brno"]
+    ],
+    "Piráti Chomutov": [
+        ["Chomutov"],
+        ["Pirati Chomutov"]
+    ],
+    "Skåre BK J20": [
+        ["Skare Jr."]
+    ],
+    "Skåre BK": [
+        ["Skare"]
+    ],
+    "California Titans 18U AAA": [
+        ["So. Cal Titans"]
+    ],
+    "South Kent Prep": [
+        ["South Kent Prep."],
+        ["South Kent"]
+    ],
+    "Mississauga Reps U18 AAA": [
+        ["Miss. Reps"]
+    ],
+    "Dixie Beehives": [
+        ["Dixie"]
+    ],
+    "Wexford Warriors": [
+        ["Wexford"]
+    ],
+    "Halifax Citadels": [
+        ["Halifax", "AHL"]
+    ],
+    "Sport U20": [
+        ["Sport Jr."]
+    ],
+    "Mississauga IceDogs": [
+        ["Mississauga", "OHL"]
+    ],
+    "Gwinnett Gladiators": [
+        ["Gwinnett"]
+    ],
+    "Medvescak Zagreb": [
+        ["Zagreb"]
+    ],
+    "Djurgårdens IF": [
+        ["Djurgarden"]
+    ],
+    "Springfield Jr. Pics 16U AAA": [
+        ["Springfield Jr. Pics"],
+        ["Springfield Jr. Pics 16U"]
+    ],
+    "Springfield Rifles 16U AAA": [
+        ["Springfield Rifles 16U"]
+    ],
+    "St. Albert Blues U15 AA": [
+        ["St. Albert Blues Bantam AA"]
+    ],
+    "St. Albert Sabres U15 AAA": [
+        ["St. Albert", "AMBHL"]
+    ],
+    "St. Albert Raiders U18 AAA": [
+        ["St. Albert", "AMHL"]
+    ],
+    "Alaska Aces": [
+        ["Alaska", "ECHL"]
+    ],
+    "St. Albert Flyers U16 AAA": [
+        ["St. Albert Flyers Minor Mdgt AAA"]
+    ],
+    "Univ. of Manitoba": [
+        ["U. Of Manitoba"]
+    ],
+    "St. Catharines Falcons U16 AAA": [
+        ["St. Catharines Falc. Mn Mdgt AAA"],
+        ["St. Cath. Falcons"]
+    ],
+    "St. Catharines Falcons": [
+        ["St. Catharines"]
+    ],
+    "St. Catharines Sabres U16 AAA": [
+        ["St. Catharines Sabres"]
+    ],
+    "Manchester Monarchs": [
+        ["Manchester", "AHL"]
+    ],
+    "St. Cloud Cathedral": [
+        ["St. Cloud Cath."]
+    ],
+    "St. Cloud Tech High": [
+        ["St. Cloud Tech"]
+    ],
+    "Saint Dominic Academy": [
+        ["St. Dominic"]
+    ],
+    "St. Edward High": [
+        ["St. Edward's"]
+    ],
+    "Danbury Trashers": [
+        ["Danbury"]
+    ],
+    "Buffalo Lightning": [
+        ["Buffalo", "OPJHL"]
+    ],
+    "St. George Lions": [
+        ["St. George"]
+    ],
+    "Peterborough Petes": [
+        ["Peterborough"]
+    ],
+    "Newmarket Saints": [
+        ["Newmarket"]
+    ],
+    "St. George's School": [
+        ["St. George's"]
+    ],
+    "Canterbury School": [
+        ["Canterbury"]
+    ],
+    "Brown Univ.": [
+        ["Brown U."]
+    ],
+    "Hampton Roads Admirals": [
+        ["Hampton Roads"]
+    ],
+    "Las Vegas Thunder": [
+        ["Las Vegas", "IHL"]
+    ],
+    "St. John's Hitmen U15 AAA": [
+        ["St. John's Hitmen"]
+    ],
+    "Victoria Grizzlies": [
+        ["Victoria", "BCHL"]
+    ],
+    "Noble & Greenough School": [
+        ["Nobles"]
+    ],
+    "Detroit Jr. Whalers": [
+        ["Detroit", "OHL"]
+    ],
+    "EHC Basel": [
+        ["Basel"]
+    ],
+    "St. John's Privateers U18 AAA": [
+        ["St. John's Priv."]
+    ],
+    "Winnipeg Monarchs U15 AAA": [
+        ["Winnipeg Monarchs Bantam AAA"]
+    ],
+    "St. John's-Ravenscourt": [
+        ["St. John's Ravenscourt"]
+    ],
+    "Brandon Wheat Kings": [
+        ["Brandon"]
+    ],
+    "St. Louis Park High": [
+        ["St. Louis Park"]
+    ],
+    "Prince Albert Raiders U18 AAA": [
+        ["Prince Albert", "SMHL"]
+    ],
+    "Flint Firebirds": [
+        ["Flint"]
+    ],
+    "EHC Olten": [
+        ["Olten"]
+    ],
+    "Saint Peter-Marian High": [
+        ["St. Peter's Marian"]
+    ],
+    "Cushing Academy": [
+        ["Cushing"]
+    ],
+    "MHK Spartak Moskva": [
+        ["Spartak Jr."]
+    ],
+    "SKA-1946 St. Petersburg": [
+        ["St. Petersburg Jr."]
+    ],
+    "SKA-Kareliya St. Petersburg": [
+        ["SKA-Kareliya"]
+    ],
+    "SKA-Neva St. Petersburg": [
+        ["SKA-Neva"]
+    ],
+    "St. Sebastian's School": [
+        ["St. Sebastian's"]
+    ],
+    "Cape Cod Whalers 18U AAA": [
+        ["Cape Cod"]
+    ],
+    "Selkirk Steelers": [
+        ["Selkirk"]
+    ],
+    "Dauphin Kings": [
+        ["Dauphin"]
+    ],
+    "Eastman Selects U18 AAA": [
+        ["Eastman"]
+    ],
+    "Univ. of Alaska-Fairbanks": [
+        ["Alaska", "CCHA"],
+        ["Alaska", "NCAA"]
+    ],
+    "Lloydminster Blazers U18 AAA": [
+        ["Lloydminster Blazers Midget AA"]
+    ],
+    "Lloydminster Bandits": [
+        ["Lloydminster", "AJHL"]
+    ],
+    "Alberni Valley Bulldogs": [
+        ["Alberni Valley"]
+    ],
+    "Stanstead College": [
+        ["Stanstead Coll."]
+    ],
+    "Lørenskog U17": [
+        ["Lorenskog U17"]
+    ],
+    "Kapitan Stupino": [
+        ["Stupino Jr."]
+    ],
+    "Sudbury Wolves U15 AAA": [
+        ["Sudbury Wolves Bantam AAA"]
+    ],
+    "Sudbury Wolves U16 AA": [
+        ["Sud. Wolves M.M."]
+    ],
+    "Syracuse Nationals 18U AAA": [
+        ["Syr. Nationals"]
+    ],
+    "Kent School": [
+        ["Kent Prep"]
+    ],
+    "Syracuse Jr. Stars 16U AAA": [
+        ["Syracuse Jr. Stars 16U"]
+    ],
+    "Thunder Bay Beavers": [
+        ["T. Bay Beavers"]
+    ],
+    "Thunder Bay North Stars": [
+        ["T. Bay Stars"]
+    ],
+    "Cornwall Royals": [
+        ["Cornwall"]
+    ],
+    "Univ. of Western Ontario": [
+        ["Western Ontario"]
+    ],
+    "Ajax/Pickering Raiders U16 AAA": [
+        ["Ajax-Pickering"]
+    ],
+    "The Hill Academy": [
+        ["The Hill Acad."]
+    ],
+    "Toronto Jr. Canadiens U16 AAA": [
+        ["Tor. Jr. Can. MM"]
+    ],
+    "Toronto Jr. Canadiens U18 AAA": [
+        ["Tor. Jr. Can. Midg"],
+        ["Tor. Jr. Can. Midg."]
+    ],
+    "Mississauga Senators U16 AAA": [
+        ["Miss. Senators"]
+    ],
+    "Toronto Jr. Canadiens": [
+        ["Tor. Canadiens"]
+    ],
+    "Toronto Titans U16 AAA": [
+        ["Tor. Titans"]
+    ],
+    "LHK Jestřábi Prostějov": [
+        ["LHK Jestrabi Prostejov"]
+    ],
+    "SK Horácká Slavia Třebíč U16": [
+        ["SK Horacka Slavia Trebic U16"]
+    ],
+    "SK Horácká Slavia Třebíč U18": [
+        ["Trebic U18"]
+    ],
+    "SK Horácká Slavia Třebíč U20": [
+        ["Trebic Jr."]
+    ],
+    "SK Horácká Slavia Třebíč": [
+        ["SK Horacka Slavia Trebic"],
+        ["Trebic"]
+    ],
+    "HC Pardubice U20": [
+        ["Pardubice Jr."]
+    ],
+    "HC Pardubice U18": [
+        ["Pardubice U18"]
+    ],
+    "HC Pardubice": [
+        ["Pardubice"]
+    ],
+    "HC Topolcany U18": [
+        ["Topolcany U18"]
+    ],
+    "HC Topolcany U20": [
+        ["Topolcany Jr."]
+    ],
+    "HK Trnava U18": [
+        ["Trnava U18"]
+    ],
+    "HK Trnava U20": [
+        ["Trnava Jr."]
+    ],
+    "HC Topolcany": [
+        ["Topolcany"]
+    ],
+    "Vancouver Giants": [
+        ["Vancouver", "WHL"]
+    ],
+    "HC Banska Bystrica": [
+        ["B. Bystrica"]
+    ],
+    "GKS Tychy U20": [
+        ["Tychy Jr."]
+    ],
+    "Kiekko-Espoo": [
+        ["K-Espoo"]
+    ],
+    "Buffalo Regals 18U AAA": [
+        ["Buf. Regals"]
+    ],
+    "Univ. of Connecticut": [
+        ["U. Of Connecticut"],
+        ["U. of Connecticut"]
+    ],
+    "New Haven Nighthawks": [
+        ["New Haven", "AHL"]
+    ],
+    "Binghamton Whalers": [
+        ["Binghamton", "AHL"]
+    ],
+    "Laval Voisins": [
+        ["Laval", "QMJHL"]
+    ],
+    "Univ. of Moncton": [
+        ["U. Of Moncton"],
+        ["U. of Moncton"]
+    ],
+    "SC Herisau": [
+        ["Herisau"]
+    ],
+    "SERC Wild Wings": [
+        ["Schwenningen"]
+    ],
+    "Kingston Canadians": [
+        ["Kingston", "OHL"]
+    ],
+    "Univ. of Regina": [
+        ["U. Of Regina"],
+        ["U. of Regina"]
+    ],
+    "Colorado Rangers": [
+        ["Colorado", "IHL"]
+    ],
+    "Denver Rangers": [
+        ["Denver Rangers", "IHL"]
+    ],
+    "SC Langnau": [
+        ["Langnau"]
+    ],
+    "HC Innsbruck": [
+        ["Innsbruck"]
+    ],
+    "Owen Sound Attack": [
+        ["Owen Sound", "OHL"] 
+    ],
+    "Univ. of Prince Edward Island": [
+        ["U. of P.E.I."]
+    ],
+    "Weyburn Red Wings": [
+        ["Weyburn"]
+    ],
+    "Yorkton Terriers": [
+        ["Yorkton"]
+    ],
+    "Virginia Lancers": [
+        ["Virginia", "ECHL"]
+    ],
+    "Phoenix Roadrunners": [
+        ["Phoenix", "IHL"]
+    ],
+    "Nottingham Panthers": [
+        ["Nottingham"]
+    ],
+    "Georgetown Raiders": [
+        ["Georgetown"]
+    ],
+    "Mercer Chiefs 16UA AAA": [
+        ["Mercer Chiefs 16UA"]
+    ],
+    "New Jersey Rockets 16U AAA": [
+        ["New Jersey Rockets 16U"]
+    ],
+    "Taft School": [
+        ["Taft"]
+    ],
+    "Amos Forestiers": [
+        ["Amos"]
+    ],
+    "Valbo AIF J20": [
+        ["Valbo Jr."]
+    ],
+    "Valbo AIF": [
+        ["Valbo"]
+    ],
+    "Vålerenga U20": [
+        ["Valerengen Jr."]
+    ],
+    "Vålerenga": [
+        ["Valerengen"]
+    ],
+    "Valley Jr. Warriors 16U AAA": [
+        ["Valley"]
+    ],
+    "Valley Jr. Warriors": [
+        ["Valley Jr."]
+    ],
+    "Valley Jr. Warriors 18U AAA": [
+        ["Valley"]
+    ],
+    "Vancounver Grandview": [
+        ["Van. Grandview"]
+    ],
+    "Spokane Chiefs": [
+        ["Spokane", "WHL"]
+    ],
+    "Väsby IK J20": [
+        ["Vasby Jr."]
+    ],
+    "Djurgårdens IF J20": [
+        ["Djurgarden Jr."]
+    ],
+    "Villacher SV U20": [
+        ["Villach Jr."]
+    ],
+    "HC Vsetín U20": [
+        ["Vsetin Jr."]
+    ],
+    "HC Vsetín U18": [
+        ["Vsetin U17"],
+        ["HC Vsetin U18"]
+    ],
+    "HC Vsetín": [
+        ["Vsetin"]
+    ],
+    "HC Havířov": [
+        ["Havirov"]
+    ],
+    "HC Olomouc": [
+        ["Olomouc"]
+    ],
+    "HC Lev Praha": [
+        ["Lev Praha"]
+    ],
+    "Waterloo Wolves U16 AAA": [
+        ["Wat. Wolves MM"]
+    ],
+    "Weymouth High": [
+        "Weymouth N."
+    ],
+    "Baltimore Bandits": [
+        ["Baltimore", "AHL"]
+    ],
+    "WB/Scranton Knights 16U AAA": [
+        ["Wilkes Barre U16"]
+    ],
+    "Windsor Jr. Spitfires U16 AAA": [
+        ["Windsor Jr. Spitfires Mn Mgt AAA"]
+    ],
+    "KRS Heilongjiang": [
+        ["KRS-BSU Beijing"]
+    ],
+    "Winnipeg Clubs": [
+        ["Winnipeg Jets Jr."]
+    ],
+    "Austin Mavericks": [
+        ["Austin", "USHL"]
+    ],
+    "Rochester Mustangs": [
+        ["Rochester", "USHL"]
+    ],
+    "Univ. of Wisconsin-Stevens Point": [
+        ["Wisc-Stevens Pt."]
+    ],
+    "Windsor Jr. Spitfires U18 AAA": [
+        ["Wndsr. Club 240"]
+    ],
+    "Brantford Alexanders": [
+        ["Brantford"]
+    ],
+    "Winnipeg Hawks U15 AAA": [
+        ["Wpg. Hawks"],
+        ["Winnipeg Hawks Bantam AAA"]
+    ],
+    "Winnipeg Thrashers U18 AAA": [
+        ["Wpg. Thrashers"]
+    ],
+    "Quad City Mallards": [
+        ["Quad City"]
+    ],
+    "Winnipeg Mavericks U15 AAA": [
+        ["Wpg. Mavericks"]
+    ],
+    "Asheville Smoke": [
+        ["Asheville"]
+    ],
+    "Winnipeg Sharks U15 AAA": [
+        ["Winnipeg Sharks Bantam AAA"],
+        ["Wpg. Sharks"]
+    ],
+    "Winnipeg Warriors U17 AAA": [
+        ["Wpg. Warriors"]
+    ],
+    "Winnipeg Wild U18 AAA": [
+        ["Winnipeg Wild Midget AAA"],
+        ["Wpg. Wild"]
+    ],
+    "Winnipeg Saints": [
+        ["Wpg. Saints"]
+    ],
+    "Moose Jaw Warriors": [
+        ["Moose Jaw"]
+    ],
+    "Steinbach Pistons": [
+        ["Steinbach"]
+    ],
+    "Vincent Massey Collegiate": [
+        ["Vincent Massey"]
+    ],
+    "Winnipeg South Blues": [
+        ["Wpg. South Blues"],
+        ["Winnipeg South"]
+    ],
+    "Corpus Christi IceRays": [
+        ["Corpus Christi"]
+    ],
+    "Winnipeg Stars": [
+        ["Wpg. Stars"]
+    ],
+    "HC Ytong Brno U20": [
+        ["Ytong Brno Jr."]
+    ],
+    "HC Znojemští Orli": [
+        ["Znojmo"]
+    ],
+    "HKM Zvolen U20": [
+        ["Zvolen Jr."]
+    ],
+    "MsHK Zilina": [
+        ["Zilina"]
+    ],
+    "HKM Zvolen": [
+        ["Zvolen"]
+    ],
+    "HC Kosice": [
+        ["Kosice"]
+    ],
+    "Antoine-Girouard Gaulois": [
+        ["Saint-Hyacinthe Gaulois"]
+    ],
+    "Collège Antoine-Girouard Bantam AAA": [
+        ["École Fadette Vert et Noir U15"]
+    ],
+    "Collège Antoine-Girouard Espoir": [
+        ["École Fadette Vert et Noir Esp."]
+    ],
+    "Toronto Marlboros U16 AAA": [
+        ["Tor. Marlboros"]
+    ],
+    "Toronto Marlboros U15 AAA": [
+        ["Toronto Marlboros Bantam AAA"]
+    ],
+    "Milton Icehawks": [
+        ["Milton"]
+    ],
+    "CAC Canadians U15 AA 2": [
+        ["CAC Canadians Bantam AA 2"]
+    ],
+    "Penticton Vees": [
+        ["Penticton"]
+    ],
+    "Winnipeg Hawks U14 AAA": [
+        ["Winnipeg Hawks Bantam AAA Div 2"]
+    ],
+    "Cumberland Barons U16 AA": [
+        ["Cumberland Barons Min. Midget AA"]
+    ],
+    "Santa Fe Roadrunners": [
+        ["Santa Fe"]
+    ],
+    "U.S. National U17 Team": [
+        ["USNTDP", "U-17"]
+    ],
+    "U.S. National U18 Team": [
+        ["USNTDP", "U-18"]
+    ]
+}

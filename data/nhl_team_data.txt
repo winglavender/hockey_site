@@ -1,0 +1,33 @@
+2025
+Montréal Canadiens,2000
+Chicago Blackhawks,2000
+Boston Bruins,2000
+Detroit Red Wings,2000
+Toronto Maple Leafs,2000
+New York Rangers,2000
+New York Islanders,2000
+New Jersey Devils,2000
+Philadelphia Flyers,2000
+Pittsburgh Penguins,2000
+Carolina Hurricanes,2000
+Nashville Predators,2000
+Florida Panthers,2000
+Tampa Bay Lightning,2000
+Dallas Stars,2000
+San Jose Sharks,2000
+Anaheim Ducks,2006
+Los Angeles Kings,2000
+Vegas Golden Knights,2017
+Minnesota Wild,2000
+Columbus Blue Jackets,2000
+St. Louis Blues,2000
+Ottawa Senators,2000
+Calgary Flames,2000
+Winnipeg Jets,2011
+Edmonton Oilers,2000
+Vancouver Canucks,2000
+Colorado Avalanche,2000
+Buffalo Sabres,2000
+Washington Capitals,2000
+Seattle Kraken,2021
+Utah Hockey Club,2024

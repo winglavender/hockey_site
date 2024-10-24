@@ -1,0 +1,14 @@
+incorrect_link,correct_link
+https://www.eliteprospects.com/player/8772/martin-st.-louis,https://www.eliteprospects.com/player/8772/martin-st-louis
+https://www.eliteprospects.com/player/201476/nicholas-abruzzese,https://www.eliteprospects.com/player/201476/nick-abruzzese
+https://www.eliteprospects.com/player/338571/j.j.-moser,https://www.eliteprospects.com/player/338571/janis-moser
+https://www.eliteprospects.com/player/8542/toma%C5%A1-kaberle,https://www.eliteprospects.com/player/8542/tomas-kaberle
+https://www.eliteprospects.com/player/23512/frederic-st.-denis,https://www.eliteprospects.com/player/23512/frederic-st-denis
+https://www.eliteprospects.com/player/4231/evgeni-malkin,https://www.eliteprospects.com/player/4231/yevgeni-malkin
+https://www.eliteprospects.com/player/9285/jakub-voracek,https://www.eliteprospects.com/player/9285/jakub-vora%C4%8Dek
+https://www.eliteprospects.com/player/247398/jiri-patera,https://www.eliteprospects.com/player/247398/ji%C5%99i-patera
+https://www.eliteprospects.com/player/33395/erik-karlsson,https://www.eliteprospects.com/player/33395/erik-jinesjo-karlsson
+https://www.eliteprospects.com/player/39601/chris-tanev,https://www.eliteprospects.com/player/39601/christopher-tanev
+https://www.eliteprospects.com/player/242077/zachary-sanford,https://www.eliteprospects.com/player/242077/zach-sanford
+https://www.eliteprospects.com/player/223194/mitch-marner,https://www.eliteprospects.com/player/223194/mitchell-marner
+https://www.eliteprospects.com/player/338571/j.j.-moser,https://www.eliteprospects.com/player/338571/janis-moser

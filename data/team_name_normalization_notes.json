@@ -1,0 +1,189 @@
+{
+    "(hopefully unique) EP team name": 
+        [
+            ["nhl team name alternative 1"],
+            ["nhl team name alternative 2"],
+            ["nhl team name alternative 3", "league specified to disambiguate from another EP name", "specific player this applies to"]
+        ],
+
+    "Springfield Indians": [
+        ["Springfield", "AHL"] todo probably not, need seasons????
+    ],
+    "Springfield Thunderbirds": [
+        ["Springfield", "AHL"]
+    ],
+    "Springfield Falcons": [
+        ["Springfield", "AHL"]
+    ],
+
+
+    "HC Mountfield U18": [
+        ["C. Budejovice U18"]
+    ],
+    "HC Mountfield U20": [
+        ["C. Budejovice Jr."]
+    ],
+    "HC Mountfield": [
+        ["C. Budejovice"]
+    ],
+    "HC Mountfield U17": [
+        ["C. Budejovice U17"]
+    ],
+
+
+    "Kristall Elektrostal-2": [
+        ["Elektrostal-2"] //
+    ],
+    "Elemash Elektrostal-2": [
+        ["Elektrostal-2"] //
+    ],
+
+    "Khimik Mytishchi": [
+        ["Mytishchi"] //
+    ],
+    "Atlant Mytishchi": [
+        ["Mytishchi"] //
+    ],
+
+
+    "Colorado Thunderbirds 16U AAA": [
+        ["Col. T-birds U16"],
+        ["Col. Thunderbirds"] // slavvin
+    ],
+
+
+    "Iowa Stars": [
+        ["Iowa", "AHL"] //
+    ],
+
+
+    "Toronto Roadrunners": [
+        ["Toronto", "AHL", "2003-2004"] //
+    ],
+
+
+    "Hamilton Bulldogs": [
+        ["Hamilton"], //
+        ["Brantford Bulldogs"]
+    ],
+
+
+    "Lokomotiv Yaroslavl": [
+        ["Yaroslavl"] // what years???
+    ],
+
+
+    "MHC Martin": [ 
+        ["Martin"], //
+        ["HK Martin"]
+    ],
+    "MHA Martin U18": [
+        ["Martin", "8467958", "1996-1997"]//change this line to u18 before doing anything else 
+    ],
+    "MHA Martin U20": [
+        ["Martin Jr."]
+    ],
+    "MHA Martin": [
+        ["Martin"]//
+    ],
+
+
+    "Powell River Paper Kings": [
+        ["Powell River"] //
+    ],
+    "Powell River Kings": [
+        ["Powell River"] //
+    ],
+
+
+    "Albany River Rats": [
+        ["Albany"] // years
+    ],
+    "Albany Devils": [
+        ["Albany"] // years
+    ],
+
+
+    "Kloten Flyers": [
+        ["Kloten"] //
+    ],
+    "EHC Kloten": [
+        ["Kloten"] // 
+    ],
+
+
+    "Hamilton Steelhawks": [
+        ["Ham. Hawks"],
+        ["Hamilton", "OHL"] // year
+    ],
+
+
+    "Adirondack Phantoms": [
+        ["Adirondack"]
+    ],
+    "Adirondack Flames": [
+        ["Adirondack"] //
+    ],
+
+
+    "Torpedo Yaroslavl": [
+        ["Yaroslavl"] // what years?
+    ],
+    "ShVSM Yaroslavl": [
+        ["Yaroslavl 2"] // what years?
+    ],
+    "Lokomotiv Yaroslavl-2": [
+        ["Yaroslavl 2"] // what years
+    ],
+
+
+    "Prizma Riga U20": [
+        ["Prizma Jr."] // is this correct?
+    ],
+
+
+    "Abbotsford Heat": [
+        ["Abbotsford"] //
+    ],
+
+
+    "HC České Budějovice U20": [
+        ["C. Budejovice Jr."]//
+    ],
+
+
+    "Rytiri Kladno U20": [
+        ["Kladno Jr."] //?
+    ],
+
+    "Québec Citadelles": [
+        ["Quebec", "AHL"] //?
+    ],
+    "HC Kladno U20": [
+        ["Kladno Jr."] //?
+    ],
+
+
+    "PHK Prešov": [
+        ["Presov"]
+    ],
+    //"HC Presov U18" Vladimir Mihalik, 8471704, 2003-2004
+
+
+    "Owen Sound Platers": [
+        ["Owen Sound", "OHL"] //
+    ],
+    "Owen Sound Attack": [
+        ["Owen Sound", "OHL"] //
+    ],
+
+
+    "Kelowna Wings": [
+        ["Kelowna", "WHL"] // years
+    ],
+
+
+    "Valley Jr. Warriors 18U AAA": [
+        ["Valley"] // fix Brian Pinho	2010-2011
+    ],
+}

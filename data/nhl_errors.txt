@@ -1,0 +1,6 @@
+playerId,field,incorrect_value,value
+8465168,season,1993-1993,1993-1994
+8481524,playerName,Bowen  Byram,Bowen Byram
+8480184,playerName,Gustav Lindstrom,Gustav Lindström
+8479423,playerName,Alexander Nylander,Alex Nylander
+8482929,playerName,Emil Martinsen,Emil Lilleberg

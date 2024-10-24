@@ -9,12 +9,13 @@ root_dir = str(Path.cwd())
 import time
 
 app = Flask(__name__)
+with open(os.path.join(root_dir, 'config.yaml'), 'r') as f:
+    config = yaml.safe_load(f)
+config['data_dir'] = os.path.join(root_dir, 'data')
+
 if os.getenv('PYANYWHERE'):
     print("running on pythonanywhere")
     app.config.update(SECRET_KEY = os.getenv("SECRET_KEY"))
-    with open('hockey_site/config.yaml', 'r') as f:
-        config = yaml.safe_load(f)
-    config['root_dir'] = root_dir
     SQLALCHEMY_DATABASE_URI = "mysql://{username}:{password}@{hostname}/{databasename}".format(
     username=os.getenv("username"),# "hockeyteammates",
     password=os.getenv("password"),
@@ -29,17 +30,15 @@ if os.getenv('PYANYWHERE'):
 else:
     print("running locally")
     app.config.from_pyfile('config.py')
-    with open('config.yaml', 'r') as f:
-        config = yaml.safe_load(f)
-    config['root_dir'] = root_dir + "/.."
     config['filename_date'] = config['current_date'].replace("-", "")
-    out_db = os.path.join(config['data_dir'], f"{config['filename_date']}.db")
+    out_db = os.path.join(Path(root_dir).parents[0], 'hockey_db_data', f"{config['filename_date']}.db")
     engine = create_engine(f"sqlite:///{out_db}")
 print(root_dir)
+print(config['data_dir'])
 
 # populate NHL team data
 nhl_team_data = {'team_order': [], 'team_seasons': {}}
-with open(config['root_dir'] + '/hockey_db_data/nhl_team_data.txt','r') as in_file:
+with open(os.path.join(config['data_dir'], 'nhl_team_data.txt'), 'r') as in_file:
     line_count = 1
     for line in in_file:
         if line_count == 1:
