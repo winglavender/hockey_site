@@ -24,10 +24,20 @@ with open(f'{data_dir}skaters_test.txt','r') as in_file:
     num_failed = 0
     for idx, row in enumerate(reader):
         match = player_rows.loc[(player_rows.playerName==row['player']) & (player_rows.team==row['team']) & (player_rows.league==row['league']) & (pd.to_datetime(player_rows.start_date)==pd.to_datetime(row['start_date'])) & (pd.to_datetime(player_rows.end_date)==pd.to_datetime(row['end_date']))]
+        partial_match = player_rows.loc[(player_rows.playerName==row['player']) & (player_rows.team==row['team'])]
         if len(match) != 1:
             print(f"TEST FAILED: line {idx}, found {len(match)} matching rows")
-            print(row)
-            print(match)
+            if row['notes']:
+                print(f"WARNING: {row['notes']}")
+            print()
+            print(f"{row['player']}, {row['team']} ({row['league']}) {row['start_date']} to {row['end_date']}")
+            if len(match) > 0:
+                print(match)
+            if len (partial_match) > 0:
+                print("partial match")
+                for row in partial_match.itertuples():
+                    print(f"{row.playerName}, {row.team} ({row.league}) {row.start_date.strftime('%Y-%m-%d')} to {row.end_date.strftime('%Y-%m-%d')}")
+            print("------------------\n\n")
             num_failed += 1
         else:
             num_passed += 1

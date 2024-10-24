@@ -82,6 +82,10 @@ from site_builder.normalize_name import normalize_name
 with open(os.path.join(data_dir, "ahl_affiliates.json")) as f:
     ahl_affiliates = json.load(f)
 
+with open(os.path.join(data_dir, "verified_trades.csv")) as f:
+    verified_trades = pd.read_csv(f)
+verified_trades['date'] = pd.to_datetime(verified_trades['date'])
+
 # establish list of seasons to scrape (relevant for both scraping operations)
 today = datetime.strptime(config['current_date'], '%Y-%m-%d').date()
 today_str = config['current_date'].replace("-","")
@@ -106,14 +110,14 @@ else: # we only want to scrape starting in the season containing prev_file_date
         end_year = start_year+1
         seasons_to_scrape.append(f"{start_year}-{end_year}")
 
-
 def get_tournament_leagues(): # this is a function so we can call it from the side code teammates_db.py
-    tournament_leagues = {'WJAC-19': (12, 0), 'OGQ': (9, 0), 'OG': (2,1), 'wjc-20': (1,1), 'wc': (6,1), 'wjc-18': (4,1), 'WCup': (9,0), 'nhl-asg': (2,1), 'whc-17': (11,0),} # first value is month and second value is 0 if the first year in a season should be used, 1 if the second year in the season should be used
+    # first value is month and second value is 0 if the first year in a season should be used, 1 if the second year in the season should be used
+    tournament_leagues = {'Hlinka Gretzky Cup': (8, 0), 'WJAC-19': (12, 0), 'Oly-Q': (9, 0), 'Olympics': (2,1), 'wjc-20': (1,1), 'wc': (6,1), 'wjc-18': (4,1), 'WJC-18': (4,1), 'WJC-18 D1A': (4,1), 'W-Cup': (9,0), 'WCup': (9,0), 'nhl-asg': (2,1), 'whc-17': (11,0), 'U17-Dev': (11,0), 'U18-Dev': (11,0)} 
     return tournament_leagues
     
 tournament_leagues = get_tournament_leagues()
-league_strings = {'OG': 'Olympics', 'OGQ': 'Olympics Qualifiers', 'wc': 'Worlds', 'wjc-20': 'World Juniors', 'WCup': 'World Cup', 'nhl-asg': 'NHL ASG', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17', }
-nhl_leagues_to_drop = {'WC', 'WC-A', 'WJC-A', 'WJ18-A', 'WJC-20', 'M-Cup', 'Champions HL'}
+league_strings = {'Oly-Q': 'Olympics Qualifiers', 'wc': 'Worlds', 'wjc-20': 'World Juniors', 'WCup': 'World Cup', 'nhl-asg': 'NHL ASG', 'wjc-20': 'World Juniors', 'wjc-18': 'WC-U18', 'whc-17': 'WHC-17'}
+nhl_leagues_to_drop = {'WC', 'WC-A', 'WJC-A', 'WJ18-A', 'WJC-20', 'M-Cup', 'Champions HL', 'Other', 'WJC-18', 'International', 'WHC-17'}
 
 # FUNCTIONS
 def get_team_display_string(league_str, team_str):
@@ -238,8 +242,9 @@ def scrape_game_pages(game_urls, teams_info, engine):
             games_info.append([game_id, game_url, game_json['gameDate'], game_json['gameType'], game_json['season'], season_id_to_name(game_json['season']), get_team_name_from_id(game_json['awayTeam'], teams_info), get_team_name_from_id(game_json['homeTeam'], teams_info), game_json['awayTeam']['score'], game_json['homeTeam']['score'], game_json['venue']['default'], winningTeam])
             # process game roster
             for team in ["homeTeam", "awayTeam"]:
-                for scratch in game_json["summary"]["gameInfo"][team]["scratches"]: # updated
-                    scratch_data.append([game_id, scratch["id"]])
+                if "gameInfo" in game_json["summary"] and "scratches" in game_json["summary"]["gameInfo"][team]:
+                    for scratch in game_json["summary"]["gameInfo"][team]["scratches"]: # updated
+                        scratch_data.append([game_id, scratch["id"]])
                 for player_type in ["forwards", "defense", "goalies"]:
                     # for player in game_json["boxscore"]["playerByGameStats"][team][player_type]:
                     for player in game_json["playerByGameStats"][team][player_type]:
@@ -371,7 +376,7 @@ def scrape_ep(engine, old_ep_raw_intl=None):
     skaters['player'] = skaters['player'].str.replace(r"\(.*\)", "", regex=True)
     skaters['player'] = skaters['player'].str.strip()
      # scrape transfer data and save to raw db
-    transfers = scraper.get_transfers(earliest_transfer_date, max_page=2)
+    transfers = scraper.get_transfers(earliest_transfer_date)#, max_page=2)
     transfers.date = pd.to_datetime(transfers.date)
     transfers['player'] = transfers['player'].str.replace(r"\(.*\)", "", regex=True)
     transfers['player'] = transfers['player'].str.strip()
@@ -508,7 +513,11 @@ def convert_tournament_dates(tournament, start_date, end_date):
         season_years = (2012,2013)
     elif season_years_str == "2021-2021":
         season_years = (2020, 2021)
-    tourney_month, tourney_year = tournament_leagues[tournament]
+    if tournament in tournament_leagues:
+        tourney_month, tourney_year = tournament_leagues[tournament]
+    else:
+        tourney_month, tourney_year = (4,1)
+        print(f"Tournament not found: {tournament}")
     return (pd.to_datetime(f"{season_years[tourney_year]}/{tourney_month}/1"), pd.to_datetime(f"{season_years[tourney_year]}/{tourney_month}/28"))
 
 def id_adjacent_team_rows(team_rows):
@@ -568,57 +577,66 @@ def build_player_timeline_new(rows, transfers, postseasons):
                     continue # don't add a duplicate trade
                 ahl_rows.append([row['date'], from_team, to_team, row['link'], row['player'], row['playerId'], row['playerName'], False]) 
     player_trade_candidates = pd.concat([player_trade_candidates, pd.DataFrame(ahl_rows, columns=['date', 'from_team', 'to_team', 'link', 'player', 'playerId', 'playerName', 'orig_transfer'])])
-    player_trade_candidates['to_team_words'] = player_trade_candidates['to_team'].apply(get_team_subwords)
-    player_trade_candidates['from_team_words'] = player_trade_candidates['from_team'].apply(get_team_subwords)
-    # condense adjacent seasons for the same team
-    for league in rows['league'].unique():
-        league_rows = rows.loc[rows['league'] == league]
-        for team in league_rows['team'].unique():
-            # TODO check usntdp here
-            team_rows = rows.loc[(rows['team'] == team) & (rows['league'] == league)]
-            # check for tournament special cases: no merging, each row becomes its own row in the timeline
-            if league in tournament_leagues:
+    # condense adjacent seasons for the same team -- we're now ignoring league name differences (bc of NHL inconsistent data)
+    for team in rows['team'].unique():
+        # TODO check usntdp here
+        team_rows = rows.loc[(rows['team'] == team)] # & (rows['league'] == league)]
+        # unify league name
+        team_leagues = team_rows['league'].unique()
+        team_leagues = sorted(team_leagues)
+        league = team_leagues[0]
+        # check for tournament special cases: no merging, each row becomes its own row in the timeline
+        if league in tournament_leagues:
+            # use all available leagues
+            for league_option in team_leagues:
+                team_rows = rows.loc[(rows['team'] == team) & (rows['league'] == league_option)]
                 seasons = team_rows['season'].tolist()
                 for _, season in enumerate(seasons):
                     season_start, season_end, _ = season_calc.get_season_dates(season)
                     # adjust for tournaments
-                    tournament_start_date, tournament_end_date = convert_tournament_dates(league, season_start, season_end)
-                    player_timeline.append([team, league, tournament_start_date, tournament_end_date, player_id])
-                continue
-            adjacent_team_rows = id_adjacent_team_rows(team_rows)
-            # for a list of adjacent seasons on a roster, we will add at least 1 tenure row to the player timeline
-            for adj_season_rows in adjacent_team_rows:
-                # select all trades that occurred in this time period
-                term_start_date = season_calc.get_season_dates(adj_season_rows.iloc[0]['season'])[0]
-                # term_start_season = adj_season_rows.iloc[0].season
-                term_end_date_soft = season_calc.get_season_dates(adj_season_rows.iloc[-1]['season'])[1]
-                # term_end_date = season_calc.get_season_dates(adj_season_rows.iloc[-1]['season'])[2]
-                # prev_term_offseason_start = season_calc.get_season_dates(season_calc.get_prev_season(adj_season_rows.iloc[0]['season']))[1]
-                # create a new tenure row (without checking trades)
-                player_timeline.append([team, league, term_start_date, term_end_date_soft, player_id, adj_season_rows.iloc[0].season, adj_season_rows.iloc[-1].season])
+                    tournament_start_date, tournament_end_date = convert_tournament_dates(league_option, season_start, season_end)
+                    player_timeline.append([team, league_option, tournament_start_date, tournament_end_date, player_id])
+            continue
+        adjacent_team_rows = id_adjacent_team_rows(team_rows)
+        # for a list of adjacent seasons on a roster, we will add at least 1 tenure row to the player timeline
+        for adj_season_rows in adjacent_team_rows:
+            # select all trades that occurred in this time period
+            term_start_date = season_calc.get_season_dates(adj_season_rows.iloc[0]['season'])[0]
+            term_end_date_soft = season_calc.get_season_dates(adj_season_rows.iloc[-1]['season'])[1]
+            # create a new tenure row (without checking trades)
+            player_timeline.append([team, league, term_start_date, term_end_date_soft, player_id, adj_season_rows.iloc[0].season, adj_season_rows.iloc[-1].season])
     # now consider trades TODO this will need the most refinement maybe
     unused_transfers = []
     player_timeline = pd.DataFrame(player_timeline, columns=['team', 'league', 'term_start_date', 'term_end_date', 'player_id', 'first_season', 'last_season'])
-    player_trade_candidates['to_team_words'] = player_trade_candidates['to_team'].apply(get_team_subwords)
-    player_trade_candidates['from_team_words'] = player_trade_candidates['from_team'].apply(get_team_subwords)
     for _, row in player_trade_candidates.iterrows():
-        # TODO we're assuming the trade team string is longer (from EP) so it needs to be split into words
-        # TODO drop any words with "." as in "Tor. Marlboros?"
         trade_season, trade_in_season = season_calc.get_season_from_date(row.date)
         if not trade_in_season: # find offseason trade
             trade_season_next = season_calc.get_next_season(trade_season)
-            from_row = player_timeline.loc[(player_timeline['team'].isin(row.from_team_words)) & (player_timeline['last_season']==trade_season)]
-            to_row = player_timeline.loc[(player_timeline['team'].isin(row.to_team_words)) & (player_timeline['first_season']==trade_season_next)]
+            from_row = player_timeline.loc[(player_timeline['team']==row.from_team) & (player_timeline['last_season']==trade_season)]
+            to_row = player_timeline.loc[(player_timeline['team']==row.to_team) & (player_timeline['first_season']==trade_season_next)]
             if len(from_row) == 1 and len(to_row) == 1:
-                player_timeline.loc[(player_timeline['team'].isin(row.from_team_words)) & (player_timeline['last_season']==trade_season), 'term_end_date'] = row['date'] - pd.to_timedelta(1, unit='d')
-                player_timeline.loc[(player_timeline['team'].isin(row.to_team_words)) & (player_timeline['first_season']==trade_season_next), 'term_start_date'] = row['date'] 
+                player_timeline.loc[(player_timeline['team']==row.from_team) & (player_timeline['last_season']==trade_season), 'term_end_date'] = row['date'] - pd.to_timedelta(1, unit='d')
+                player_timeline.loc[(player_timeline['team']==row.to_team) & (player_timeline['first_season']==trade_season_next), 'term_start_date'] = row['date'] 
                 continue 
+            elif len(from_row) == 1 and (row.to_team.lower() in ('retired', 'no team', 'unknown') or is_verified_trade(row)):
+                player_timeline.loc[(player_timeline['team']==row.from_team) & (player_timeline['last_season']==trade_season), 'term_end_date'] = row['date'] - pd.to_timedelta(1, unit='d')
+                continue
+            elif len(to_row) == 1 and (row.from_team.lower() in ('retired', 'no team', 'unknown') or is_verified_trade(row)):
+                player_timeline.loc[(player_timeline['team']==row.to_team) & (player_timeline['first_season']==trade_season_next), 'term_start_date'] = row['date'] 
+                continue
+        # TODO make trade date adjustment into a function
         if trade_in_season: # find in-season trade
-            from_row = player_timeline.loc[(player_timeline['team'].isin(row.from_team_words)) & (player_timeline['last_season']==trade_season)]
-            to_row = player_timeline.loc[(player_timeline['team'].isin(row.to_team_words)) & (player_timeline['first_season']==trade_season)]
+            from_row = player_timeline.loc[(player_timeline['team']==row.from_team) & (player_timeline['last_season']==trade_season)]
+            to_row = player_timeline.loc[(player_timeline['team']==row.to_team) & (player_timeline['first_season']==trade_season)]
             if len(from_row) == 1 and len(to_row) == 1:
-                player_timeline.loc[(player_timeline['team'].isin(row.from_team_words)) & (player_timeline['last_season']==trade_season), 'term_end_date'] = row['date'] - pd.to_timedelta(1, unit='d')
-                player_timeline.loc[(player_timeline['team'].isin(row.to_team_words)) & (player_timeline['first_season']==trade_season), 'term_start_date'] = row['date'] 
+                player_timeline.loc[(player_timeline['team']==row.from_team) & (player_timeline['last_season']==trade_season), 'term_end_date'] = row['date'] - pd.to_timedelta(1, unit='d')
+                player_timeline.loc[(player_timeline['team']==row.to_team) & (player_timeline['first_season']==trade_season), 'term_start_date'] = row['date'] 
+                continue
+            elif len(from_row) == 1 and (row.to_team.lower() in ('retired', 'no team', 'unknown') or is_verified_trade(row)):
+                player_timeline.loc[(player_timeline['team']==row.from_team) & (player_timeline['last_season']==trade_season), 'term_end_date'] = row['date'] - pd.to_timedelta(1, unit='d')
+                continue
+            elif len(to_row) == 1 and (row.from_team.lower() in ('retired', 'no team', 'unknown') or is_verified_trade(row)):
+                player_timeline.loc[(player_timeline['team']==row.to_team) & (player_timeline['first_season']==trade_season), 'term_start_date'] = row['date'] 
                 continue
         # this trade didn't match a pair of teams, only add if this was an original transfer (not one from AHL team expansion options)
         if row['orig_transfer']:
@@ -628,7 +646,12 @@ def build_player_timeline_new(rows, transfers, postseasons):
     player_timeline = player_timeline.values.tolist()
     playoffs = get_player_playoffs(postseasons, player_timeline, player_id)
     return player_timeline, playoffs, unused_transfers
-    
+
+def is_verified_trade(row):
+    if len(verified_trades.loc[(verified_trades['date']==row['date']) & (verified_trades['playerName']==row['player'])]) == 1:
+        return True
+    return False    
+
 def build_player_timeline(rows, transfers, postseasons):
     rows['start_date'] = 0
     rows['end_date'] = 0
@@ -994,22 +1017,78 @@ def preprocessing(engine):
         worlds_df.to_sql('ep_clean_intl', engine, index=False, if_exists='replace')
         asg_df.to_sql('ep_clean_asg', engine, index=False, if_exists='replace')
     # normalize team names
-    with open(os.path.join(data_dir, "team_mapping.json")) as in_file:
-        team_mapping = json.load(in_file)
-        for league in team_mapping:
-            for team_name in team_mapping[league]:
-                team_name_replace = team_mapping[league][team_name]
-                nhl_players_df.loc[(nhl_players_df['league']==league) & (nhl_players_df['team']==team_name), 'team'] = team_name_replace
+    nhl_players_df['team'] = nhl_players_df['team'].str.split().str.join(' ') # need to normalize whitespace before we do dictionary-based name replacement
+    team_mapping = {}
+    with open(os.path.join(data_dir, "team_name_normalization.json")) as in_file:
+        team_mapping_tmp = json.load(in_file)
+        for target_name in team_mapping_tmp:
+            for source_name_list in team_mapping_tmp[target_name]:
+                if len(source_name_list) > 2:
+                    continue # TODO don't handle this more complicated replacement case yet
+                elif len(source_name_list) == 2: # team name and league
+                    tup = (source_name_list[0], source_name_list[1])
+                elif len(source_name_list) == 1:
+                    tup = (source_name_list[0])
+                if tup in team_mapping_tmp:
+                    # TODO remove duplicates for now
+                    team_mapping.pop(tup, None)
+                else:
+                    team_mapping[tup] = target_name
+        # now replace
+        for source_team_list in team_mapping:
+            target_team = team_mapping[source_team_list]
+            if type(source_team_list) == tuple and len(source_team_list) == 2:
+                source_team, source_league = source_team_list
+                nhl_players_df.loc[(nhl_players_df['league']==source_league) & (nhl_players_df['team']==source_team), 'team'] = target_team
+            else:
+                source_team = source_team_list
+                nhl_players_df.loc[nhl_players_df['team']==source_team, 'team'] = target_team
+    # specific USNTDP normalization
+    # drop USHL
+    nhl_players_df = nhl_players_df.loc[~((nhl_players_df['league']=='USHL') & (nhl_players_df['team']=='USNTDP'))]
+    nhl_players_df = nhl_players_df.loc[~((nhl_players_df['league']=='USHL') & (nhl_players_df['team']=='USNTDP Juniors'))]
+    nhl_players_df = nhl_players_df.loc[~((nhl_players_df['league']=='USHL') & (nhl_players_df['team']=='USAHNTDP'))]
+    
+    # fix U-17
+    # u17_mask = (nhl_players_df['league']=='U-17') & (nhl_players_df['team']=='USNTDP')
+    # nhl_players_df['league'] = nhl_players_df['league'].mask(u17_mask, 'USHL')
+    # nhl_players_df['team'] = nhl_players_df['team'].mask(u17_mask, 'USNTDP U-17')
+    
+    
+    # nhl_players_df['league'] = nhl_players_df['league'].mask(mask, 'USHL')
+    # print(nhl_players_df)
+    # mask = df['A'].isin([1, 3]) & df['B'].isin([4, 6])
+
+    # nhl_players_df['team'] = new_team
+    # nhl_players_df['league'] = new_league
+    # print(nhl_players_df.loc[nhl_players_df['playerName']=='Matthew Tkachuk'])
+    # fix U-18
+    # u18_mask = (nhl_players_df['league']=='U-18') & (nhl_players_df['team']=='USNTDP')
+    # nhl_players_df['team'] = nhl_players_df['team'].mask(u18_mask, 'USNTDP U-18')
+    # nhl_players_df['league'] = nhl_players_df['league'].mask(u18_mask, 'USHL')
+    # nhl_players_df['team'] = new_team
+    # nhl_players_df['league'] = new_league
     # write the correction
     nhl_players_df.to_sql(name="players_nhl", if_exists='replace', index=False, con=engine)
     postseasons = pd.read_sql_query(sql=sql_text("select * from ep_raw_postseasons"), con=engine.connect())
     # TODO drop names from the EP/NHL data tables?
     # TODO should this name step happen after we drop asg players we don't have ids for?
     # STEP FOUR: unify names (will want to repeat this step based on the outputs of the missing nhl/ep links)
+    # name_db depends on preprocessing of transfers, nhl_players, what else???
     build_name_db(engine)#, players_df, transfers, asg_terms)
     # all "join links" should happen after the name db is constructed
     transfers_df = pd.read_sql_query(sql=sql_text("select * from ep_clean_transfers join links using (link)"), con=engine.connect(), parse_dates=['date'])
     transfers_df = transfers_df[transfers_df['playerId'] != ''] # drop transfer terms for players we don't have matching NHL site playerIds for
+    # normalization of transfer team names
+    for source_team_list in team_mapping:
+        target_team = team_mapping[source_team_list]
+        if type(source_team_list) == str: 
+            transfers_df.loc[transfers_df['from_team']==source_team_list, 'from_team'] = target_team
+            transfers_df.loc[transfers_df['to_team']==source_team_list, 'to_team'] = target_team
+    # normalize whitespace
+    transfers_df['to_team'] = transfers_df['to_team'].str.split().str.join(" ")
+    transfers_df['from_team'] = transfers_df['from_team'].str.split().str.join(" ")
+    transfers_df.to_sql('ep_clean_transfers', engine, index=False, if_exists='replace')
     asg_df = pd.read_sql(sql=sql_text('select * from ep_clean_asg join links using (link)'), con=engine.connect())
     asg_df = asg_df[asg_df['playerId'] != ''] # drop ASG terms for players we don't have matching NHL site playerIds for
     asg_df = asg_df.drop(['index', 'level_0'], axis=1, errors='ignore')
@@ -1018,8 +1097,25 @@ def preprocessing(engine):
     players_df = pd.concat([worlds_df, nhl_players_df, asg_df], axis=0, ignore_index=True) # add intl roster data to skaters table
     # drop superfluous Worlds and M-Cup rows
     players_df = players_df[~players_df['league'].isin(nhl_leagues_to_drop)]
-    players_df = players_df.drop_duplicates(subset=['playerId', 'playerName', 'season', 'team']) # to drop semi-redundant playoff rows (e.g. Connor McDavid Marlboros, but also the same row where Marlboros are in league "Other")
+    # now drop non-national teams that appear more than once in a season
+    players_natl = players_df.copy()
+    players_natl = players_natl.loc[players_natl['team'].apply(is_national_team)]
+    print(players_natl)
+    players_not_natl = players_df.copy()
+    players_not_natl = players_not_natl.loc[~players_not_natl['team'].apply(is_national_team)]
+    print(players_not_natl)
+    players_not_natl = players_not_natl.drop_duplicates(subset=['playerId', 'playerName', 'season', 'team']) # to drop semi-redundant playoff rows (e.g. Connor McDavid Marlboros, but also the same row where Marlboros are in league "Other")
+    players_df = pd.concat([players_natl, players_not_natl])
+    # players_df = players_df.drop_duplicates(subset=['playerId', 'playerName', 'season', 'team']) # to drop semi-redundant playoff rows (e.g. Connor McDavid Marlboros, but also the same row where Marlboros are in league "Other")
     return players_df, nhl_players_df, transfers_df, asg_df, worlds_df, postseasons # TODO can't processing_players just read from db instead of passing these dfs?
+
+def is_national_team(team_name):
+    country_names = ["Canada", "Finland", "Finland", "Sweden", "Czechia", "Czech Republic", "USA", "Denmark", "Austria", "Great Britain", "Norway", "Switzerland", "France", "Germany", "Kazakhstan", "Latvia", "Poland", "Slovakia", "Czechoslovakia", "Russian", "Soviet Union", "Belarus", "Ukraine", "Italy", "Slovenia", "Hungary"]
+    for country_name in country_names:
+        if country_name in team_name:
+            return True
+    return False
+
 
 def match_transfer_teams(transfers_df, nhl_players_df):
     # get all teams from EP and NHL sites
