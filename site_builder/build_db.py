@@ -9,7 +9,6 @@ root_dir = str(Path.cwd())#.parents[0])
 
 if os.getenv('PYANYWHERE'):
     root_dir = os.path.join(root_dir, 'hockey_site')
-    print(root_dir)
     # config_location = '/home/hockeyteammates/hockey_site/config.yaml'
      # "/home/hockeyteammates/hockey_site/data/"
 else:
@@ -18,7 +17,6 @@ else:
     # config_location = '../hockey_site/config.yaml'
     # data_dir = "/Users/alice/Dropbox/Projects/hockey_site/data/"
     db_dir = os.path.join(Path(root_dir).parents[0], 'hockey_db_data')
-print(root_dir)
 data_dir = os.path.join(root_dir, 'data')
 config_location = os.path.join(root_dir, 'config.yaml')
 with open(config_location, 'r') as f:

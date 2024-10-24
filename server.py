@@ -6,6 +6,8 @@ import os
 import yaml
 from pathlib import Path
 root_dir = str(Path.cwd())
+if os.getenv('PYANYWHERE'):
+    root_dir = os.path.join(root_dir, 'hockey_site')
 import time
 
 app = Flask(__name__)
