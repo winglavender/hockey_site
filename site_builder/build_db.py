@@ -6,17 +6,19 @@ import numpy as np
 from pathlib import Path
 root_dir = str(Path.cwd())#.parents[0])
 
-data_dir = os.path.join(root_dir, 'data')
-db_dir = os.path.join(Path(root_dir).parents[0], 'hockey_db_data')
-config_location = os.path.join(root_dir, 'config.yaml')
-if not os.getenv('PYANYWHERE'):
+
+if os.getenv('PYANYWHERE'):
+    root_dir = os.path.join(root_dir, 'hockey_site')
     # config_location = '/home/hockeyteammates/hockey_site/config.yaml'
      # "/home/hockeyteammates/hockey_site/data/"
-# else:
+else:
     sys.path.insert(1, '../hockey_scraper')
     import scraper
     # config_location = '../hockey_site/config.yaml'
     # data_dir = "/Users/alice/Dropbox/Projects/hockey_site/data/"
+    db_dir = os.path.join(Path(root_dir).parents[0], 'hockey_db_data')
+data_dir = os.path.join(root_dir, 'data')
+config_location = os.path.join(root_dir, 'config.yaml')
 with open(config_location, 'r') as f:
     config = yaml.safe_load(f)
 if 'prev_file_date' not in config:
