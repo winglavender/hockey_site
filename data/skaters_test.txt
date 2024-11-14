@@ -29,8 +29,9 @@ Connor McDavid,Canada,wc,2018-06-01,2018-06-28
 Connor McDavid,Team North America,WCup,2016-09-01,2016-09-28
 Jani Hakanpää,Anaheim Ducks,NHL,2019-07-03,2021-04-11
 Jani Hakanpää,Carolina Hurricanes,NHL,2021-04-12,2021-07-28
-Jani Hakanpää,Dallas Stars,NHL,2021-07-29,2024-06-24
-Jani Hakanpää,Kärpät,Finland,2015-07-02,2019-07-02
+Jani Hakanpää,Dallas Stars,NHL,2021-07-29,2024-09-10
+Jani Hakanpää,Toronto Marlies,AHL,2024-09-11,2025-06-30
+Jani Hakanpää,Kärpät,Finland,2015-10-07,2019-07-02,WARNING start date might be either 2015-10-07 or 2015-07-02
 Duncan Keith,Chicago Blackhawks,NHL,2005-10-05,2021-07-11
 Duncan Keith,Edmonton Oilers,NHL,2021-07-12,2022-07-11
 Warren Foegele,Carolina Hurricanes,NHL,2017-10-04,2021-07-27
@@ -66,7 +67,8 @@ Ryan Ellis,Nashville Predators,NHL,2011-10-06,2021-07-16
 Ryan Ellis,Philadelphia Flyers,NHL,2021-07-17,2022-06-26
 Matty Beniers,Seattle Kraken,NHL,2022-04-10,2025-06-30
 Matty Beniers,Univ. of Michigan,NCAA,2021-01-13,2022-04-09
-Matty Beniers,USA,OG,2022-02-01,2022-02-28
+Matty Beniers,USA,Olympics,2022-02-01,2022-02-28
+Matty Beniers,USA,wc,2021-06-01,2021-06-28
 Brandon Tanev,Winnipeg Jets,NHL,2016-03-30,2019-06-30
 Brandon Tanev,Pittsburgh Penguins,NHL,2019-07-01,2021-07-21
 Brandon Tanev,Seattle Kraken,NHL,2021-07-22,2025-06-30

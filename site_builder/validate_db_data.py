@@ -7,18 +7,18 @@ pd.set_option('display.max_columns', 500)
 sys.path.insert(1, '../hockey_db')
 from sqlalchemy import create_engine, text as sql_text
 
-data_dir = "../hockey_db_data/"
+# data_dir = ""
 with open('config.yaml', 'r') as f:
     config = yaml.safe_load(f)
 config['filename_date'] = config['current_date'].replace("-", "")
-db_filename = f"{data_dir}/{config['filename_date']}.db"
+db_filename = f"../hockey_db_data/{config['filename_date']}.db"
 print(db_filename)
 engine = create_engine(f"sqlite:///{db_filename}")
 
 # check skaters
 player_rows = pd.read_sql_query(sql=sql_text(f"select * from skaters join links using(playerId)"), con=engine.connect(), parse_dates=['start_date', 'end_date']) 
 
-with open(f'{data_dir}skaters_test.txt','r') as in_file:
+with open('data/skaters_test.txt','r') as in_file:
     reader = csv.DictReader(in_file) 
     num_passed = 0
     num_failed = 0

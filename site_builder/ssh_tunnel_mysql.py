@@ -17,6 +17,7 @@ import glob
 # parser.add_argument('--to_live_website', action=argparse.BooleanOptionalAction)
 # args = parser.parse_args()
 
+data_dir = "/Users/alice/Dropbox/Projects/hockey_db_data"
 with open(f'../hockey_site/config.yaml', 'r') as f:
     config = yaml.safe_load(f)
 root_dir = str(Path.cwd())
@@ -62,7 +63,7 @@ with sshtunnel.SSHTunnelForwarder(
     )
     print(SQLALCHEMY_DATABASE_URI)
     engine = create_engine(SQLALCHEMY_DATABASE_URI, pool_recycle=280)
-    input_dir = os.path.join(config['data_dir'], config['filename_date'])
+    input_dir = os.path.join(data_dir, config['filename_date'])
     print(input_dir)
     # read tables to pandas and pickle them
     start = time.time()
