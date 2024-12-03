@@ -1053,7 +1053,8 @@ def preprocessing(engine):
     nhl_players_df = nhl_players_df.loc[~((nhl_players_df['league']=='USHL') & (nhl_players_df['team']=='USNTDP'))]
     nhl_players_df = nhl_players_df.loc[~((nhl_players_df['league']=='USHL') & (nhl_players_df['team']=='USNTDP Juniors'))]
     nhl_players_df = nhl_players_df.loc[~((nhl_players_df['league']=='USHL') & (nhl_players_df['team']=='USAHNTDP'))]
-    
+    # Olympics normalization
+    nhl_players_df.loc[nhl_players_df['league']=='OG', 'league'] = 'Olympics'
     # fix U-17
     # u17_mask = (nhl_players_df['league']=='U-17') & (nhl_players_df['team']=='USNTDP')
     # nhl_players_df['league'] = nhl_players_df['league'].mask(u17_mask, 'USHL')
