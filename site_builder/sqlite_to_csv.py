@@ -14,10 +14,11 @@ with open(f'../hockey_site/config.yaml', 'r') as f:
 config['filename_date'] = config['current_date'].replace("-", "")
 root_dir = str(Path.cwd())
 config['root_dir'] = root_dir + "/.."
-data_dir = "/Users/alice/Dropbox/Projects/hockey_db_data"
-db_file = os.path.join(data_dir, f"{config['filename_date']}.db")
+db_dir = os.path.join(Path(root_dir).parents[0], 'hockey_db_data')
+db_file = os.path.join(db_dir, f"{config['filename_date']}.db")
+print(db_file)
 engine = create_engine(f"sqlite:///{db_file}")
-output_dir = os.path.join(data_dir, config['filename_date'])
+output_dir = os.path.join(db_dir, config['filename_date'])
 if not os.path.exists(output_dir):
    # Create a new directory because it does not exist
    os.makedirs(output_dir)

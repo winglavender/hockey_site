@@ -17,7 +17,7 @@ import glob
 # parser.add_argument('--to_live_website', action=argparse.BooleanOptionalAction)
 # args = parser.parse_args()
 
-data_dir = "/Users/alice/Dropbox/Projects/hockey_db_data"
+data_dir = "/Users/alice/Library/Mobile Documents/com~apple~CloudDocs/Projects/hockey_db_data"
 with open(f'../hockey_site/config.yaml', 'r') as f:
     config = yaml.safe_load(f)
 root_dir = str(Path.cwd())

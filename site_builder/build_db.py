@@ -15,7 +15,6 @@ else:
     sys.path.insert(1, '../hockey_scraper')
     import scraper
     # config_location = '../hockey_site/config.yaml'
-    # data_dir = "/Users/alice/Dropbox/Projects/hockey_site/data/"
     db_dir = os.path.join(Path(root_dir).parents[0], 'hockey_db_data')
 data_dir = os.path.join(root_dir, 'data')
 config_location = os.path.join(root_dir, 'config.yaml')
@@ -117,7 +116,7 @@ else: # we only want to scrape starting in the season containing prev_file_date
 
 def get_tournament_leagues(): # this is a function so we can call it from the side code teammates_db.py
     # first value is month and second value is 0 if the first year in a season should be used, 1 if the second year in the season should be used
-    tournament_leagues = {'Hlinka Gretzky Cup': (8, 0), 'WJAC-19': (12, 0), 'Oly-Q': (9, 0), 'Olympics': (2,1), 'wjc-20': (1,1), 'wc': (6,1), 'wjc-18': (4,1), 'WJC-18': (4,1), 'WJC-18 D1A': (4,1), 'W-Cup': (9,0), 'WCup': (9,0), 'nhl-asg': (2,1), 'whc-17': (11,0), 'U17-Dev': (11,0), 'U18-Dev': (11,0)} 
+    tournament_leagues = {'4 Nations': (2, 1), 'Hlinka Gretzky Cup': (8, 0), 'WJAC-19': (12, 0), 'Oly-Q': (9, 0), 'Olympics': (2,1), 'wjc-20': (1,1), 'wc': (6,1), 'wjc-18': (4,1), 'WJC-18': (4,1), 'WJC-18 D1A': (4,1), 'W-Cup': (9,0), 'WCup': (9,0), 'nhl-asg': (2,1), 'whc-17': (11,0), 'U17-Dev': (11,0), 'U18-Dev': (11,0)} 
     return tournament_leagues
     
 tournament_leagues = get_tournament_leagues()
@@ -212,7 +211,16 @@ def get_team_name_from_id(team_json, teams_info):
     if len(team_lookup) == 1:
         return team_lookup.iloc[0]["fullName"]
     else:
-        return team_json["name"]["default"]
+        if "name" in team_json:
+            return team_json["name"]["default"]
+        elif "commonName" in team_json:
+            return team_json["commonName"]["default"]
+        else:
+            print("error: team name not found")
+            print(teams_info)
+            print(team_json)
+            return team_json["commonName"]["default"] # this will crash the script, that's fine
+        
     
 def scrape_game_pages(game_urls, teams_info, engine):
     all_stats_list = ["toi", "assists", "points", "goals", "shots", "hits", "powerPlayGoals", "powerPlayPoints",
@@ -1156,7 +1164,7 @@ if __name__ == "__main__":
     elif sys.argv[1] == "--scrape_playoffs":
         postseasons = scraper.get_postseasons()
         postseasons.to_csv(os.path.join(data_dir, "ep_raw_postseasons.csv"))
-    elif len(sys.argv) < 2 or sys.argv[1] == "--scrape":
+    elif len(sys.argv) < 2 or sys.argv[1] == "--scrape" or sys.argv[1] == "--scrape-games-only":
         print(f"Scraping seasons: {seasons_to_scrape} up to {today}")
         # copy old db to new db (removing the seasons that will be scraped fresh)
         if config['prev_file_date']:
@@ -1174,6 +1182,8 @@ if __name__ == "__main__":
         scrape_game_pages(game_urls, teams_info, engine)
         end = time.time()
         print(f"elapsed time: {timedelta(seconds=end - start)}")
+        if sys.argv[1] == "--scrape-games-only":
+            sys.exit(0)
         # scrape EP website for transfers & roster data
         scrape_ep(engine, old_ep_raw_intl)
         end = time.time()
