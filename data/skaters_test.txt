@@ -62,7 +62,8 @@ Jack Eichel,Buffalo Sabres,NHL,2015-07-01,2021-07-07
 Jack Eichel,Vegas Golden Knights,NHL,2021-11-04,2025-06-30,fix with verified_trades.csv (not rostered on BUF in 21-22)
 Jack Eichel,Boston Univ.,H-East,2014-10-08,2015-06-30
 Oliver Bjorkstrand,Columbus Blue Jackets,NHL,2015-10-07,2022-07-21
-Oliver Bjorkstrand,Seattle Kraken,NHL,2022-07-22,2025-06-30
+Oliver Bjorkstrand,Seattle Kraken,NHL,2022-07-22,2025-03-04
+Oliver Bjorkstrand,Tampa Bay Lightning,NHL,2025-03-05,2025-06-30
 Ryan Ellis,Nashville Predators,NHL,2011-10-06,2021-07-16
 Ryan Ellis,Philadelphia Flyers,NHL,2021-07-17,2022-06-26
 Matty Beniers,Seattle Kraken,NHL,2022-04-10,2025-06-30
@@ -71,7 +72,8 @@ Matty Beniers,USA,Olympics,2022-02-01,2022-02-28
 Matty Beniers,USA,wc,2021-06-01,2021-06-28
 Brandon Tanev,Winnipeg Jets,NHL,2016-03-30,2019-06-30
 Brandon Tanev,Pittsburgh Penguins,NHL,2019-07-01,2021-07-21
-Brandon Tanev,Seattle Kraken,NHL,2021-07-22,2025-06-30
+Brandon Tanev,Seattle Kraken,NHL,2021-07-22,2025-03-06
+Brandon Tanev,Winnipeg Jets,NHL,2025-03-07,2025-06-30
 Brandon Tanev,Providence College,H-East,2013-01-19,2016-03-29
 Alex Barré-Boulet,Tampa Bay Lightning,NHL,2021-01-13,2024-06-30
 Alex Barré-Boulet,Seattle Kraken,NHL,2021-10-12,2022-06-26,he was only with SEA for 10 days but this is a casualty of the simplified trade code
