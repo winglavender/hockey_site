@@ -285,6 +285,7 @@ def scrape_game_pages(game_urls, teams_info, engine):
     columns_list = ["gameId", "playerId", "team"] + all_stats_list + ["shotsAgainst", "saves", "savePercentage"]# skater_stats_names + goalie_stats_names
     game_player_df = pd.DataFrame(game_player_data, columns=columns_list)
     game_player_df.to_sql(name="game_player", if_exists='append', index=False, con=engine)
+    return player_urls
 
 def computeShotsSaves(goalieStats):
     tmp = goalieStats["saveShotsAgainst"].split("/")
@@ -317,7 +318,7 @@ def season_id_to_name(season_id):
     return season_name
 
 # get all players team-season terms from NHL site
-def scrape_nhl_skaters(engine, teams_by_season):#, old_players_df=None):
+def scrape_nhl_skaters(engine, teams_by_season, player_urls_by_game):#, old_players_df=None):
     # get all players on NHL rosters for all specified seasons
     roster_player_urls = set()
     team_season_roster_urls = []
@@ -343,19 +344,20 @@ def scrape_nhl_skaters(engine, teams_by_season):#, old_players_df=None):
             for player in roster_json['goalies']:
                 roster_player_urls.add(f"https://api-web.nhle.com/v1/player/{player['id']}/landing")
     # now get all team terms for those players
-    roster_player_urls = list(roster_player_urls)
-    print('https://api-web.nhle.com/v1/player/8476876/landing' in roster_player_urls)
+    player_urls = roster_player_urls.union(player_urls_by_game)
+    player_urls = list(player_urls)
+    print('https://api-web.nhle.com/v1/player/8484779/landing' in player_urls)
     player_terms = []
-    threads = min(MAX_THREADS, len(roster_player_urls))
+    threads = min(MAX_THREADS, len(player_urls))
     with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
-        results = executor.map(scrape_page, roster_player_urls)
+        results = executor.map(scrape_page, player_urls)
         for player_url, player_json in results:
             if not player_json:
                 print(f"No player data found for {player_url}")
                 continue
             player_id = player_url.split("/")[5]
             for term in player_json['seasonTotals']:
-                if player_url=='https://api-web.nhle.com/v1/player/8476876/landing':
+                if player_url=='https://api-web.nhle.com/v1/player/8484779/landing':
                     print(term)
                 if 'gamesPlayed' in term:
                     games_played = term['gamesPlayed']
@@ -1176,10 +1178,10 @@ if __name__ == "__main__":
             old_ep_raw_intl = None
         # scrape NHL website game data
         game_urls, teams_info, teams_by_season = get_game_urls(seasons_to_scrape)
-        # scrape NHL website roster data
-        scrape_nhl_skaters(engine, teams_by_season)#, seasons_to_scrape)# old_players_df)
         # scrape player stats for all games, write to db
-        scrape_game_pages(game_urls, teams_info, engine)
+        player_urls_by_game = scrape_game_pages(game_urls, teams_info, engine)
+        # scrape NHL website roster data
+        scrape_nhl_skaters(engine, teams_by_season, player_urls_by_game)#, seasons_to_scrape)# old_players_df)
         end = time.time()
         print(f"elapsed time: {timedelta(seconds=end - start)}")
         if sys.argv[1] == "--scrape-games-only":

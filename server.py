@@ -74,7 +74,7 @@ for team1 in nhl_team_data['team_order']:
 @app.route("/")
 def home():
     session.clear()
-    return render_template("index.html",nhl_team_data=nhl_team_data,update_date=config['current_date'])
+    return render_template("index.html",nhl_team_data=nhl_team_data,update_date=config['current_date'],update_year=config['current_date'][:4])
 
 # ONE PLAYER FUNCTIONS 
 # one player: view teammates over career
