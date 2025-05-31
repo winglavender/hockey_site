@@ -116,7 +116,7 @@ else: # we only want to scrape starting in the season containing prev_file_date
 
 def get_tournament_leagues(): # this is a function so we can call it from the side code teammates_db.py
     # first value is month and second value is 0 if the first year in a season should be used, 1 if the second year in the season should be used
-    tournament_leagues = {'4 Nations': (2, 1), 'Hlinka Gretzky Cup': (8, 0), 'WJAC-19': (12, 0), 'Oly-Q': (9, 0), 'Olympics': (2,1), 'wjc-20': (1,1), 'wc': (6,1), 'wjc-18': (4,1), 'WJC-18': (4,1), 'WJC-18 D1A': (4,1), 'W-Cup': (9,0), 'WCup': (9,0), 'nhl-asg': (2,1), 'whc-17': (11,0), 'U17-Dev': (11,0), 'U18-Dev': (11,0)} 
+    tournament_leagues = {'4 Nations': (2, 1), 'Hlinka Gretzky Cup': (8, 0), 'WJAC-19': (12, 0), 'OGQ': (9, 0), 'Oly-Q': (9, 0), 'Olympics': (2,1), 'wjc-20': (1,1), 'wc': (6,1), 'wjc-18': (4,1), 'WJC-18': (4,1), 'WJC-18 D1A': (4,1), 'W-Cup': (9,0), 'WCup': (9,0), 'nhl-asg': (2,1), 'whc-17': (11,0), 'U17-Dev': (11,0), 'U18-Dev': (11,0)} 
     return tournament_leagues
     
 tournament_leagues = get_tournament_leagues()
@@ -128,7 +128,7 @@ def get_team_display_string(league_str, team_str):
     if league_str == 'Olympics':
         return f"{team_str} Olympics"
     elif league_str == 'OGQ':
-        return f"{team_str} Olympics Qualifiers"
+        return f"{team_str} Olympics Qualifiers" # todo should I unify this and Oly-Q
     elif league_str == 'wc':
         return f"{team_str} Worlds"
     elif league_str == 'WCup':
