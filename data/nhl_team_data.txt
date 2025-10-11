@@ -1,4 +1,4 @@
-2025
+2026
 Montréal Canadiens,2000
 Chicago Blackhawks,2000
 Boston Bruins,2000
@@ -30,4 +30,4 @@ Colorado Avalanche,2000
 Buffalo Sabres,2000
 Washington Capitals,2000
 Seattle Kraken,2021
-Utah Hockey Club,2024
+Utah Mammoth,2025

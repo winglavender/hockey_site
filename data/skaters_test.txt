@@ -3,12 +3,12 @@ Malcolm Subban,Buffalo Sabres,NHL,2021-12-02,2022-06-26
 Malcolm Subban,Rochester Americans,AHL,2022-10-07,2023-06-30
 Claude Giroux,Philadelphia Flyers,NHL,2007-09-29,2022-03-18
 Claude Giroux,Florida Panthers,NHL,2022-03-19,2022-07-12
-Claude Giroux,Ottawa Senators,NHL,2022-07-13,2025-06-30
-Sidney Crosby,Pittsburgh Penguins,NHL,2005-10-05,2025-06-30
+Claude Giroux,Ottawa Senators,NHL,2022-07-13,2026-06-30
+Sidney Crosby,Pittsburgh Penguins,NHL,2005-10-05,2026-06-30
 Dylan Strome,Erie Otters,OHL,2013-10-01,2017-06-11
 Dylan Strome,Arizona Coyotes,NHL,2016-10-12,2018-11-25
 Dylan Strome,Chicago Blackhawks,NHL,2018-11-26,2022-07-13
-Dylan Strome,Washington Capitals,NHL,2022-07-14,2025-06-30
+Dylan Strome,Washington Capitals,NHL,2022-07-14,2026-06-30
 Johnny Gaudreau,Calgary Flames,NHL,2014-04-11,2022-07-12
 Johnny Gaudreau,Columbus Blue Jackets,NHL,2022-07-13,2024-06-24
 Johnny Gaudreau,Boston College,H-East,2011-10-06,2014-04-10
@@ -18,11 +18,11 @@ Evander Kane,Dynamo Minsk,KHL,2012-09-28,2013-06-24,dates for lockout team are w
 Evander Kane,Buffalo Sabres,NHL,2015-10-07,2018-02-25
 Evander Kane,San Jose Sharks,NHL,2018-02-26,2021-07-07
 Evander Kane,San Jose Barracuda,AHL,2021-10-12,2022-01-07
-Brett Kulak,Edmonton Oilers,NHL,2022-03-21,2025-06-30
+Brett Kulak,Edmonton Oilers,NHL,2022-03-21,2026-06-30
 Brett Kulak,Calgary Flames,NHL,2014-10-08,2018-09-30
 Brett Kulak,Montréal Canadiens,NHL,2018-10-01,2022-03-20
 Brett Kulak,Laval Rocket,AHL,2018-10-01,2019-06-12
-Connor McDavid,Edmonton Oilers,NHL,2015-07-03,2025-06-30
+Connor McDavid,Edmonton Oilers,NHL,2015-07-03,2026-06-30
 Connor McDavid,Erie Otters,OHL,2012-06-21,2015-07-02
 Connor McDavid,Canada,wc,2016-06-01,2016-06-28
 Connor McDavid,Canada,wc,2018-06-01,2018-06-28
@@ -30,19 +30,19 @@ Connor McDavid,Team North America,WCup,2016-09-01,2016-09-28
 Jani Hakanpää,Anaheim Ducks,NHL,2019-07-03,2021-04-11
 Jani Hakanpää,Carolina Hurricanes,NHL,2021-04-12,2021-07-28
 Jani Hakanpää,Dallas Stars,NHL,2021-07-29,2024-09-10
-Jani Hakanpää,Toronto Marlies,AHL,2024-09-11,2025-06-30
+Jani Hakanpää,Toronto Marlies,AHL,2024-09-11,2025-06-17
 Jani Hakanpää,Kärpät,Finland,2015-10-07,2019-07-02,WARNING start date might be either 2015-10-07 or 2015-07-02
 Duncan Keith,Chicago Blackhawks,NHL,2005-10-05,2021-07-11
 Duncan Keith,Edmonton Oilers,NHL,2021-07-12,2022-07-11
 Warren Foegele,Carolina Hurricanes,NHL,2017-10-04,2021-07-27
 Warren Foegele,Edmonton Oilers,NHL,2021-07-28,2024-06-30
-Warren Foegele,Los Angeles Kings,NHL,2024-07-01,2025-06-30
+Warren Foegele,Los Angeles Kings,NHL,2024-07-01,2026-06-30
 Derek Ryan,Carolina Hurricanes,NHL,2015-06-16,2018-06-30
 Derek Ryan,Calgary Flames,NHL,2018-07-01,2021-07-27
-Derek Ryan,Edmonton Oilers,NHL,2021-07-28,2025-06-30
+Derek Ryan,Edmonton Oilers,NHL,2021-07-28,2025-09-04
 Derek Ryan,Örebro HK,Sweden,2014-10-08,2015-06-15
 Matthew Tkachuk,Calgary Flames,NHL,2016-07-07,2022-07-22
-Matthew Tkachuk,Florida Panthers,NHL,2022-07-23,2025-06-30
+Matthew Tkachuk,Florida Panthers,NHL,2022-07-23,2025-06-17
 Matthew Tkachuk,London Knights,OHL,2015-10-07,2016-07-06
 Jakub Voracek,Columbus Blue Jackets,NHL,2008-10-04,2011-06-22
 Jakub Voracek,Columbus Blue Jackets,NHL,2021-07-24,2023-03-01,fix with verified_trades.csv (not rostered on ARI in 22-23)
@@ -56,17 +56,17 @@ Christian Wolanin,Buffalo Sabres,NHL,2021-10-16,2022-06-26,he was on BUF from Oc
 Christian Wolanin,Belleville Senators,AHL,2018-10-03,2021-03-28
 Christian Wolanin,Univ. of North Dakota,NCAA,2015-10-07,2018-03-20
 Christian Wolanin,USA,wc,2021-06-01,2021-06-28
-Mikael Backlund,Calgary Flames,NHL,2008-10-04,2025-06-30
+Mikael Backlund,Calgary Flames,NHL,2008-10-04,2026-06-30
 Ryan Getzlaf,Anaheim Ducks,NHL,2005-10-05,2022-04-04
 Jack Eichel,Buffalo Sabres,NHL,2015-07-01,2021-07-07
-Jack Eichel,Vegas Golden Knights,NHL,2021-11-04,2025-06-30,fix with verified_trades.csv (not rostered on BUF in 21-22)
+Jack Eichel,Vegas Golden Knights,NHL,2021-11-04,2026-06-30,fix with verified_trades.csv (not rostered on BUF in 21-22)
 Jack Eichel,Boston Univ.,H-East,2014-10-08,2015-06-30
 Oliver Bjorkstrand,Columbus Blue Jackets,NHL,2015-10-07,2022-07-21
 Oliver Bjorkstrand,Seattle Kraken,NHL,2022-07-22,2025-03-04
-Oliver Bjorkstrand,Tampa Bay Lightning,NHL,2025-03-05,2025-06-30
+Oliver Bjorkstrand,Tampa Bay Lightning,NHL,2025-03-05,2026-06-30
 Ryan Ellis,Nashville Predators,NHL,2011-10-06,2021-07-16
 Ryan Ellis,Philadelphia Flyers,NHL,2021-07-17,2022-06-26
-Matty Beniers,Seattle Kraken,NHL,2022-04-10,2025-06-30
+Matty Beniers,Seattle Kraken,NHL,2022-04-10,2026-06-30
 Matty Beniers,Univ. of Michigan,NCAA,2021-01-13,2022-04-09
 Matty Beniers,USA,Olympics,2022-02-01,2022-02-28
 Matty Beniers,USA,wc,2021-06-01,2021-06-28
@@ -74,11 +74,12 @@ Brandon Tanev,Winnipeg Jets,NHL,2016-03-30,2019-06-30
 Brandon Tanev,Pittsburgh Penguins,NHL,2019-07-01,2021-07-21
 Brandon Tanev,Seattle Kraken,NHL,2021-07-22,2025-03-06
 Brandon Tanev,Winnipeg Jets,NHL,2025-03-07,2025-06-30
+Brandon Tanev,Utah Mammoth,NHL,2025-07-01,2026-06-30
 Brandon Tanev,Providence College,H-East,2013-01-19,2016-03-29
 Alex Barré-Boulet,Tampa Bay Lightning,NHL,2021-01-13,2024-06-30
 Alex Barré-Boulet,Seattle Kraken,NHL,2021-10-12,2022-06-26,he was only with SEA for 10 days but this is a casualty of the simplified trade code
 Alex Barré-Boulet,Syracuse Crunch,AHL,2018-10-03,2024-06-30
-Alex Barré-Boulet,Montréal Canadiens,NHL,2024-07-01,2025-06-30
+Alex Barré-Boulet,Montréal Canadiens,NHL,2024-07-01,2025-06-17
 Justin Braun,Philadelphia Flyers,NHL,2019-06-18,2023-06-26
 Justin Braun,New York Rangers,NHL,2021-10-12,2022-06-26,he was with NYR from March to July but this is a casualty of the simplified trade code
 Justin Braun,San Jose Sharks,NHL,2010-10-07,2019-06-17

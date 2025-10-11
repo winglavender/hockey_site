@@ -1,33 +1,33 @@
 ,season,postseason,team
-1,2023-2024,Did not make playoffs,Anaheim Ducks
-2,2022-2023,Did not make playoffs,Anaheim Ducks
-3,2021-2022,Did not make playoffs,Anaheim Ducks
-4,2020-2021,Did not make playoffs,Anaheim Ducks
-5,2019-2020,Did not make playoffs,Anaheim Ducks
-6,2018-2019,Did not make playoffs,Anaheim Ducks
-7,2017-2018,Conference QF loss,Anaheim Ducks
-8,2016-2017,Conference Final loss,Anaheim Ducks
-9,2015-2016,Conference QF loss,Anaheim Ducks
-10,2014-2015,Conference Final loss,Anaheim Ducks
-11,2013-2014,Conference SF loss,Anaheim Ducks
-12,2012-2013,Conference QF loss,Anaheim Ducks
-13,2011-2012,Did not make playoffs,Anaheim Ducks
-14,2010-2011,Conference QF loss,Anaheim Ducks
-15,2009-2010,Did not make playoffs,Anaheim Ducks
-16,2008-2009,Conference SF loss,Anaheim Ducks
-17,2007-2008,Conference QF loss,Anaheim Ducks
-18,2006-2007,Champion,Anaheim Ducks
-19,2005-2006,Conference Final loss,Mighty Ducks of Anaheim
-20,2003-2004,Did not make playoffs,Mighty Ducks of Anaheim
-21,2002-2003,Final loss,Mighty Ducks of Anaheim
-22,2001-2002,Did not make playoffs,Mighty Ducks of Anaheim
-23,2000-2001,Did not make playoffs,Mighty Ducks of Anaheim
-24,1999-2000,Did not make playoffs,Mighty Ducks of Anaheim
-25,1998-1999,Conference QF loss,Mighty Ducks of Anaheim
-26,1997-1998,Did not make playoffs,Mighty Ducks of Anaheim
-27,1996-1997,Conference SF loss,Mighty Ducks of Anaheim
-28,1995-1996,Did not make playoffs,Mighty Ducks of Anaheim
-29,1994-1995,Did not make playoffs,Mighty Ducks of Anaheim
+1,2024-2025,Did not make playoffs,Anaheim Ducks
+2,2023-2024,Did not make playoffs,Anaheim Ducks
+3,2022-2023,Did not make playoffs,Anaheim Ducks
+4,2021-2022,Did not make playoffs,Anaheim Ducks
+5,2020-2021,Did not make playoffs,Anaheim Ducks
+6,2019-2020,Did not make playoffs,Anaheim Ducks
+7,2018-2019,Did not make playoffs,Anaheim Ducks
+8,2017-2018,Conference QF loss,Anaheim Ducks
+9,2016-2017,Conference Final loss,Anaheim Ducks
+10,2015-2016,Conference QF loss,Anaheim Ducks
+11,2014-2015,Conference Final loss,Anaheim Ducks
+12,2013-2014,Conference SF loss,Anaheim Ducks
+13,2012-2013,Conference QF loss,Anaheim Ducks
+14,2011-2012,Did not make playoffs,Anaheim Ducks
+15,2010-2011,Conference QF loss,Anaheim Ducks
+16,2009-2010,Did not make playoffs,Anaheim Ducks
+17,2008-2009,Conference SF loss,Anaheim Ducks
+18,2007-2008,Conference QF loss,Anaheim Ducks
+19,2006-2007,Champion,Anaheim Ducks
+20,2005-2006,Conference Final loss,Mighty Ducks of Anaheim
+21,2003-2004,Did not make playoffs,Mighty Ducks of Anaheim
+22,2002-2003,Final loss,Mighty Ducks of Anaheim
+23,2001-2002,Did not make playoffs,Mighty Ducks of Anaheim
+24,2000-2001,Did not make playoffs,Mighty Ducks of Anaheim
+25,1999-2000,Did not make playoffs,Mighty Ducks of Anaheim
+26,1998-1999,Conference QF loss,Mighty Ducks of Anaheim
+27,1997-1998,Did not make playoffs,Mighty Ducks of Anaheim
+28,1996-1997,Conference SF loss,Mighty Ducks of Anaheim
+29,1995-1996,Did not make playoffs,Mighty Ducks of Anaheim
 30,2023-2024,Did not make playoffs,Arizona Coyotes
 31,2022-2023,Did not make playoffs,Arizona Coyotes
 32,2021-2022,Did not make playoffs,Arizona Coyotes
@@ -55,789 +55,798 @@
 54,1998-1999,Conference QF loss,Phoenix Coyotes
 55,1997-1998,Conference QF loss,Phoenix Coyotes
 56,1996-1997,Conference QF loss,Phoenix Coyotes
-58,2023-2024,Conference SF loss,Boston Bruins
-59,2022-2023,Conference QF loss,Boston Bruins
-60,2021-2022,Conference QF loss,Boston Bruins
-61,2020-2021,Conference SF loss,Boston Bruins
-62,2019-2020,Conference SF loss,Boston Bruins
-63,2018-2019,Final loss,Boston Bruins
-64,2017-2018,Conference SF loss,Boston Bruins
-65,2016-2017,Conference QF loss,Boston Bruins
-66,2015-2016,Did not make playoffs,Boston Bruins
-67,2014-2015,Did not make playoffs,Boston Bruins
-68,2013-2014,Conference SF loss,Boston Bruins
-69,2012-2013,Final loss,Boston Bruins
-70,2011-2012,Conference QF loss,Boston Bruins
-71,2010-2011,Champion,Boston Bruins
-72,2009-2010,Conference SF loss,Boston Bruins
-73,2008-2009,Conference SF loss,Boston Bruins
-74,2007-2008,Conference QF loss,Boston Bruins
-75,2006-2007,Did not make playoffs,Boston Bruins
-76,2005-2006,Did not make playoffs,Boston Bruins
-77,2003-2004,Conference QF loss,Boston Bruins
-78,2002-2003,Conference QF loss,Boston Bruins
-79,2001-2002,Conference QF loss,Boston Bruins
-80,2000-2001,Did not make playoffs,Boston Bruins
-81,1999-2000,Did not make playoffs,Boston Bruins
-82,1998-1999,Conference SF loss,Boston Bruins
-83,1997-1998,Conference QF loss,Boston Bruins
-84,1996-1997,Did not make playoffs,Boston Bruins
-85,1995-1996,Conference QF loss,Boston Bruins
-86,1994-1995,Conference QF loss,Boston Bruins
-88,2023-2024,Did not make playoffs,Buffalo Sabres
-89,2022-2023,Did not make playoffs,Buffalo Sabres
-90,2021-2022,Did not make playoffs,Buffalo Sabres
-91,2020-2021,Did not make playoffs,Buffalo Sabres
-92,2019-2020,Did not make playoffs,Buffalo Sabres
-93,2018-2019,Did not make playoffs,Buffalo Sabres
-94,2017-2018,Did not make playoffs,Buffalo Sabres
-95,2016-2017,Did not make playoffs,Buffalo Sabres
-96,2015-2016,Did not make playoffs,Buffalo Sabres
-97,2014-2015,Did not make playoffs,Buffalo Sabres
-98,2013-2014,Did not make playoffs,Buffalo Sabres
-99,2012-2013,Did not make playoffs,Buffalo Sabres
-100,2011-2012,Did not make playoffs,Buffalo Sabres
-101,2010-2011,Conference QF loss,Buffalo Sabres
-102,2009-2010,Conference QF loss,Buffalo Sabres
-103,2008-2009,Did not make playoffs,Buffalo Sabres
-104,2007-2008,Did not make playoffs,Buffalo Sabres
-105,2006-2007,Conference Final loss,Buffalo Sabres
-106,2005-2006,Conference Final loss,Buffalo Sabres
-107,2003-2004,Did not make playoffs,Buffalo Sabres
-108,2002-2003,Did not make playoffs,Buffalo Sabres
-109,2001-2002,Did not make playoffs,Buffalo Sabres
-110,2000-2001,Conference SF loss,Buffalo Sabres
-111,1999-2000,Conference QF loss,Buffalo Sabres
-112,1998-1999,Final loss,Buffalo Sabres
-113,1997-1998,Conference Final loss,Buffalo Sabres
-114,1996-1997,Conference SF loss,Buffalo Sabres
-115,1995-1996,Did not make playoffs,Buffalo Sabres
-116,1994-1995,Conference QF loss,Buffalo Sabres
-118,2023-2024,Did not make playoffs,Calgary Flames
-119,2022-2023,Did not make playoffs,Calgary Flames
-120,2021-2022,Conference SF loss,Calgary Flames
-121,2020-2021,Did not make playoffs,Calgary Flames
-122,2019-2020,Conference QF loss,Calgary Flames
-123,2018-2019,Conference QF loss,Calgary Flames
-124,2017-2018,Did not make playoffs,Calgary Flames
-125,2016-2017,Conference QF loss,Calgary Flames
-126,2015-2016,Did not make playoffs,Calgary Flames
-127,2014-2015,Conference SF loss,Calgary Flames
-128,2013-2014,Did not make playoffs,Calgary Flames
-129,2012-2013,Did not make playoffs,Calgary Flames
-130,2011-2012,Did not make playoffs,Calgary Flames
-131,2010-2011,Did not make playoffs,Calgary Flames
-132,2009-2010,Did not make playoffs,Calgary Flames
-133,2008-2009,Conference QF loss,Calgary Flames
-134,2007-2008,Conference QF loss,Calgary Flames
-135,2006-2007,Conference QF loss,Calgary Flames
-136,2005-2006,Conference QF loss,Calgary Flames
-137,2003-2004,Final loss,Calgary Flames
-138,2002-2003,Did not make playoffs,Calgary Flames
-139,2001-2002,Did not make playoffs,Calgary Flames
-140,2000-2001,Did not make playoffs,Calgary Flames
-141,1999-2000,Did not make playoffs,Calgary Flames
-142,1998-1999,Did not make playoffs,Calgary Flames
-143,1997-1998,Did not make playoffs,Calgary Flames
-144,1996-1997,Did not make playoffs,Calgary Flames
-145,1995-1996,Conference QF loss,Calgary Flames
-146,1994-1995,Conference QF loss,Calgary Flames
-148,2023-2024,Conference SF loss,Carolina Hurricanes
-149,2022-2023,Conference Final loss,Carolina Hurricanes
-150,2021-2022,Conference SF loss,Carolina Hurricanes
-151,2020-2021,Conference SF loss,Carolina Hurricanes
-152,2019-2020,Conference QF loss,Carolina Hurricanes
-153,2018-2019,Conference Final loss,Carolina Hurricanes
-154,2017-2018,Did not make playoffs,Carolina Hurricanes
-155,2016-2017,Did not make playoffs,Carolina Hurricanes
-156,2015-2016,Did not make playoffs,Carolina Hurricanes
-157,2014-2015,Did not make playoffs,Carolina Hurricanes
-158,2013-2014,Did not make playoffs,Carolina Hurricanes
-159,2012-2013,Did not make playoffs,Carolina Hurricanes
-160,2011-2012,Did not make playoffs,Carolina Hurricanes
-161,2010-2011,Did not make playoffs,Carolina Hurricanes
-162,2009-2010,Did not make playoffs,Carolina Hurricanes
-163,2008-2009,Conference Final loss,Carolina Hurricanes
-164,2007-2008,Did not make playoffs,Carolina Hurricanes
-165,2006-2007,Did not make playoffs,Carolina Hurricanes
-166,2005-2006,Champion,Carolina Hurricanes
-167,2003-2004,Did not make playoffs,Carolina Hurricanes
-168,2002-2003,Did not make playoffs,Carolina Hurricanes
-169,2001-2002,Final loss,Carolina Hurricanes
-170,2000-2001,Conference QF loss,Carolina Hurricanes
-171,1999-2000,Did not make playoffs,Carolina Hurricanes
-172,1998-1999,Conference QF loss,Carolina Hurricanes
-173,1997-1998,Did not make playoffs,Carolina Hurricanes
-175,2023-2024,Did not make playoffs,Chicago Blackhawks
-176,2022-2023,Did not make playoffs,Chicago Blackhawks
-177,2021-2022,Did not make playoffs,Chicago Blackhawks
-178,2020-2021,Did not make playoffs,Chicago Blackhawks
-179,2019-2020,Conference QF loss,Chicago Blackhawks
-180,2018-2019,Did not make playoffs,Chicago Blackhawks
-181,2017-2018,Did not make playoffs,Chicago Blackhawks
-182,2016-2017,Conference QF loss,Chicago Blackhawks
-183,2015-2016,Conference QF loss,Chicago Blackhawks
-184,2014-2015,Champion,Chicago Blackhawks
-185,2013-2014,Conference Final loss,Chicago Blackhawks
-186,2012-2013,Champion,Chicago Blackhawks
-187,2011-2012,Conference QF loss,Chicago Blackhawks
-188,2010-2011,Conference QF loss,Chicago Blackhawks
-189,2009-2010,Champion,Chicago Blackhawks
-190,2008-2009,Conference Final loss,Chicago Blackhawks
-191,2007-2008,Did not make playoffs,Chicago Blackhawks
-192,2006-2007,Did not make playoffs,Chicago Blackhawks
-193,2005-2006,Did not make playoffs,Chicago Blackhawks
-194,2003-2004,Did not make playoffs,Chicago Blackhawks
-195,2002-2003,Did not make playoffs,Chicago Blackhawks
-196,2001-2002,Conference QF loss,Chicago Blackhawks
-197,2000-2001,Did not make playoffs,Chicago Blackhawks
-198,1999-2000,Did not make playoffs,Chicago Blackhawks
-199,1998-1999,Did not make playoffs,Chicago Blackhawks
-200,1997-1998,Did not make playoffs,Chicago Blackhawks
-201,1996-1997,Conference QF loss,Chicago Blackhawks
-202,1995-1996,Conference SF loss,Chicago Blackhawks
-203,1994-1995,Conference Final loss,Chicago Blackhawks
-205,2023-2024,Conference SF loss,Colorado Avalanche
-206,2022-2023,Conference QF loss,Colorado Avalanche
-207,2021-2022,Champion,Colorado Avalanche
-208,2020-2021,Conference SF loss,Colorado Avalanche
-209,2019-2020,Conference SF loss,Colorado Avalanche
-210,2018-2019,Conference SF loss,Colorado Avalanche
-211,2017-2018,Conference QF loss,Colorado Avalanche
-212,2016-2017,Did not make playoffs,Colorado Avalanche
-213,2015-2016,Did not make playoffs,Colorado Avalanche
-214,2014-2015,Did not make playoffs,Colorado Avalanche
-215,2013-2014,Conference QF loss,Colorado Avalanche
-216,2012-2013,Did not make playoffs,Colorado Avalanche
-217,2011-2012,Did not make playoffs,Colorado Avalanche
-218,2010-2011,Did not make playoffs,Colorado Avalanche
-219,2009-2010,Conference QF loss,Colorado Avalanche
-220,2008-2009,Did not make playoffs,Colorado Avalanche
-221,2007-2008,Conference SF loss,Colorado Avalanche
-222,2006-2007,Did not make playoffs,Colorado Avalanche
-223,2005-2006,Conference SF loss,Colorado Avalanche
-224,2003-2004,Conference SF loss,Colorado Avalanche
-225,2002-2003,Conference QF loss,Colorado Avalanche
-226,2001-2002,Conference Final loss,Colorado Avalanche
-227,2000-2001,Champion,Colorado Avalanche
-228,1999-2000,Conference Final loss,Colorado Avalanche
-229,1998-1999,Conference Final loss,Colorado Avalanche
-230,1997-1998,Conference QF loss,Colorado Avalanche
-231,1996-1997,Conference Final loss,Colorado Avalanche
-232,1995-1996,Champion,Colorado Avalanche
-234,2023-2024,Did not make playoffs,Columbus Blue Jackets
-235,2022-2023,Did not make playoffs,Columbus Blue Jackets
-236,2021-2022,Did not make playoffs,Columbus Blue Jackets
-237,2020-2021,Did not make playoffs,Columbus Blue Jackets
-238,2019-2020,Conference QF loss,Columbus Blue Jackets
-239,2018-2019,Conference SF loss,Columbus Blue Jackets
-240,2017-2018,Conference QF loss,Columbus Blue Jackets
-241,2016-2017,Conference QF loss,Columbus Blue Jackets
-242,2015-2016,Did not make playoffs,Columbus Blue Jackets
-243,2014-2015,Did not make playoffs,Columbus Blue Jackets
-244,2013-2014,Conference QF loss,Columbus Blue Jackets
-245,2012-2013,Did not make playoffs,Columbus Blue Jackets
-246,2011-2012,Did not make playoffs,Columbus Blue Jackets
-247,2010-2011,Did not make playoffs,Columbus Blue Jackets
-248,2009-2010,Did not make playoffs,Columbus Blue Jackets
-249,2008-2009,Conference QF loss,Columbus Blue Jackets
-250,2007-2008,Did not make playoffs,Columbus Blue Jackets
-251,2006-2007,Did not make playoffs,Columbus Blue Jackets
-252,2005-2006,Did not make playoffs,Columbus Blue Jackets
-253,2003-2004,Did not make playoffs,Columbus Blue Jackets
-254,2002-2003,Did not make playoffs,Columbus Blue Jackets
-255,2001-2002,Did not make playoffs,Columbus Blue Jackets
-256,2000-2001,Did not make playoffs,Columbus Blue Jackets
-258,2023-2024,Conference Final loss,Dallas Stars
-259,2022-2023,Conference Final loss,Dallas Stars
-260,2021-2022,Conference QF loss,Dallas Stars
-261,2020-2021,Did not make playoffs,Dallas Stars
-262,2019-2020,Final loss,Dallas Stars
-263,2018-2019,Conference SF loss,Dallas Stars
-264,2017-2018,Did not make playoffs,Dallas Stars
-265,2016-2017,Did not make playoffs,Dallas Stars
-266,2015-2016,Conference SF loss,Dallas Stars
-267,2014-2015,Did not make playoffs,Dallas Stars
-268,2013-2014,Conference QF loss,Dallas Stars
-269,2012-2013,Did not make playoffs,Dallas Stars
-270,2011-2012,Did not make playoffs,Dallas Stars
-271,2010-2011,Did not make playoffs,Dallas Stars
-272,2009-2010,Did not make playoffs,Dallas Stars
-273,2008-2009,Did not make playoffs,Dallas Stars
-274,2007-2008,Conference Final loss,Dallas Stars
-275,2006-2007,Conference QF loss,Dallas Stars
-276,2005-2006,Conference QF loss,Dallas Stars
-277,2003-2004,Conference QF loss,Dallas Stars
-278,2002-2003,Conference SF loss,Dallas Stars
-279,2001-2002,Did not make playoffs,Dallas Stars
-280,2000-2001,Conference SF loss,Dallas Stars
-281,1999-2000,Final loss,Dallas Stars
-282,1998-1999,Champion,Dallas Stars
-283,1997-1998,Conference Final loss,Dallas Stars
-284,1996-1997,Conference QF loss,Dallas Stars
-285,1995-1996,Did not make playoffs,Dallas Stars
-286,1994-1995,Conference QF loss,Dallas Stars
-288,2023-2024,Did not make playoffs,Detroit Red Wings
-289,2022-2023,Did not make playoffs,Detroit Red Wings
-290,2021-2022,Did not make playoffs,Detroit Red Wings
-291,2020-2021,Did not make playoffs,Detroit Red Wings
-292,2019-2020,Did not make playoffs,Detroit Red Wings
-293,2018-2019,Did not make playoffs,Detroit Red Wings
-294,2017-2018,Did not make playoffs,Detroit Red Wings
-295,2016-2017,Did not make playoffs,Detroit Red Wings
-296,2015-2016,Conference QF loss,Detroit Red Wings
-297,2014-2015,Conference QF loss,Detroit Red Wings
-298,2013-2014,Conference QF loss,Detroit Red Wings
-299,2012-2013,Conference SF loss,Detroit Red Wings
-300,2011-2012,Conference QF loss,Detroit Red Wings
-301,2010-2011,Conference SF loss,Detroit Red Wings
-302,2009-2010,Conference SF loss,Detroit Red Wings
-303,2008-2009,Final loss,Detroit Red Wings
-304,2007-2008,Champion,Detroit Red Wings
-305,2006-2007,Conference Final loss,Detroit Red Wings
-306,2005-2006,Conference QF loss,Detroit Red Wings
-307,2003-2004,Conference SF loss,Detroit Red Wings
-308,2002-2003,Conference QF loss,Detroit Red Wings
-309,2001-2002,Champion,Detroit Red Wings
-310,2000-2001,Conference QF loss,Detroit Red Wings
-311,1999-2000,Conference SF loss,Detroit Red Wings
-312,1998-1999,Conference SF loss,Detroit Red Wings
-313,1997-1998,Champion,Detroit Red Wings
-314,1996-1997,Champion,Detroit Red Wings
-315,1995-1996,Conference Final loss,Detroit Red Wings
-316,1994-1995,Final loss,Detroit Red Wings
-318,2023-2024,Final loss,Edmonton Oilers
-319,2022-2023,Conference SF loss,Edmonton Oilers
-320,2021-2022,Conference Final loss,Edmonton Oilers
-321,2020-2021,Conference QF loss,Edmonton Oilers
-322,2019-2020,Playoffs Qualifier loss,Edmonton Oilers
-323,2018-2019,Did not make playoffs,Edmonton Oilers
-324,2017-2018,Did not make playoffs,Edmonton Oilers
-325,2016-2017,Conference SF loss,Edmonton Oilers
-326,2015-2016,Did not make playoffs,Edmonton Oilers
-327,2014-2015,Did not make playoffs,Edmonton Oilers
-328,2013-2014,Did not make playoffs,Edmonton Oilers
-329,2012-2013,Did not make playoffs,Edmonton Oilers
-330,2011-2012,Did not make playoffs,Edmonton Oilers
-331,2010-2011,Did not make playoffs,Edmonton Oilers
-332,2009-2010,Did not make playoffs,Edmonton Oilers
-333,2008-2009,Did not make playoffs,Edmonton Oilers
-334,2007-2008,Did not make playoffs,Edmonton Oilers
-335,2006-2007,Did not make playoffs,Edmonton Oilers
-336,2005-2006,Final loss,Edmonton Oilers
-337,2003-2004,Did not make playoffs,Edmonton Oilers
-338,2002-2003,Conference QF loss,Edmonton Oilers
-339,2001-2002,Did not make playoffs,Edmonton Oilers
-340,2000-2001,Conference QF loss,Edmonton Oilers
-341,1999-2000,Conference QF loss,Edmonton Oilers
-342,1998-1999,Conference QF loss,Edmonton Oilers
-343,1997-1998,Conference SF loss,Edmonton Oilers
-344,1996-1997,Conference SF loss,Edmonton Oilers
-345,1995-1996,Did not make playoffs,Edmonton Oilers
-346,1994-1995,Did not make playoffs,Edmonton Oilers
-348,2023-2024,Champion,Florida Panthers
-349,2022-2023,Final loss,Florida Panthers
-350,2021-2022,Conference SF loss,Florida Panthers
-351,2020-2021,Conference QF loss,Florida Panthers
-352,2019-2020,Playoffs Qualifier loss,Florida Panthers
-353,2018-2019,Did not make playoffs,Florida Panthers
-354,2017-2018,Did not make playoffs,Florida Panthers
-355,2016-2017,Did not make playoffs,Florida Panthers
-356,2015-2016,Conference QF loss,Florida Panthers
-357,2014-2015,Did not make playoffs,Florida Panthers
-358,2013-2014,Did not make playoffs,Florida Panthers
-359,2012-2013,Did not make playoffs,Florida Panthers
-360,2011-2012,Conference QF loss,Florida Panthers
-361,2010-2011,Did not make playoffs,Florida Panthers
-362,2009-2010,Did not make playoffs,Florida Panthers
-363,2008-2009,Did not make playoffs,Florida Panthers
-364,2007-2008,Did not make playoffs,Florida Panthers
-365,2006-2007,Did not make playoffs,Florida Panthers
-366,2005-2006,Did not make playoffs,Florida Panthers
-367,2003-2004,Did not make playoffs,Florida Panthers
-368,2002-2003,Did not make playoffs,Florida Panthers
-369,2001-2002,Did not make playoffs,Florida Panthers
-370,2000-2001,Did not make playoffs,Florida Panthers
-371,1999-2000,Conference QF loss,Florida Panthers
-372,1998-1999,Did not make playoffs,Florida Panthers
-373,1997-1998,Did not make playoffs,Florida Panthers
-374,1996-1997,Conference QF loss,Florida Panthers
-375,1995-1996,Final loss,Florida Panthers
-376,1994-1995,Did not make playoffs,Florida Panthers
-378,2023-2024,Conference QF loss,Los Angeles Kings
-379,2022-2023,Conference QF loss,Los Angeles Kings
-380,2021-2022,Conference QF loss,Los Angeles Kings
-381,2020-2021,Did not make playoffs,Los Angeles Kings
-382,2019-2020,Did not make playoffs,Los Angeles Kings
-383,2018-2019,Did not make playoffs,Los Angeles Kings
-384,2017-2018,Conference QF loss,Los Angeles Kings
-385,2016-2017,Did not make playoffs,Los Angeles Kings
-386,2015-2016,Conference QF loss,Los Angeles Kings
-387,2014-2015,Did not make playoffs,Los Angeles Kings
-388,2013-2014,Champion,Los Angeles Kings
-389,2012-2013,Conference Final loss,Los Angeles Kings
-390,2011-2012,Champion,Los Angeles Kings
-391,2010-2011,Conference QF loss,Los Angeles Kings
-392,2009-2010,Conference QF loss,Los Angeles Kings
-393,2008-2009,Did not make playoffs,Los Angeles Kings
-394,2007-2008,Did not make playoffs,Los Angeles Kings
-395,2006-2007,Did not make playoffs,Los Angeles Kings
-396,2005-2006,Did not make playoffs,Los Angeles Kings
-397,2003-2004,Did not make playoffs,Los Angeles Kings
-398,2002-2003,Did not make playoffs,Los Angeles Kings
-399,2001-2002,Conference QF loss,Los Angeles Kings
-400,2000-2001,Conference SF loss,Los Angeles Kings
-401,1999-2000,Conference QF loss,Los Angeles Kings
-402,1998-1999,Did not make playoffs,Los Angeles Kings
-403,1997-1998,Conference QF loss,Los Angeles Kings
-404,1996-1997,Did not make playoffs,Los Angeles Kings
-405,1995-1996,Did not make playoffs,Los Angeles Kings
-406,1994-1995,Did not make playoffs,Los Angeles Kings
-408,2023-2024,Did not make playoffs,Minnesota Wild
-409,2022-2023,Conference QF loss,Minnesota Wild
-410,2021-2022,Conference QF loss,Minnesota Wild
-411,2020-2021,Conference QF loss,Minnesota Wild
-412,2019-2020,Playoffs Qualifier loss,Minnesota Wild
-413,2018-2019,Did not make playoffs,Minnesota Wild
-414,2017-2018,Conference QF loss,Minnesota Wild
-415,2016-2017,Conference QF loss,Minnesota Wild
-416,2015-2016,Conference QF loss,Minnesota Wild
-417,2014-2015,Conference SF loss,Minnesota Wild
-418,2013-2014,Conference SF loss,Minnesota Wild
-419,2012-2013,Conference QF loss,Minnesota Wild
-420,2011-2012,Did not make playoffs,Minnesota Wild
-421,2010-2011,Did not make playoffs,Minnesota Wild
-422,2009-2010,Did not make playoffs,Minnesota Wild
-423,2008-2009,Did not make playoffs,Minnesota Wild
-424,2007-2008,Conference QF loss,Minnesota Wild
-425,2006-2007,Conference QF loss,Minnesota Wild
-426,2005-2006,Did not make playoffs,Minnesota Wild
-427,2003-2004,Did not make playoffs,Minnesota Wild
-428,2002-2003,Conference Final loss,Minnesota Wild
-429,2001-2002,Did not make playoffs,Minnesota Wild
-430,2000-2001,Did not make playoffs,Minnesota Wild
-432,2023-2024,Did not make playoffs,Montreal Canadiens
-433,2022-2023,Did not make playoffs,Montreal Canadiens
-434,2021-2022,Did not make playoffs,Montreal Canadiens
-435,2020-2021,Final loss,Montreal Canadiens
-436,2019-2020,Conference QF loss,Montreal Canadiens
-437,2018-2019,Did not make playoffs,Montreal Canadiens
-438,2017-2018,Did not make playoffs,Montreal Canadiens
-439,2016-2017,Conference QF loss,Montreal Canadiens
-440,2015-2016,Did not make playoffs,Montreal Canadiens
-441,2014-2015,Conference SF loss,Montreal Canadiens
-442,2013-2014,Conference Final loss,Montreal Canadiens
-443,2012-2013,Conference QF loss,Montreal Canadiens
-444,2011-2012,Did not make playoffs,Montreal Canadiens
-445,2010-2011,Conference QF loss,Montreal Canadiens
-446,2009-2010,Conference Final loss,Montreal Canadiens
-447,2008-2009,Conference QF loss,Montreal Canadiens
-448,2007-2008,Conference SF loss,Montreal Canadiens
-449,2006-2007,Did not make playoffs,Montreal Canadiens
-450,2005-2006,Conference QF loss,Montreal Canadiens
-451,2003-2004,Conference SF loss,Montreal Canadiens
-452,2002-2003,Did not make playoffs,Montreal Canadiens
-453,2001-2002,Conference SF loss,Montreal Canadiens
-454,2000-2001,Did not make playoffs,Montreal Canadiens
-455,1999-2000,Did not make playoffs,Montreal Canadiens
-456,1998-1999,Did not make playoffs,Montreal Canadiens
-457,1997-1998,Conference SF loss,Montreal Canadiens
-458,1996-1997,Conference QF loss,Montreal Canadiens
-459,1995-1996,Conference QF loss,Montreal Canadiens
-460,1994-1995,Did not make playoffs,Montreal Canadiens
-462,2023-2024,Conference QF loss,Nashville Predators
-463,2022-2023,Did not make playoffs,Nashville Predators
-464,2021-2022,Conference QF loss,Nashville Predators
-465,2020-2021,Conference QF loss,Nashville Predators
-466,2019-2020,Playoffs Qualifier loss,Nashville Predators
-467,2018-2019,Conference QF loss,Nashville Predators
-468,2017-2018,Conference SF loss,Nashville Predators
-469,2016-2017,Final loss,Nashville Predators
-470,2015-2016,Conference SF loss,Nashville Predators
-471,2014-2015,Conference QF loss,Nashville Predators
-472,2013-2014,Did not make playoffs,Nashville Predators
-473,2012-2013,Did not make playoffs,Nashville Predators
-474,2011-2012,Conference SF loss,Nashville Predators
-475,2010-2011,Conference SF loss,Nashville Predators
-476,2009-2010,Conference QF loss,Nashville Predators
-477,2008-2009,Did not make playoffs,Nashville Predators
-478,2007-2008,Conference QF loss,Nashville Predators
-479,2006-2007,Conference QF loss,Nashville Predators
-480,2005-2006,Conference QF loss,Nashville Predators
-481,2003-2004,Conference QF loss,Nashville Predators
-482,2002-2003,Did not make playoffs,Nashville Predators
-483,2001-2002,Did not make playoffs,Nashville Predators
-484,2000-2001,Did not make playoffs,Nashville Predators
-485,1999-2000,Did not make playoffs,Nashville Predators
-486,1998-1999,Did not make playoffs,Nashville Predators
-488,2023-2024,Did not make playoffs,New Jersey Devils
-489,2022-2023,Conference SF loss,New Jersey Devils
-490,2021-2022,Did not make playoffs,New Jersey Devils
-491,2020-2021,Did not make playoffs,New Jersey Devils
-492,2019-2020,Did not make playoffs,New Jersey Devils
-493,2018-2019,Did not make playoffs,New Jersey Devils
-494,2017-2018,Conference QF loss,New Jersey Devils
-495,2016-2017,Did not make playoffs,New Jersey Devils
-496,2015-2016,Did not make playoffs,New Jersey Devils
-497,2014-2015,Did not make playoffs,New Jersey Devils
-498,2013-2014,Did not make playoffs,New Jersey Devils
-499,2012-2013,Did not make playoffs,New Jersey Devils
-500,2011-2012,Final loss,New Jersey Devils
-501,2010-2011,Did not make playoffs,New Jersey Devils
-502,2009-2010,Conference QF loss,New Jersey Devils
-503,2008-2009,Conference QF loss,New Jersey Devils
-504,2007-2008,Conference QF loss,New Jersey Devils
-505,2006-2007,Conference SF loss,New Jersey Devils
-506,2005-2006,Conference SF loss,New Jersey Devils
-507,2003-2004,Conference QF loss,New Jersey Devils
-508,2002-2003,Champion,New Jersey Devils
-509,2001-2002,Conference QF loss,New Jersey Devils
-510,2000-2001,Final loss,New Jersey Devils
-511,1999-2000,Champion,New Jersey Devils
-512,1998-1999,Conference QF loss,New Jersey Devils
-513,1997-1998,Conference QF loss,New Jersey Devils
-514,1996-1997,Conference SF loss,New Jersey Devils
-515,1995-1996,Did not make playoffs,New Jersey Devils
-516,1994-1995,Champion,New Jersey Devils
-518,2023-2024,Conference QF loss,New York Islanders
-519,2022-2023,Conference QF loss,New York Islanders
-520,2021-2022,Did not make playoffs,New York Islanders
-521,2020-2021,Conference Final loss,New York Islanders
-522,2019-2020,Conference Final loss,New York Islanders
-523,2018-2019,Conference SF loss,New York Islanders
-524,2017-2018,Did not make playoffs,New York Islanders
-525,2016-2017,Did not make playoffs,New York Islanders
-526,2015-2016,Conference SF loss,New York Islanders
-527,2014-2015,Conference QF loss,New York Islanders
-528,2013-2014,Did not make playoffs,New York Islanders
-529,2012-2013,Conference QF loss,New York Islanders
-530,2011-2012,Did not make playoffs,New York Islanders
-531,2010-2011,Did not make playoffs,New York Islanders
-532,2009-2010,Did not make playoffs,New York Islanders
-533,2008-2009,Did not make playoffs,New York Islanders
-534,2007-2008,Did not make playoffs,New York Islanders
-535,2006-2007,Conference QF loss,New York Islanders
-536,2005-2006,Did not make playoffs,New York Islanders
-537,2003-2004,Conference QF loss,New York Islanders
-538,2002-2003,Conference QF loss,New York Islanders
-539,2001-2002,Conference QF loss,New York Islanders
-540,2000-2001,Did not make playoffs,New York Islanders
-541,1999-2000,Did not make playoffs,New York Islanders
-542,1998-1999,Did not make playoffs,New York Islanders
-543,1997-1998,Did not make playoffs,New York Islanders
-544,1996-1997,Did not make playoffs,New York Islanders
-545,1995-1996,Did not make playoffs,New York Islanders
-546,1994-1995,Did not make playoffs,New York Islanders
-548,2023-2024,Conference Final loss,New York Rangers
-549,2022-2023,Conference QF loss,New York Rangers
-550,2021-2022,Conference Final loss,New York Rangers
-551,2020-2021,Did not make playoffs,New York Rangers
-552,2019-2020,Playoffs Qualifier loss,New York Rangers
-553,2018-2019,Did not make playoffs,New York Rangers
-554,2017-2018,Did not make playoffs,New York Rangers
-555,2016-2017,Conference SF loss,New York Rangers
-556,2015-2016,Conference QF loss,New York Rangers
-557,2014-2015,Conference Final loss,New York Rangers
-558,2013-2014,Final loss,New York Rangers
-559,2012-2013,Conference SF loss,New York Rangers
-560,2011-2012,Conference Final loss,New York Rangers
-561,2010-2011,Conference QF loss,New York Rangers
-562,2009-2010,Did not make playoffs,New York Rangers
-563,2008-2009,Conference QF loss,New York Rangers
-564,2007-2008,Conference SF loss,New York Rangers
-565,2006-2007,Conference SF loss,New York Rangers
-566,2005-2006,Conference QF loss,New York Rangers
-567,2003-2004,Did not make playoffs,New York Rangers
-568,2002-2003,Did not make playoffs,New York Rangers
-569,2001-2002,Did not make playoffs,New York Rangers
-570,2000-2001,Did not make playoffs,New York Rangers
-571,1999-2000,Did not make playoffs,New York Rangers
-572,1998-1999,Did not make playoffs,New York Rangers
-573,1997-1998,Did not make playoffs,New York Rangers
-574,1996-1997,Conference Final loss,New York Rangers
-575,1995-1996,Conference SF loss,New York Rangers
-576,1994-1995,Conference SF loss,New York Rangers
-578,2023-2024,Did not make playoffs,Ottawa Senators
-579,2022-2023,Did not make playoffs,Ottawa Senators
-580,2021-2022,Did not make playoffs,Ottawa Senators
-581,2020-2021,Did not make playoffs,Ottawa Senators
-582,2019-2020,Did not make playoffs,Ottawa Senators
-583,2018-2019,Did not make playoffs,Ottawa Senators
-584,2017-2018,Did not make playoffs,Ottawa Senators
-585,2016-2017,Conference Final loss,Ottawa Senators
-586,2015-2016,Did not make playoffs,Ottawa Senators
-587,2014-2015,Conference QF loss,Ottawa Senators
-588,2013-2014,Did not make playoffs,Ottawa Senators
-589,2012-2013,Conference SF loss,Ottawa Senators
-590,2011-2012,Conference QF loss,Ottawa Senators
-591,2010-2011,Did not make playoffs,Ottawa Senators
-592,2009-2010,Conference QF loss,Ottawa Senators
-593,2008-2009,Did not make playoffs,Ottawa Senators
-594,2007-2008,Conference QF loss,Ottawa Senators
-595,2006-2007,Final loss,Ottawa Senators
-596,2005-2006,Conference SF loss,Ottawa Senators
-597,2003-2004,Conference QF loss,Ottawa Senators
-598,2002-2003,Conference Final loss,Ottawa Senators
-599,2001-2002,Conference SF loss,Ottawa Senators
-600,2000-2001,Conference QF loss,Ottawa Senators
-601,1999-2000,Conference QF loss,Ottawa Senators
-602,1998-1999,Conference QF loss,Ottawa Senators
-603,1997-1998,Conference SF loss,Ottawa Senators
-604,1996-1997,Conference QF loss,Ottawa Senators
-605,1995-1996,Did not make playoffs,Ottawa Senators
-606,1994-1995,Did not make playoffs,Ottawa Senators
-608,2023-2024,Did not make playoffs,Philadelphia Flyers
-609,2022-2023,Did not make playoffs,Philadelphia Flyers
-610,2021-2022,Did not make playoffs,Philadelphia Flyers
-611,2020-2021,Did not make playoffs,Philadelphia Flyers
-612,2019-2020,Conference SF loss,Philadelphia Flyers
-613,2018-2019,Did not make playoffs,Philadelphia Flyers
-614,2017-2018,Conference QF loss,Philadelphia Flyers
-615,2016-2017,Did not make playoffs,Philadelphia Flyers
-616,2015-2016,Conference QF loss,Philadelphia Flyers
-617,2014-2015,Did not make playoffs,Philadelphia Flyers
-618,2013-2014,Conference QF loss,Philadelphia Flyers
-619,2012-2013,Did not make playoffs,Philadelphia Flyers
-620,2011-2012,Conference SF loss,Philadelphia Flyers
-621,2010-2011,Conference SF loss,Philadelphia Flyers
-622,2009-2010,Final loss,Philadelphia Flyers
-623,2008-2009,Conference QF loss,Philadelphia Flyers
-624,2007-2008,Conference Final loss,Philadelphia Flyers
-625,2006-2007,Did not make playoffs,Philadelphia Flyers
-626,2005-2006,Conference QF loss,Philadelphia Flyers
-627,2003-2004,Conference Final loss,Philadelphia Flyers
-628,2002-2003,Conference SF loss,Philadelphia Flyers
-629,2001-2002,Conference QF loss,Philadelphia Flyers
-630,2000-2001,Conference QF loss,Philadelphia Flyers
-631,1999-2000,Conference Final loss,Philadelphia Flyers
-632,1998-1999,Conference QF loss,Philadelphia Flyers
-633,1997-1998,Conference QF loss,Philadelphia Flyers
-634,1996-1997,Final loss,Philadelphia Flyers
-635,1995-1996,Conference SF loss,Philadelphia Flyers
-636,1994-1995,Conference Final loss,Philadelphia Flyers
-638,2023-2024,Did not make playoffs,Pittsburgh Penguins
-639,2022-2023,Did not make playoffs,Pittsburgh Penguins
-640,2021-2022,Conference QF loss,Pittsburgh Penguins
-641,2020-2021,Conference QF loss,Pittsburgh Penguins
-642,2019-2020,Playoffs Qualifier loss,Pittsburgh Penguins
-643,2018-2019,Conference QF loss,Pittsburgh Penguins
-644,2017-2018,Conference SF loss,Pittsburgh Penguins
-645,2016-2017,Champion,Pittsburgh Penguins
-646,2015-2016,Champion,Pittsburgh Penguins
-647,2014-2015,Conference QF loss,Pittsburgh Penguins
-648,2013-2014,Conference SF loss,Pittsburgh Penguins
-649,2012-2013,Conference Final loss,Pittsburgh Penguins
-650,2011-2012,Conference QF loss,Pittsburgh Penguins
-651,2010-2011,Conference QF loss,Pittsburgh Penguins
-652,2009-2010,Conference SF loss,Pittsburgh Penguins
-653,2008-2009,Champion,Pittsburgh Penguins
-654,2007-2008,Final loss,Pittsburgh Penguins
-655,2006-2007,Conference QF loss,Pittsburgh Penguins
-656,2005-2006,Did not make playoffs,Pittsburgh Penguins
-657,2003-2004,Did not make playoffs,Pittsburgh Penguins
-658,2002-2003,Did not make playoffs,Pittsburgh Penguins
-659,2001-2002,Did not make playoffs,Pittsburgh Penguins
-660,2000-2001,Conference Final loss,Pittsburgh Penguins
-661,1999-2000,Conference SF loss,Pittsburgh Penguins
-662,1998-1999,Conference SF loss,Pittsburgh Penguins
-663,1997-1998,Conference QF loss,Pittsburgh Penguins
-664,1996-1997,Conference QF loss,Pittsburgh Penguins
-665,1995-1996,Conference Final loss,Pittsburgh Penguins
-666,1994-1995,Conference SF loss,Pittsburgh Penguins
-668,2023-2024,Did not make playoffs,San Jose Sharks
-669,2022-2023,Did not make playoffs,San Jose Sharks
-670,2021-2022,Did not make playoffs,San Jose Sharks
-671,2020-2021,Did not make playoffs,San Jose Sharks
-672,2019-2020,Did not make playoffs,San Jose Sharks
-673,2018-2019,Conference Final loss,San Jose Sharks
-674,2017-2018,Conference SF loss,San Jose Sharks
-675,2016-2017,Conference QF loss,San Jose Sharks
-676,2015-2016,Final loss,San Jose Sharks
-677,2014-2015,Did not make playoffs,San Jose Sharks
-678,2013-2014,Conference QF loss,San Jose Sharks
-679,2012-2013,Conference SF loss,San Jose Sharks
-680,2011-2012,Conference QF loss,San Jose Sharks
-681,2010-2011,Conference Final loss,San Jose Sharks
-682,2009-2010,Conference Final loss,San Jose Sharks
-683,2008-2009,Conference QF loss,San Jose Sharks
-684,2007-2008,Conference SF loss,San Jose Sharks
-685,2006-2007,Conference SF loss,San Jose Sharks
-686,2005-2006,Conference SF loss,San Jose Sharks
-687,2003-2004,Conference Final loss,San Jose Sharks
-688,2002-2003,Did not make playoffs,San Jose Sharks
-689,2001-2002,Conference SF loss,San Jose Sharks
-690,2000-2001,Conference QF loss,San Jose Sharks
-691,1999-2000,Conference SF loss,San Jose Sharks
-692,1998-1999,Conference QF loss,San Jose Sharks
-693,1997-1998,Conference QF loss,San Jose Sharks
-694,1996-1997,Did not make playoffs,San Jose Sharks
-695,1995-1996,Did not make playoffs,San Jose Sharks
-696,1994-1995,Conference SF loss,San Jose Sharks
-698,2023-2024,Did not make playoffs,Seattle Kraken
-699,2022-2023,Conference SF loss,Seattle Kraken
-700,2021-2022,Did not make playoffs,Seattle Kraken
-702,2023-2024,Did not make playoffs,St. Louis Blues
-703,2022-2023,Did not make playoffs,St. Louis Blues
-704,2021-2022,Conference SF loss,St. Louis Blues
-705,2020-2021,Conference QF loss,St. Louis Blues
-706,2019-2020,Conference QF loss,St. Louis Blues
-707,2018-2019,Champion,St. Louis Blues
-708,2017-2018,Did not make playoffs,St. Louis Blues
-709,2016-2017,Conference SF loss,St. Louis Blues
-710,2015-2016,Conference Final loss,St. Louis Blues
-711,2014-2015,Conference QF loss,St. Louis Blues
-712,2013-2014,Conference QF loss,St. Louis Blues
-713,2012-2013,Conference QF loss,St. Louis Blues
-714,2011-2012,Conference SF loss,St. Louis Blues
-715,2010-2011,Did not make playoffs,St. Louis Blues
-716,2009-2010,Did not make playoffs,St. Louis Blues
-717,2008-2009,Conference QF loss,St. Louis Blues
-718,2007-2008,Did not make playoffs,St. Louis Blues
-719,2006-2007,Did not make playoffs,St. Louis Blues
-720,2005-2006,Did not make playoffs,St. Louis Blues
-721,2003-2004,Conference QF loss,St. Louis Blues
-722,2002-2003,Conference QF loss,St. Louis Blues
-723,2001-2002,Conference SF loss,St. Louis Blues
-724,2000-2001,Conference Final loss,St. Louis Blues
-725,1999-2000,Conference QF loss,St. Louis Blues
-726,1998-1999,Conference SF loss,St. Louis Blues
-727,1997-1998,Conference SF loss,St. Louis Blues
-728,1996-1997,Conference QF loss,St. Louis Blues
-729,1995-1996,Conference SF loss,St. Louis Blues
-730,1994-1995,Conference QF loss,St. Louis Blues
-732,2023-2024,Conference QF loss,Tampa Bay Lightning
-733,2022-2023,Conference QF loss,Tampa Bay Lightning
-734,2021-2022,Final loss,Tampa Bay Lightning
-735,2020-2021,Champion,Tampa Bay Lightning
-736,2019-2020,Champion,Tampa Bay Lightning
-737,2018-2019,Conference QF loss,Tampa Bay Lightning
-738,2017-2018,Conference Final loss,Tampa Bay Lightning
-739,2016-2017,Did not make playoffs,Tampa Bay Lightning
-740,2015-2016,Conference Final loss,Tampa Bay Lightning
-741,2014-2015,Final loss,Tampa Bay Lightning
-742,2013-2014,Conference QF loss,Tampa Bay Lightning
-743,2012-2013,Did not make playoffs,Tampa Bay Lightning
-744,2011-2012,Did not make playoffs,Tampa Bay Lightning
-745,2010-2011,Conference Final loss,Tampa Bay Lightning
-746,2009-2010,Did not make playoffs,Tampa Bay Lightning
-747,2008-2009,Did not make playoffs,Tampa Bay Lightning
-748,2007-2008,Did not make playoffs,Tampa Bay Lightning
-749,2006-2007,Conference QF loss,Tampa Bay Lightning
-750,2005-2006,Conference QF loss,Tampa Bay Lightning
-751,2003-2004,Champion,Tampa Bay Lightning
-752,2002-2003,Conference SF loss,Tampa Bay Lightning
-753,2001-2002,Did not make playoffs,Tampa Bay Lightning
-754,2000-2001,Did not make playoffs,Tampa Bay Lightning
-755,1999-2000,Did not make playoffs,Tampa Bay Lightning
-756,1998-1999,Did not make playoffs,Tampa Bay Lightning
-757,1997-1998,Did not make playoffs,Tampa Bay Lightning
-758,1996-1997,Did not make playoffs,Tampa Bay Lightning
-759,1995-1996,Conference QF loss,Tampa Bay Lightning
-760,1994-1995,Did not make playoffs,Tampa Bay Lightning
-762,2023-2024,Conference QF loss,Toronto Maple Leafs
-763,2022-2023,Conference SF loss,Toronto Maple Leafs
-764,2021-2022,Conference QF loss,Toronto Maple Leafs
-765,2020-2021,Conference QF loss,Toronto Maple Leafs
-766,2019-2020,Playoffs Qualifier loss,Toronto Maple Leafs
-767,2018-2019,Conference QF loss,Toronto Maple Leafs
-768,2017-2018,Conference QF loss,Toronto Maple Leafs
-769,2016-2017,Conference QF loss,Toronto Maple Leafs
-770,2015-2016,Did not make playoffs,Toronto Maple Leafs
-771,2014-2015,Did not make playoffs,Toronto Maple Leafs
-772,2013-2014,Did not make playoffs,Toronto Maple Leafs
-773,2012-2013,Conference QF loss,Toronto Maple Leafs
-774,2011-2012,Did not make playoffs,Toronto Maple Leafs
-775,2010-2011,Did not make playoffs,Toronto Maple Leafs
-776,2009-2010,Did not make playoffs,Toronto Maple Leafs
-777,2008-2009,Did not make playoffs,Toronto Maple Leafs
-778,2007-2008,Did not make playoffs,Toronto Maple Leafs
-779,2006-2007,Did not make playoffs,Toronto Maple Leafs
-780,2005-2006,Did not make playoffs,Toronto Maple Leafs
-781,2003-2004,Conference SF loss,Toronto Maple Leafs
-782,2002-2003,Conference QF loss,Toronto Maple Leafs
-783,2001-2002,Conference Final loss,Toronto Maple Leafs
-784,2000-2001,Conference SF loss,Toronto Maple Leafs
-785,1999-2000,Conference SF loss,Toronto Maple Leafs
-786,1998-1999,Conference Final loss,Toronto Maple Leafs
-787,1997-1998,Did not make playoffs,Toronto Maple Leafs
-788,1996-1997,Did not make playoffs,Toronto Maple Leafs
-789,1995-1996,Conference QF loss,Toronto Maple Leafs
-790,1994-1995,Conference QF loss,Toronto Maple Leafs
-792,2023-2024,Conference SF loss,Vancouver Canucks
-793,2022-2023,Did not make playoffs,Vancouver Canucks
-794,2021-2022,Did not make playoffs,Vancouver Canucks
-795,2020-2021,Did not make playoffs,Vancouver Canucks
-796,2019-2020,Conference SF loss,Vancouver Canucks
-797,2018-2019,Did not make playoffs,Vancouver Canucks
-798,2017-2018,Did not make playoffs,Vancouver Canucks
-799,2016-2017,Did not make playoffs,Vancouver Canucks
-800,2015-2016,Did not make playoffs,Vancouver Canucks
-801,2014-2015,Conference QF loss,Vancouver Canucks
-802,2013-2014,Did not make playoffs,Vancouver Canucks
-803,2012-2013,Conference QF loss,Vancouver Canucks
-804,2011-2012,Conference QF loss,Vancouver Canucks
-805,2010-2011,Final loss,Vancouver Canucks
-806,2009-2010,Conference SF loss,Vancouver Canucks
-807,2008-2009,Conference SF loss,Vancouver Canucks
-808,2007-2008,Did not make playoffs,Vancouver Canucks
-809,2006-2007,Conference SF loss,Vancouver Canucks
-810,2005-2006,Did not make playoffs,Vancouver Canucks
-811,2003-2004,Conference QF loss,Vancouver Canucks
-812,2002-2003,Conference SF loss,Vancouver Canucks
-813,2001-2002,Conference QF loss,Vancouver Canucks
-814,2000-2001,Conference QF loss,Vancouver Canucks
-815,1999-2000,Did not make playoffs,Vancouver Canucks
-816,1998-1999,Did not make playoffs,Vancouver Canucks
-817,1997-1998,Did not make playoffs,Vancouver Canucks
-818,1996-1997,Did not make playoffs,Vancouver Canucks
-819,1995-1996,Conference QF loss,Vancouver Canucks
-820,1994-1995,Conference SF loss,Vancouver Canucks
-822,2023-2024,Conference QF loss,Vegas Golden Knights
-823,2022-2023,Champion,Vegas Golden Knights
-824,2021-2022,Did not make playoffs,Vegas Golden Knights
-825,2020-2021,Conference Final loss,Vegas Golden Knights
-826,2019-2020,Conference Final loss,Vegas Golden Knights
-827,2018-2019,Conference QF loss,Vegas Golden Knights
-828,2017-2018,Final loss,Vegas Golden Knights
-830,2023-2024,Conference QF loss,Washington Capitals
-831,2022-2023,Did not make playoffs,Washington Capitals
-832,2021-2022,Conference QF loss,Washington Capitals
-833,2020-2021,Conference QF loss,Washington Capitals
-834,2019-2020,Conference QF loss,Washington Capitals
-835,2018-2019,Conference QF loss,Washington Capitals
-836,2017-2018,Champion,Washington Capitals
-837,2016-2017,Conference SF loss,Washington Capitals
-838,2015-2016,Conference SF loss,Washington Capitals
-839,2014-2015,Conference SF loss,Washington Capitals
-840,2013-2014,Did not make playoffs,Washington Capitals
-841,2012-2013,Conference QF loss,Washington Capitals
-842,2011-2012,Conference SF loss,Washington Capitals
-843,2010-2011,Conference SF loss,Washington Capitals
-844,2009-2010,Conference QF loss,Washington Capitals
-845,2008-2009,Conference SF loss,Washington Capitals
-846,2007-2008,Conference QF loss,Washington Capitals
-847,2006-2007,Did not make playoffs,Washington Capitals
-848,2005-2006,Did not make playoffs,Washington Capitals
-849,2003-2004,Did not make playoffs,Washington Capitals
-850,2002-2003,Conference QF loss,Washington Capitals
-851,2001-2002,Did not make playoffs,Washington Capitals
-852,2000-2001,Conference QF loss,Washington Capitals
-853,1999-2000,Conference QF loss,Washington Capitals
-854,1998-1999,Did not make playoffs,Washington Capitals
-855,1997-1998,Final loss,Washington Capitals
-856,1996-1997,Did not make playoffs,Washington Capitals
-857,1995-1996,Conference QF loss,Washington Capitals
-858,1994-1995,Conference QF loss,Washington Capitals
-860,2023-2024,Conference QF loss,Winnipeg Jets
-861,2022-2023,Conference QF loss,Winnipeg Jets
-862,2021-2022,Did not make playoffs,Winnipeg Jets
-863,2020-2021,Conference SF loss,Winnipeg Jets
-864,2019-2020,Playoffs Qualifier loss,Winnipeg Jets
-865,2018-2019,Conference QF loss,Winnipeg Jets
-866,2017-2018,Conference Final loss,Winnipeg Jets
-867,2016-2017,Did not make playoffs,Winnipeg Jets
-868,2015-2016,Did not make playoffs,Winnipeg Jets
-869,2014-2015,Conference QF loss,Winnipeg Jets
-870,2013-2014,Did not make playoffs,Winnipeg Jets
-871,2012-2013,Did not make playoffs,Winnipeg Jets
-872,2011-2012,Did not make playoffs,Winnipeg Jets
+58,2024-2025,Did not make playoffs,Boston Bruins
+59,2023-2024,Conference SF loss,Boston Bruins
+60,2022-2023,Conference QF loss,Boston Bruins
+61,2021-2022,Conference QF loss,Boston Bruins
+62,2020-2021,Conference SF loss,Boston Bruins
+63,2019-2020,Conference SF loss,Boston Bruins
+64,2018-2019,Final loss,Boston Bruins
+65,2017-2018,Conference SF loss,Boston Bruins
+66,2016-2017,Conference QF loss,Boston Bruins
+67,2015-2016,Did not make playoffs,Boston Bruins
+68,2014-2015,Did not make playoffs,Boston Bruins
+69,2013-2014,Conference SF loss,Boston Bruins
+70,2012-2013,Final loss,Boston Bruins
+71,2011-2012,Conference QF loss,Boston Bruins
+72,2010-2011,Champion,Boston Bruins
+73,2009-2010,Conference SF loss,Boston Bruins
+74,2008-2009,Conference SF loss,Boston Bruins
+75,2007-2008,Conference QF loss,Boston Bruins
+76,2006-2007,Did not make playoffs,Boston Bruins
+77,2005-2006,Did not make playoffs,Boston Bruins
+78,2003-2004,Conference QF loss,Boston Bruins
+79,2002-2003,Conference QF loss,Boston Bruins
+80,2001-2002,Conference QF loss,Boston Bruins
+81,2000-2001,Did not make playoffs,Boston Bruins
+82,1999-2000,Did not make playoffs,Boston Bruins
+83,1998-1999,Conference SF loss,Boston Bruins
+84,1997-1998,Conference QF loss,Boston Bruins
+85,1996-1997,Did not make playoffs,Boston Bruins
+86,1995-1996,Conference QF loss,Boston Bruins
+88,2024-2025,Did not make playoffs,Buffalo Sabres
+89,2023-2024,Did not make playoffs,Buffalo Sabres
+90,2022-2023,Did not make playoffs,Buffalo Sabres
+91,2021-2022,Did not make playoffs,Buffalo Sabres
+92,2020-2021,Did not make playoffs,Buffalo Sabres
+93,2019-2020,Did not make playoffs,Buffalo Sabres
+94,2018-2019,Did not make playoffs,Buffalo Sabres
+95,2017-2018,Did not make playoffs,Buffalo Sabres
+96,2016-2017,Did not make playoffs,Buffalo Sabres
+97,2015-2016,Did not make playoffs,Buffalo Sabres
+98,2014-2015,Did not make playoffs,Buffalo Sabres
+99,2013-2014,Did not make playoffs,Buffalo Sabres
+100,2012-2013,Did not make playoffs,Buffalo Sabres
+101,2011-2012,Did not make playoffs,Buffalo Sabres
+102,2010-2011,Conference QF loss,Buffalo Sabres
+103,2009-2010,Conference QF loss,Buffalo Sabres
+104,2008-2009,Did not make playoffs,Buffalo Sabres
+105,2007-2008,Did not make playoffs,Buffalo Sabres
+106,2006-2007,Conference Final loss,Buffalo Sabres
+107,2005-2006,Conference Final loss,Buffalo Sabres
+108,2003-2004,Did not make playoffs,Buffalo Sabres
+109,2002-2003,Did not make playoffs,Buffalo Sabres
+110,2001-2002,Did not make playoffs,Buffalo Sabres
+111,2000-2001,Conference SF loss,Buffalo Sabres
+112,1999-2000,Conference QF loss,Buffalo Sabres
+113,1998-1999,Final loss,Buffalo Sabres
+114,1997-1998,Conference Final loss,Buffalo Sabres
+115,1996-1997,Conference SF loss,Buffalo Sabres
+116,1995-1996,Did not make playoffs,Buffalo Sabres
+118,2024-2025,Did not make playoffs,Calgary Flames
+119,2023-2024,Did not make playoffs,Calgary Flames
+120,2022-2023,Did not make playoffs,Calgary Flames
+121,2021-2022,Conference SF loss,Calgary Flames
+122,2020-2021,Did not make playoffs,Calgary Flames
+123,2019-2020,Conference QF loss,Calgary Flames
+124,2018-2019,Conference QF loss,Calgary Flames
+125,2017-2018,Did not make playoffs,Calgary Flames
+126,2016-2017,Conference QF loss,Calgary Flames
+127,2015-2016,Did not make playoffs,Calgary Flames
+128,2014-2015,Conference SF loss,Calgary Flames
+129,2013-2014,Did not make playoffs,Calgary Flames
+130,2012-2013,Did not make playoffs,Calgary Flames
+131,2011-2012,Did not make playoffs,Calgary Flames
+132,2010-2011,Did not make playoffs,Calgary Flames
+133,2009-2010,Did not make playoffs,Calgary Flames
+134,2008-2009,Conference QF loss,Calgary Flames
+135,2007-2008,Conference QF loss,Calgary Flames
+136,2006-2007,Conference QF loss,Calgary Flames
+137,2005-2006,Conference QF loss,Calgary Flames
+138,2003-2004,Final loss,Calgary Flames
+139,2002-2003,Did not make playoffs,Calgary Flames
+140,2001-2002,Did not make playoffs,Calgary Flames
+141,2000-2001,Did not make playoffs,Calgary Flames
+142,1999-2000,Did not make playoffs,Calgary Flames
+143,1998-1999,Did not make playoffs,Calgary Flames
+144,1997-1998,Did not make playoffs,Calgary Flames
+145,1996-1997,Did not make playoffs,Calgary Flames
+146,1995-1996,Conference QF loss,Calgary Flames
+148,2024-2025,Conference Final loss,Carolina Hurricanes
+149,2023-2024,Conference SF loss,Carolina Hurricanes
+150,2022-2023,Conference Final loss,Carolina Hurricanes
+151,2021-2022,Conference SF loss,Carolina Hurricanes
+152,2020-2021,Conference SF loss,Carolina Hurricanes
+153,2019-2020,Conference QF loss,Carolina Hurricanes
+154,2018-2019,Conference Final loss,Carolina Hurricanes
+155,2017-2018,Did not make playoffs,Carolina Hurricanes
+156,2016-2017,Did not make playoffs,Carolina Hurricanes
+157,2015-2016,Did not make playoffs,Carolina Hurricanes
+158,2014-2015,Did not make playoffs,Carolina Hurricanes
+159,2013-2014,Did not make playoffs,Carolina Hurricanes
+160,2012-2013,Did not make playoffs,Carolina Hurricanes
+161,2011-2012,Did not make playoffs,Carolina Hurricanes
+162,2010-2011,Did not make playoffs,Carolina Hurricanes
+163,2009-2010,Did not make playoffs,Carolina Hurricanes
+164,2008-2009,Conference Final loss,Carolina Hurricanes
+165,2007-2008,Did not make playoffs,Carolina Hurricanes
+166,2006-2007,Did not make playoffs,Carolina Hurricanes
+167,2005-2006,Champion,Carolina Hurricanes
+168,2003-2004,Did not make playoffs,Carolina Hurricanes
+169,2002-2003,Did not make playoffs,Carolina Hurricanes
+170,2001-2002,Final loss,Carolina Hurricanes
+171,2000-2001,Conference QF loss,Carolina Hurricanes
+172,1999-2000,Did not make playoffs,Carolina Hurricanes
+173,1998-1999,Conference QF loss,Carolina Hurricanes
+174,1997-1998,Did not make playoffs,Carolina Hurricanes
+176,2024-2025,Did not make playoffs,Chicago Blackhawks
+177,2023-2024,Did not make playoffs,Chicago Blackhawks
+178,2022-2023,Did not make playoffs,Chicago Blackhawks
+179,2021-2022,Did not make playoffs,Chicago Blackhawks
+180,2020-2021,Did not make playoffs,Chicago Blackhawks
+181,2019-2020,Conference QF loss,Chicago Blackhawks
+182,2018-2019,Did not make playoffs,Chicago Blackhawks
+183,2017-2018,Did not make playoffs,Chicago Blackhawks
+184,2016-2017,Conference QF loss,Chicago Blackhawks
+185,2015-2016,Conference QF loss,Chicago Blackhawks
+186,2014-2015,Champion,Chicago Blackhawks
+187,2013-2014,Conference Final loss,Chicago Blackhawks
+188,2012-2013,Champion,Chicago Blackhawks
+189,2011-2012,Conference QF loss,Chicago Blackhawks
+190,2010-2011,Conference QF loss,Chicago Blackhawks
+191,2009-2010,Champion,Chicago Blackhawks
+192,2008-2009,Conference Final loss,Chicago Blackhawks
+193,2007-2008,Did not make playoffs,Chicago Blackhawks
+194,2006-2007,Did not make playoffs,Chicago Blackhawks
+195,2005-2006,Did not make playoffs,Chicago Blackhawks
+196,2003-2004,Did not make playoffs,Chicago Blackhawks
+197,2002-2003,Did not make playoffs,Chicago Blackhawks
+198,2001-2002,Conference QF loss,Chicago Blackhawks
+199,2000-2001,Did not make playoffs,Chicago Blackhawks
+200,1999-2000,Did not make playoffs,Chicago Blackhawks
+201,1998-1999,Did not make playoffs,Chicago Blackhawks
+202,1997-1998,Did not make playoffs,Chicago Blackhawks
+203,1996-1997,Conference QF loss,Chicago Blackhawks
+204,1995-1996,Conference SF loss,Chicago Blackhawks
+206,2024-2025,Conference QF loss,Colorado Avalanche
+207,2023-2024,Conference SF loss,Colorado Avalanche
+208,2022-2023,Conference QF loss,Colorado Avalanche
+209,2021-2022,Champion,Colorado Avalanche
+210,2020-2021,Conference SF loss,Colorado Avalanche
+211,2019-2020,Conference SF loss,Colorado Avalanche
+212,2018-2019,Conference SF loss,Colorado Avalanche
+213,2017-2018,Conference QF loss,Colorado Avalanche
+214,2016-2017,Did not make playoffs,Colorado Avalanche
+215,2015-2016,Did not make playoffs,Colorado Avalanche
+216,2014-2015,Did not make playoffs,Colorado Avalanche
+217,2013-2014,Conference QF loss,Colorado Avalanche
+218,2012-2013,Did not make playoffs,Colorado Avalanche
+219,2011-2012,Did not make playoffs,Colorado Avalanche
+220,2010-2011,Did not make playoffs,Colorado Avalanche
+221,2009-2010,Conference QF loss,Colorado Avalanche
+222,2008-2009,Did not make playoffs,Colorado Avalanche
+223,2007-2008,Conference SF loss,Colorado Avalanche
+224,2006-2007,Did not make playoffs,Colorado Avalanche
+225,2005-2006,Conference SF loss,Colorado Avalanche
+226,2003-2004,Conference SF loss,Colorado Avalanche
+227,2002-2003,Conference QF loss,Colorado Avalanche
+228,2001-2002,Conference Final loss,Colorado Avalanche
+229,2000-2001,Champion,Colorado Avalanche
+230,1999-2000,Conference Final loss,Colorado Avalanche
+231,1998-1999,Conference Final loss,Colorado Avalanche
+232,1997-1998,Conference QF loss,Colorado Avalanche
+233,1996-1997,Conference Final loss,Colorado Avalanche
+234,1995-1996,Champion,Colorado Avalanche
+236,2024-2025,Did not make playoffs,Columbus Blue Jackets
+237,2023-2024,Did not make playoffs,Columbus Blue Jackets
+238,2022-2023,Did not make playoffs,Columbus Blue Jackets
+239,2021-2022,Did not make playoffs,Columbus Blue Jackets
+240,2020-2021,Did not make playoffs,Columbus Blue Jackets
+241,2019-2020,Conference QF loss,Columbus Blue Jackets
+242,2018-2019,Conference SF loss,Columbus Blue Jackets
+243,2017-2018,Conference QF loss,Columbus Blue Jackets
+244,2016-2017,Conference QF loss,Columbus Blue Jackets
+245,2015-2016,Did not make playoffs,Columbus Blue Jackets
+246,2014-2015,Did not make playoffs,Columbus Blue Jackets
+247,2013-2014,Conference QF loss,Columbus Blue Jackets
+248,2012-2013,Did not make playoffs,Columbus Blue Jackets
+249,2011-2012,Did not make playoffs,Columbus Blue Jackets
+250,2010-2011,Did not make playoffs,Columbus Blue Jackets
+251,2009-2010,Did not make playoffs,Columbus Blue Jackets
+252,2008-2009,Conference QF loss,Columbus Blue Jackets
+253,2007-2008,Did not make playoffs,Columbus Blue Jackets
+254,2006-2007,Did not make playoffs,Columbus Blue Jackets
+255,2005-2006,Did not make playoffs,Columbus Blue Jackets
+256,2003-2004,Did not make playoffs,Columbus Blue Jackets
+257,2002-2003,Did not make playoffs,Columbus Blue Jackets
+258,2001-2002,Did not make playoffs,Columbus Blue Jackets
+259,2000-2001,Did not make playoffs,Columbus Blue Jackets
+261,2024-2025,Conference Final loss,Dallas Stars
+262,2023-2024,Conference Final loss,Dallas Stars
+263,2022-2023,Conference Final loss,Dallas Stars
+264,2021-2022,Conference QF loss,Dallas Stars
+265,2020-2021,Did not make playoffs,Dallas Stars
+266,2019-2020,Final loss,Dallas Stars
+267,2018-2019,Conference SF loss,Dallas Stars
+268,2017-2018,Did not make playoffs,Dallas Stars
+269,2016-2017,Did not make playoffs,Dallas Stars
+270,2015-2016,Conference SF loss,Dallas Stars
+271,2014-2015,Did not make playoffs,Dallas Stars
+272,2013-2014,Conference QF loss,Dallas Stars
+273,2012-2013,Did not make playoffs,Dallas Stars
+274,2011-2012,Did not make playoffs,Dallas Stars
+275,2010-2011,Did not make playoffs,Dallas Stars
+276,2009-2010,Did not make playoffs,Dallas Stars
+277,2008-2009,Did not make playoffs,Dallas Stars
+278,2007-2008,Conference Final loss,Dallas Stars
+279,2006-2007,Conference QF loss,Dallas Stars
+280,2005-2006,Conference QF loss,Dallas Stars
+281,2003-2004,Conference QF loss,Dallas Stars
+282,2002-2003,Conference SF loss,Dallas Stars
+283,2001-2002,Did not make playoffs,Dallas Stars
+284,2000-2001,Conference SF loss,Dallas Stars
+285,1999-2000,Final loss,Dallas Stars
+286,1998-1999,Champion,Dallas Stars
+287,1997-1998,Conference Final loss,Dallas Stars
+288,1996-1997,Conference QF loss,Dallas Stars
+289,1995-1996,Did not make playoffs,Dallas Stars
+291,2024-2025,Did not make playoffs,Detroit Red Wings
+292,2023-2024,Did not make playoffs,Detroit Red Wings
+293,2022-2023,Did not make playoffs,Detroit Red Wings
+294,2021-2022,Did not make playoffs,Detroit Red Wings
+295,2020-2021,Did not make playoffs,Detroit Red Wings
+296,2019-2020,Did not make playoffs,Detroit Red Wings
+297,2018-2019,Did not make playoffs,Detroit Red Wings
+298,2017-2018,Did not make playoffs,Detroit Red Wings
+299,2016-2017,Did not make playoffs,Detroit Red Wings
+300,2015-2016,Conference QF loss,Detroit Red Wings
+301,2014-2015,Conference QF loss,Detroit Red Wings
+302,2013-2014,Conference QF loss,Detroit Red Wings
+303,2012-2013,Conference SF loss,Detroit Red Wings
+304,2011-2012,Conference QF loss,Detroit Red Wings
+305,2010-2011,Conference SF loss,Detroit Red Wings
+306,2009-2010,Conference SF loss,Detroit Red Wings
+307,2008-2009,Final loss,Detroit Red Wings
+308,2007-2008,Champion,Detroit Red Wings
+309,2006-2007,Conference Final loss,Detroit Red Wings
+310,2005-2006,Conference QF loss,Detroit Red Wings
+311,2003-2004,Conference SF loss,Detroit Red Wings
+312,2002-2003,Conference QF loss,Detroit Red Wings
+313,2001-2002,Champion,Detroit Red Wings
+314,2000-2001,Conference QF loss,Detroit Red Wings
+315,1999-2000,Conference SF loss,Detroit Red Wings
+316,1998-1999,Conference SF loss,Detroit Red Wings
+317,1997-1998,Champion,Detroit Red Wings
+318,1996-1997,Champion,Detroit Red Wings
+319,1995-1996,Conference Final loss,Detroit Red Wings
+321,2024-2025,Final loss,Edmonton Oilers
+322,2023-2024,Final loss,Edmonton Oilers
+323,2022-2023,Conference SF loss,Edmonton Oilers
+324,2021-2022,Conference Final loss,Edmonton Oilers
+325,2020-2021,Conference QF loss,Edmonton Oilers
+326,2019-2020,Playoffs Qualifier loss,Edmonton Oilers
+327,2018-2019,Did not make playoffs,Edmonton Oilers
+328,2017-2018,Did not make playoffs,Edmonton Oilers
+329,2016-2017,Conference SF loss,Edmonton Oilers
+330,2015-2016,Did not make playoffs,Edmonton Oilers
+331,2014-2015,Did not make playoffs,Edmonton Oilers
+332,2013-2014,Did not make playoffs,Edmonton Oilers
+333,2012-2013,Did not make playoffs,Edmonton Oilers
+334,2011-2012,Did not make playoffs,Edmonton Oilers
+335,2010-2011,Did not make playoffs,Edmonton Oilers
+336,2009-2010,Did not make playoffs,Edmonton Oilers
+337,2008-2009,Did not make playoffs,Edmonton Oilers
+338,2007-2008,Did not make playoffs,Edmonton Oilers
+339,2006-2007,Did not make playoffs,Edmonton Oilers
+340,2005-2006,Final loss,Edmonton Oilers
+341,2003-2004,Did not make playoffs,Edmonton Oilers
+342,2002-2003,Conference QF loss,Edmonton Oilers
+343,2001-2002,Did not make playoffs,Edmonton Oilers
+344,2000-2001,Conference QF loss,Edmonton Oilers
+345,1999-2000,Conference QF loss,Edmonton Oilers
+346,1998-1999,Conference QF loss,Edmonton Oilers
+347,1997-1998,Conference SF loss,Edmonton Oilers
+348,1996-1997,Conference SF loss,Edmonton Oilers
+349,1995-1996,Did not make playoffs,Edmonton Oilers
+351,2024-2025,Champion,Florida Panthers
+352,2023-2024,Champion,Florida Panthers
+353,2022-2023,Final loss,Florida Panthers
+354,2021-2022,Conference SF loss,Florida Panthers
+355,2020-2021,Conference QF loss,Florida Panthers
+356,2019-2020,Playoffs Qualifier loss,Florida Panthers
+357,2018-2019,Did not make playoffs,Florida Panthers
+358,2017-2018,Did not make playoffs,Florida Panthers
+359,2016-2017,Did not make playoffs,Florida Panthers
+360,2015-2016,Conference QF loss,Florida Panthers
+361,2014-2015,Did not make playoffs,Florida Panthers
+362,2013-2014,Did not make playoffs,Florida Panthers
+363,2012-2013,Did not make playoffs,Florida Panthers
+364,2011-2012,Conference QF loss,Florida Panthers
+365,2010-2011,Did not make playoffs,Florida Panthers
+366,2009-2010,Did not make playoffs,Florida Panthers
+367,2008-2009,Did not make playoffs,Florida Panthers
+368,2007-2008,Did not make playoffs,Florida Panthers
+369,2006-2007,Did not make playoffs,Florida Panthers
+370,2005-2006,Did not make playoffs,Florida Panthers
+371,2003-2004,Did not make playoffs,Florida Panthers
+372,2002-2003,Did not make playoffs,Florida Panthers
+373,2001-2002,Did not make playoffs,Florida Panthers
+374,2000-2001,Did not make playoffs,Florida Panthers
+375,1999-2000,Conference QF loss,Florida Panthers
+376,1998-1999,Did not make playoffs,Florida Panthers
+377,1997-1998,Did not make playoffs,Florida Panthers
+378,1996-1997,Conference QF loss,Florida Panthers
+379,1995-1996,Final loss,Florida Panthers
+381,2024-2025,Conference QF loss,Los Angeles Kings
+382,2023-2024,Conference QF loss,Los Angeles Kings
+383,2022-2023,Conference QF loss,Los Angeles Kings
+384,2021-2022,Conference QF loss,Los Angeles Kings
+385,2020-2021,Did not make playoffs,Los Angeles Kings
+386,2019-2020,Did not make playoffs,Los Angeles Kings
+387,2018-2019,Did not make playoffs,Los Angeles Kings
+388,2017-2018,Conference QF loss,Los Angeles Kings
+389,2016-2017,Did not make playoffs,Los Angeles Kings
+390,2015-2016,Conference QF loss,Los Angeles Kings
+391,2014-2015,Did not make playoffs,Los Angeles Kings
+392,2013-2014,Champion,Los Angeles Kings
+393,2012-2013,Conference Final loss,Los Angeles Kings
+394,2011-2012,Champion,Los Angeles Kings
+395,2010-2011,Conference QF loss,Los Angeles Kings
+396,2009-2010,Conference QF loss,Los Angeles Kings
+397,2008-2009,Did not make playoffs,Los Angeles Kings
+398,2007-2008,Did not make playoffs,Los Angeles Kings
+399,2006-2007,Did not make playoffs,Los Angeles Kings
+400,2005-2006,Did not make playoffs,Los Angeles Kings
+401,2003-2004,Did not make playoffs,Los Angeles Kings
+402,2002-2003,Did not make playoffs,Los Angeles Kings
+403,2001-2002,Conference QF loss,Los Angeles Kings
+404,2000-2001,Conference SF loss,Los Angeles Kings
+405,1999-2000,Conference QF loss,Los Angeles Kings
+406,1998-1999,Did not make playoffs,Los Angeles Kings
+407,1997-1998,Conference QF loss,Los Angeles Kings
+408,1996-1997,Did not make playoffs,Los Angeles Kings
+409,1995-1996,Did not make playoffs,Los Angeles Kings
+411,2024-2025,Conference QF loss,Minnesota Wild
+412,2023-2024,Did not make playoffs,Minnesota Wild
+413,2022-2023,Conference QF loss,Minnesota Wild
+414,2021-2022,Conference QF loss,Minnesota Wild
+415,2020-2021,Conference QF loss,Minnesota Wild
+416,2019-2020,Playoffs Qualifier loss,Minnesota Wild
+417,2018-2019,Did not make playoffs,Minnesota Wild
+418,2017-2018,Conference QF loss,Minnesota Wild
+419,2016-2017,Conference QF loss,Minnesota Wild
+420,2015-2016,Conference QF loss,Minnesota Wild
+421,2014-2015,Conference SF loss,Minnesota Wild
+422,2013-2014,Conference SF loss,Minnesota Wild
+423,2012-2013,Conference QF loss,Minnesota Wild
+424,2011-2012,Did not make playoffs,Minnesota Wild
+425,2010-2011,Did not make playoffs,Minnesota Wild
+426,2009-2010,Did not make playoffs,Minnesota Wild
+427,2008-2009,Did not make playoffs,Minnesota Wild
+428,2007-2008,Conference QF loss,Minnesota Wild
+429,2006-2007,Conference QF loss,Minnesota Wild
+430,2005-2006,Did not make playoffs,Minnesota Wild
+431,2003-2004,Did not make playoffs,Minnesota Wild
+432,2002-2003,Conference Final loss,Minnesota Wild
+433,2001-2002,Did not make playoffs,Minnesota Wild
+434,2000-2001,Did not make playoffs,Minnesota Wild
+436,2024-2025,Conference QF loss,Montreal Canadiens
+437,2023-2024,Did not make playoffs,Montreal Canadiens
+438,2022-2023,Did not make playoffs,Montreal Canadiens
+439,2021-2022,Did not make playoffs,Montreal Canadiens
+440,2020-2021,Final loss,Montreal Canadiens
+441,2019-2020,Conference QF loss,Montreal Canadiens
+442,2018-2019,Did not make playoffs,Montreal Canadiens
+443,2017-2018,Did not make playoffs,Montreal Canadiens
+444,2016-2017,Conference QF loss,Montreal Canadiens
+445,2015-2016,Did not make playoffs,Montreal Canadiens
+446,2014-2015,Conference SF loss,Montreal Canadiens
+447,2013-2014,Conference Final loss,Montreal Canadiens
+448,2012-2013,Conference QF loss,Montreal Canadiens
+449,2011-2012,Did not make playoffs,Montreal Canadiens
+450,2010-2011,Conference QF loss,Montreal Canadiens
+451,2009-2010,Conference Final loss,Montreal Canadiens
+452,2008-2009,Conference QF loss,Montreal Canadiens
+453,2007-2008,Conference SF loss,Montreal Canadiens
+454,2006-2007,Did not make playoffs,Montreal Canadiens
+455,2005-2006,Conference QF loss,Montreal Canadiens
+456,2003-2004,Conference SF loss,Montreal Canadiens
+457,2002-2003,Did not make playoffs,Montreal Canadiens
+458,2001-2002,Conference SF loss,Montreal Canadiens
+459,2000-2001,Did not make playoffs,Montreal Canadiens
+460,1999-2000,Did not make playoffs,Montreal Canadiens
+461,1998-1999,Did not make playoffs,Montreal Canadiens
+462,1997-1998,Conference SF loss,Montreal Canadiens
+463,1996-1997,Conference QF loss,Montreal Canadiens
+464,1995-1996,Conference QF loss,Montreal Canadiens
+466,2024-2025,Did not make playoffs,Nashville Predators
+467,2023-2024,Conference QF loss,Nashville Predators
+468,2022-2023,Did not make playoffs,Nashville Predators
+469,2021-2022,Conference QF loss,Nashville Predators
+470,2020-2021,Conference QF loss,Nashville Predators
+471,2019-2020,Playoffs Qualifier loss,Nashville Predators
+472,2018-2019,Conference QF loss,Nashville Predators
+473,2017-2018,Conference SF loss,Nashville Predators
+474,2016-2017,Final loss,Nashville Predators
+475,2015-2016,Conference SF loss,Nashville Predators
+476,2014-2015,Conference QF loss,Nashville Predators
+477,2013-2014,Did not make playoffs,Nashville Predators
+478,2012-2013,Did not make playoffs,Nashville Predators
+479,2011-2012,Conference SF loss,Nashville Predators
+480,2010-2011,Conference SF loss,Nashville Predators
+481,2009-2010,Conference QF loss,Nashville Predators
+482,2008-2009,Did not make playoffs,Nashville Predators
+483,2007-2008,Conference QF loss,Nashville Predators
+484,2006-2007,Conference QF loss,Nashville Predators
+485,2005-2006,Conference QF loss,Nashville Predators
+486,2003-2004,Conference QF loss,Nashville Predators
+487,2002-2003,Did not make playoffs,Nashville Predators
+488,2001-2002,Did not make playoffs,Nashville Predators
+489,2000-2001,Did not make playoffs,Nashville Predators
+490,1999-2000,Did not make playoffs,Nashville Predators
+491,1998-1999,Did not make playoffs,Nashville Predators
+493,2024-2025,Conference QF loss,New Jersey Devils
+494,2023-2024,Did not make playoffs,New Jersey Devils
+495,2022-2023,Conference SF loss,New Jersey Devils
+496,2021-2022,Did not make playoffs,New Jersey Devils
+497,2020-2021,Did not make playoffs,New Jersey Devils
+498,2019-2020,Did not make playoffs,New Jersey Devils
+499,2018-2019,Did not make playoffs,New Jersey Devils
+500,2017-2018,Conference QF loss,New Jersey Devils
+501,2016-2017,Did not make playoffs,New Jersey Devils
+502,2015-2016,Did not make playoffs,New Jersey Devils
+503,2014-2015,Did not make playoffs,New Jersey Devils
+504,2013-2014,Did not make playoffs,New Jersey Devils
+505,2012-2013,Did not make playoffs,New Jersey Devils
+506,2011-2012,Final loss,New Jersey Devils
+507,2010-2011,Did not make playoffs,New Jersey Devils
+508,2009-2010,Conference QF loss,New Jersey Devils
+509,2008-2009,Conference QF loss,New Jersey Devils
+510,2007-2008,Conference QF loss,New Jersey Devils
+511,2006-2007,Conference SF loss,New Jersey Devils
+512,2005-2006,Conference SF loss,New Jersey Devils
+513,2003-2004,Conference QF loss,New Jersey Devils
+514,2002-2003,Champion,New Jersey Devils
+515,2001-2002,Conference QF loss,New Jersey Devils
+516,2000-2001,Final loss,New Jersey Devils
+517,1999-2000,Champion,New Jersey Devils
+518,1998-1999,Conference QF loss,New Jersey Devils
+519,1997-1998,Conference QF loss,New Jersey Devils
+520,1996-1997,Conference SF loss,New Jersey Devils
+521,1995-1996,Did not make playoffs,New Jersey Devils
+523,2024-2025,Did not make playoffs,New York Islanders
+524,2023-2024,Conference QF loss,New York Islanders
+525,2022-2023,Conference QF loss,New York Islanders
+526,2021-2022,Did not make playoffs,New York Islanders
+527,2020-2021,Conference Final loss,New York Islanders
+528,2019-2020,Conference Final loss,New York Islanders
+529,2018-2019,Conference SF loss,New York Islanders
+530,2017-2018,Did not make playoffs,New York Islanders
+531,2016-2017,Did not make playoffs,New York Islanders
+532,2015-2016,Conference SF loss,New York Islanders
+533,2014-2015,Conference QF loss,New York Islanders
+534,2013-2014,Did not make playoffs,New York Islanders
+535,2012-2013,Conference QF loss,New York Islanders
+536,2011-2012,Did not make playoffs,New York Islanders
+537,2010-2011,Did not make playoffs,New York Islanders
+538,2009-2010,Did not make playoffs,New York Islanders
+539,2008-2009,Did not make playoffs,New York Islanders
+540,2007-2008,Did not make playoffs,New York Islanders
+541,2006-2007,Conference QF loss,New York Islanders
+542,2005-2006,Did not make playoffs,New York Islanders
+543,2003-2004,Conference QF loss,New York Islanders
+544,2002-2003,Conference QF loss,New York Islanders
+545,2001-2002,Conference QF loss,New York Islanders
+546,2000-2001,Did not make playoffs,New York Islanders
+547,1999-2000,Did not make playoffs,New York Islanders
+548,1998-1999,Did not make playoffs,New York Islanders
+549,1997-1998,Did not make playoffs,New York Islanders
+550,1996-1997,Did not make playoffs,New York Islanders
+551,1995-1996,Did not make playoffs,New York Islanders
+553,2024-2025,Did not make playoffs,New York Rangers
+554,2023-2024,Conference Final loss,New York Rangers
+555,2022-2023,Conference QF loss,New York Rangers
+556,2021-2022,Conference Final loss,New York Rangers
+557,2020-2021,Did not make playoffs,New York Rangers
+558,2019-2020,Playoffs Qualifier loss,New York Rangers
+559,2018-2019,Did not make playoffs,New York Rangers
+560,2017-2018,Did not make playoffs,New York Rangers
+561,2016-2017,Conference SF loss,New York Rangers
+562,2015-2016,Conference QF loss,New York Rangers
+563,2014-2015,Conference Final loss,New York Rangers
+564,2013-2014,Final loss,New York Rangers
+565,2012-2013,Conference SF loss,New York Rangers
+566,2011-2012,Conference Final loss,New York Rangers
+567,2010-2011,Conference QF loss,New York Rangers
+568,2009-2010,Did not make playoffs,New York Rangers
+569,2008-2009,Conference QF loss,New York Rangers
+570,2007-2008,Conference SF loss,New York Rangers
+571,2006-2007,Conference SF loss,New York Rangers
+572,2005-2006,Conference QF loss,New York Rangers
+573,2003-2004,Did not make playoffs,New York Rangers
+574,2002-2003,Did not make playoffs,New York Rangers
+575,2001-2002,Did not make playoffs,New York Rangers
+576,2000-2001,Did not make playoffs,New York Rangers
+577,1999-2000,Did not make playoffs,New York Rangers
+578,1998-1999,Did not make playoffs,New York Rangers
+579,1997-1998,Did not make playoffs,New York Rangers
+580,1996-1997,Conference Final loss,New York Rangers
+581,1995-1996,Conference SF loss,New York Rangers
+583,2024-2025,Conference QF loss,Ottawa Senators
+584,2023-2024,Did not make playoffs,Ottawa Senators
+585,2022-2023,Did not make playoffs,Ottawa Senators
+586,2021-2022,Did not make playoffs,Ottawa Senators
+587,2020-2021,Did not make playoffs,Ottawa Senators
+588,2019-2020,Did not make playoffs,Ottawa Senators
+589,2018-2019,Did not make playoffs,Ottawa Senators
+590,2017-2018,Did not make playoffs,Ottawa Senators
+591,2016-2017,Conference Final loss,Ottawa Senators
+592,2015-2016,Did not make playoffs,Ottawa Senators
+593,2014-2015,Conference QF loss,Ottawa Senators
+594,2013-2014,Did not make playoffs,Ottawa Senators
+595,2012-2013,Conference SF loss,Ottawa Senators
+596,2011-2012,Conference QF loss,Ottawa Senators
+597,2010-2011,Did not make playoffs,Ottawa Senators
+598,2009-2010,Conference QF loss,Ottawa Senators
+599,2008-2009,Did not make playoffs,Ottawa Senators
+600,2007-2008,Conference QF loss,Ottawa Senators
+601,2006-2007,Final loss,Ottawa Senators
+602,2005-2006,Conference SF loss,Ottawa Senators
+603,2003-2004,Conference QF loss,Ottawa Senators
+604,2002-2003,Conference Final loss,Ottawa Senators
+605,2001-2002,Conference SF loss,Ottawa Senators
+606,2000-2001,Conference QF loss,Ottawa Senators
+607,1999-2000,Conference QF loss,Ottawa Senators
+608,1998-1999,Conference QF loss,Ottawa Senators
+609,1997-1998,Conference SF loss,Ottawa Senators
+610,1996-1997,Conference QF loss,Ottawa Senators
+611,1995-1996,Did not make playoffs,Ottawa Senators
+613,2024-2025,Did not make playoffs,Philadelphia Flyers
+614,2023-2024,Did not make playoffs,Philadelphia Flyers
+615,2022-2023,Did not make playoffs,Philadelphia Flyers
+616,2021-2022,Did not make playoffs,Philadelphia Flyers
+617,2020-2021,Did not make playoffs,Philadelphia Flyers
+618,2019-2020,Conference SF loss,Philadelphia Flyers
+619,2018-2019,Did not make playoffs,Philadelphia Flyers
+620,2017-2018,Conference QF loss,Philadelphia Flyers
+621,2016-2017,Did not make playoffs,Philadelphia Flyers
+622,2015-2016,Conference QF loss,Philadelphia Flyers
+623,2014-2015,Did not make playoffs,Philadelphia Flyers
+624,2013-2014,Conference QF loss,Philadelphia Flyers
+625,2012-2013,Did not make playoffs,Philadelphia Flyers
+626,2011-2012,Conference SF loss,Philadelphia Flyers
+627,2010-2011,Conference SF loss,Philadelphia Flyers
+628,2009-2010,Final loss,Philadelphia Flyers
+629,2008-2009,Conference QF loss,Philadelphia Flyers
+630,2007-2008,Conference Final loss,Philadelphia Flyers
+631,2006-2007,Did not make playoffs,Philadelphia Flyers
+632,2005-2006,Conference QF loss,Philadelphia Flyers
+633,2003-2004,Conference Final loss,Philadelphia Flyers
+634,2002-2003,Conference SF loss,Philadelphia Flyers
+635,2001-2002,Conference QF loss,Philadelphia Flyers
+636,2000-2001,Conference QF loss,Philadelphia Flyers
+637,1999-2000,Conference Final loss,Philadelphia Flyers
+638,1998-1999,Conference QF loss,Philadelphia Flyers
+639,1997-1998,Conference QF loss,Philadelphia Flyers
+640,1996-1997,Final loss,Philadelphia Flyers
+641,1995-1996,Conference SF loss,Philadelphia Flyers
+643,2024-2025,Did not make playoffs,Pittsburgh Penguins
+644,2023-2024,Did not make playoffs,Pittsburgh Penguins
+645,2022-2023,Did not make playoffs,Pittsburgh Penguins
+646,2021-2022,Conference QF loss,Pittsburgh Penguins
+647,2020-2021,Conference QF loss,Pittsburgh Penguins
+648,2019-2020,Playoffs Qualifier loss,Pittsburgh Penguins
+649,2018-2019,Conference QF loss,Pittsburgh Penguins
+650,2017-2018,Conference SF loss,Pittsburgh Penguins
+651,2016-2017,Champion,Pittsburgh Penguins
+652,2015-2016,Champion,Pittsburgh Penguins
+653,2014-2015,Conference QF loss,Pittsburgh Penguins
+654,2013-2014,Conference SF loss,Pittsburgh Penguins
+655,2012-2013,Conference Final loss,Pittsburgh Penguins
+656,2011-2012,Conference QF loss,Pittsburgh Penguins
+657,2010-2011,Conference QF loss,Pittsburgh Penguins
+658,2009-2010,Conference SF loss,Pittsburgh Penguins
+659,2008-2009,Champion,Pittsburgh Penguins
+660,2007-2008,Final loss,Pittsburgh Penguins
+661,2006-2007,Conference QF loss,Pittsburgh Penguins
+662,2005-2006,Did not make playoffs,Pittsburgh Penguins
+663,2003-2004,Did not make playoffs,Pittsburgh Penguins
+664,2002-2003,Did not make playoffs,Pittsburgh Penguins
+665,2001-2002,Did not make playoffs,Pittsburgh Penguins
+666,2000-2001,Conference Final loss,Pittsburgh Penguins
+667,1999-2000,Conference SF loss,Pittsburgh Penguins
+668,1998-1999,Conference SF loss,Pittsburgh Penguins
+669,1997-1998,Conference QF loss,Pittsburgh Penguins
+670,1996-1997,Conference QF loss,Pittsburgh Penguins
+671,1995-1996,Conference Final loss,Pittsburgh Penguins
+673,2024-2025,Did not make playoffs,San Jose Sharks
+674,2023-2024,Did not make playoffs,San Jose Sharks
+675,2022-2023,Did not make playoffs,San Jose Sharks
+676,2021-2022,Did not make playoffs,San Jose Sharks
+677,2020-2021,Did not make playoffs,San Jose Sharks
+678,2019-2020,Did not make playoffs,San Jose Sharks
+679,2018-2019,Conference Final loss,San Jose Sharks
+680,2017-2018,Conference SF loss,San Jose Sharks
+681,2016-2017,Conference QF loss,San Jose Sharks
+682,2015-2016,Final loss,San Jose Sharks
+683,2014-2015,Did not make playoffs,San Jose Sharks
+684,2013-2014,Conference QF loss,San Jose Sharks
+685,2012-2013,Conference SF loss,San Jose Sharks
+686,2011-2012,Conference QF loss,San Jose Sharks
+687,2010-2011,Conference Final loss,San Jose Sharks
+688,2009-2010,Conference Final loss,San Jose Sharks
+689,2008-2009,Conference QF loss,San Jose Sharks
+690,2007-2008,Conference SF loss,San Jose Sharks
+691,2006-2007,Conference SF loss,San Jose Sharks
+692,2005-2006,Conference SF loss,San Jose Sharks
+693,2003-2004,Conference Final loss,San Jose Sharks
+694,2002-2003,Did not make playoffs,San Jose Sharks
+695,2001-2002,Conference SF loss,San Jose Sharks
+696,2000-2001,Conference QF loss,San Jose Sharks
+697,1999-2000,Conference SF loss,San Jose Sharks
+698,1998-1999,Conference QF loss,San Jose Sharks
+699,1997-1998,Conference QF loss,San Jose Sharks
+700,1996-1997,Did not make playoffs,San Jose Sharks
+701,1995-1996,Did not make playoffs,San Jose Sharks
+703,2024-2025,Did not make playoffs,Seattle Kraken
+704,2023-2024,Did not make playoffs,Seattle Kraken
+705,2022-2023,Conference SF loss,Seattle Kraken
+706,2021-2022,Did not make playoffs,Seattle Kraken
+708,2024-2025,Conference QF loss,St. Louis Blues
+709,2023-2024,Did not make playoffs,St. Louis Blues
+710,2022-2023,Did not make playoffs,St. Louis Blues
+711,2021-2022,Conference SF loss,St. Louis Blues
+712,2020-2021,Conference QF loss,St. Louis Blues
+713,2019-2020,Conference QF loss,St. Louis Blues
+714,2018-2019,Champion,St. Louis Blues
+715,2017-2018,Did not make playoffs,St. Louis Blues
+716,2016-2017,Conference SF loss,St. Louis Blues
+717,2015-2016,Conference Final loss,St. Louis Blues
+718,2014-2015,Conference QF loss,St. Louis Blues
+719,2013-2014,Conference QF loss,St. Louis Blues
+720,2012-2013,Conference QF loss,St. Louis Blues
+721,2011-2012,Conference SF loss,St. Louis Blues
+722,2010-2011,Did not make playoffs,St. Louis Blues
+723,2009-2010,Did not make playoffs,St. Louis Blues
+724,2008-2009,Conference QF loss,St. Louis Blues
+725,2007-2008,Did not make playoffs,St. Louis Blues
+726,2006-2007,Did not make playoffs,St. Louis Blues
+727,2005-2006,Did not make playoffs,St. Louis Blues
+728,2003-2004,Conference QF loss,St. Louis Blues
+729,2002-2003,Conference QF loss,St. Louis Blues
+730,2001-2002,Conference SF loss,St. Louis Blues
+731,2000-2001,Conference Final loss,St. Louis Blues
+732,1999-2000,Conference QF loss,St. Louis Blues
+733,1998-1999,Conference SF loss,St. Louis Blues
+734,1997-1998,Conference SF loss,St. Louis Blues
+735,1996-1997,Conference QF loss,St. Louis Blues
+736,1995-1996,Conference SF loss,St. Louis Blues
+738,2024-2025,Conference QF loss,Tampa Bay Lightning
+739,2023-2024,Conference QF loss,Tampa Bay Lightning
+740,2022-2023,Conference QF loss,Tampa Bay Lightning
+741,2021-2022,Final loss,Tampa Bay Lightning
+742,2020-2021,Champion,Tampa Bay Lightning
+743,2019-2020,Champion,Tampa Bay Lightning
+744,2018-2019,Conference QF loss,Tampa Bay Lightning
+745,2017-2018,Conference Final loss,Tampa Bay Lightning
+746,2016-2017,Did not make playoffs,Tampa Bay Lightning
+747,2015-2016,Conference Final loss,Tampa Bay Lightning
+748,2014-2015,Final loss,Tampa Bay Lightning
+749,2013-2014,Conference QF loss,Tampa Bay Lightning
+750,2012-2013,Did not make playoffs,Tampa Bay Lightning
+751,2011-2012,Did not make playoffs,Tampa Bay Lightning
+752,2010-2011,Conference Final loss,Tampa Bay Lightning
+753,2009-2010,Did not make playoffs,Tampa Bay Lightning
+754,2008-2009,Did not make playoffs,Tampa Bay Lightning
+755,2007-2008,Did not make playoffs,Tampa Bay Lightning
+756,2006-2007,Conference QF loss,Tampa Bay Lightning
+757,2005-2006,Conference QF loss,Tampa Bay Lightning
+758,2003-2004,Champion,Tampa Bay Lightning
+759,2002-2003,Conference SF loss,Tampa Bay Lightning
+760,2001-2002,Did not make playoffs,Tampa Bay Lightning
+761,2000-2001,Did not make playoffs,Tampa Bay Lightning
+762,1999-2000,Did not make playoffs,Tampa Bay Lightning
+763,1998-1999,Did not make playoffs,Tampa Bay Lightning
+764,1997-1998,Did not make playoffs,Tampa Bay Lightning
+765,1996-1997,Did not make playoffs,Tampa Bay Lightning
+766,1995-1996,Conference QF loss,Tampa Bay Lightning
+768,2024-2025,Conference SF loss,Toronto Maple Leafs
+769,2023-2024,Conference QF loss,Toronto Maple Leafs
+770,2022-2023,Conference SF loss,Toronto Maple Leafs
+771,2021-2022,Conference QF loss,Toronto Maple Leafs
+772,2020-2021,Conference QF loss,Toronto Maple Leafs
+773,2019-2020,Playoffs Qualifier loss,Toronto Maple Leafs
+774,2018-2019,Conference QF loss,Toronto Maple Leafs
+775,2017-2018,Conference QF loss,Toronto Maple Leafs
+776,2016-2017,Conference QF loss,Toronto Maple Leafs
+777,2015-2016,Did not make playoffs,Toronto Maple Leafs
+778,2014-2015,Did not make playoffs,Toronto Maple Leafs
+779,2013-2014,Did not make playoffs,Toronto Maple Leafs
+780,2012-2013,Conference QF loss,Toronto Maple Leafs
+781,2011-2012,Did not make playoffs,Toronto Maple Leafs
+782,2010-2011,Did not make playoffs,Toronto Maple Leafs
+783,2009-2010,Did not make playoffs,Toronto Maple Leafs
+784,2008-2009,Did not make playoffs,Toronto Maple Leafs
+785,2007-2008,Did not make playoffs,Toronto Maple Leafs
+786,2006-2007,Did not make playoffs,Toronto Maple Leafs
+787,2005-2006,Did not make playoffs,Toronto Maple Leafs
+788,2003-2004,Conference SF loss,Toronto Maple Leafs
+789,2002-2003,Conference QF loss,Toronto Maple Leafs
+790,2001-2002,Conference Final loss,Toronto Maple Leafs
+791,2000-2001,Conference SF loss,Toronto Maple Leafs
+792,1999-2000,Conference SF loss,Toronto Maple Leafs
+793,1998-1999,Conference Final loss,Toronto Maple Leafs
+794,1997-1998,Did not make playoffs,Toronto Maple Leafs
+795,1996-1997,Did not make playoffs,Toronto Maple Leafs
+796,1995-1996,Conference QF loss,Toronto Maple Leafs
+798,2024-2025,Did not make playoffs,Vancouver Canucks
+799,2023-2024,Conference SF loss,Vancouver Canucks
+800,2022-2023,Did not make playoffs,Vancouver Canucks
+801,2021-2022,Did not make playoffs,Vancouver Canucks
+802,2020-2021,Did not make playoffs,Vancouver Canucks
+803,2019-2020,Conference SF loss,Vancouver Canucks
+804,2018-2019,Did not make playoffs,Vancouver Canucks
+805,2017-2018,Did not make playoffs,Vancouver Canucks
+806,2016-2017,Did not make playoffs,Vancouver Canucks
+807,2015-2016,Did not make playoffs,Vancouver Canucks
+808,2014-2015,Conference QF loss,Vancouver Canucks
+809,2013-2014,Did not make playoffs,Vancouver Canucks
+810,2012-2013,Conference QF loss,Vancouver Canucks
+811,2011-2012,Conference QF loss,Vancouver Canucks
+812,2010-2011,Final loss,Vancouver Canucks
+813,2009-2010,Conference SF loss,Vancouver Canucks
+814,2008-2009,Conference SF loss,Vancouver Canucks
+815,2007-2008,Did not make playoffs,Vancouver Canucks
+816,2006-2007,Conference SF loss,Vancouver Canucks
+817,2005-2006,Did not make playoffs,Vancouver Canucks
+818,2003-2004,Conference QF loss,Vancouver Canucks
+819,2002-2003,Conference SF loss,Vancouver Canucks
+820,2001-2002,Conference QF loss,Vancouver Canucks
+821,2000-2001,Conference QF loss,Vancouver Canucks
+822,1999-2000,Did not make playoffs,Vancouver Canucks
+823,1998-1999,Did not make playoffs,Vancouver Canucks
+824,1997-1998,Did not make playoffs,Vancouver Canucks
+825,1996-1997,Did not make playoffs,Vancouver Canucks
+826,1995-1996,Conference QF loss,Vancouver Canucks
+828,2024-2025,Conference SF loss,Vegas Golden Knights
+829,2023-2024,Conference QF loss,Vegas Golden Knights
+830,2022-2023,Champion,Vegas Golden Knights
+831,2021-2022,Did not make playoffs,Vegas Golden Knights
+832,2020-2021,Conference Final loss,Vegas Golden Knights
+833,2019-2020,Conference Final loss,Vegas Golden Knights
+834,2018-2019,Conference QF loss,Vegas Golden Knights
+835,2017-2018,Final loss,Vegas Golden Knights
+837,2024-2025,Conference SF loss,Washington Capitals
+838,2023-2024,Conference QF loss,Washington Capitals
+839,2022-2023,Did not make playoffs,Washington Capitals
+840,2021-2022,Conference QF loss,Washington Capitals
+841,2020-2021,Conference QF loss,Washington Capitals
+842,2019-2020,Conference QF loss,Washington Capitals
+843,2018-2019,Conference QF loss,Washington Capitals
+844,2017-2018,Champion,Washington Capitals
+845,2016-2017,Conference SF loss,Washington Capitals
+846,2015-2016,Conference SF loss,Washington Capitals
+847,2014-2015,Conference SF loss,Washington Capitals
+848,2013-2014,Did not make playoffs,Washington Capitals
+849,2012-2013,Conference QF loss,Washington Capitals
+850,2011-2012,Conference SF loss,Washington Capitals
+851,2010-2011,Conference SF loss,Washington Capitals
+852,2009-2010,Conference QF loss,Washington Capitals
+853,2008-2009,Conference SF loss,Washington Capitals
+854,2007-2008,Conference QF loss,Washington Capitals
+855,2006-2007,Did not make playoffs,Washington Capitals
+856,2005-2006,Did not make playoffs,Washington Capitals
+857,2003-2004,Did not make playoffs,Washington Capitals
+858,2002-2003,Conference QF loss,Washington Capitals
+859,2001-2002,Did not make playoffs,Washington Capitals
+860,2000-2001,Conference QF loss,Washington Capitals
+861,1999-2000,Conference QF loss,Washington Capitals
+862,1998-1999,Did not make playoffs,Washington Capitals
+863,1997-1998,Final loss,Washington Capitals
+864,1996-1997,Did not make playoffs,Washington Capitals
+865,1995-1996,Conference QF loss,Washington Capitals
+867,2024-2025,Conference SF loss,Winnipeg Jets
+868,2023-2024,Conference QF loss,Winnipeg Jets
+869,2022-2023,Conference QF loss,Winnipeg Jets
+870,2021-2022,Did not make playoffs,Winnipeg Jets
+871,2020-2021,Conference SF loss,Winnipeg Jets
+872,2019-2020,Playoffs Qualifier loss,Winnipeg Jets
+873,2018-2019,Conference QF loss,Winnipeg Jets
+874,2017-2018,Conference Final loss,Winnipeg Jets
+875,2016-2017,Did not make playoffs,Winnipeg Jets
+876,2015-2016,Did not make playoffs,Winnipeg Jets
+877,2014-2015,Conference QF loss,Winnipeg Jets
+878,2013-2014,Did not make playoffs,Winnipeg Jets
+879,2012-2013,Did not make playoffs,Winnipeg Jets
+880,2011-2012,Did not make playoffs,Winnipeg Jets
+882,2024-2025,Did not make playoffs,Utah Hockey Club
