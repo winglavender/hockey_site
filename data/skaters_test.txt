@@ -83,3 +83,20 @@ Alex Barré-Boulet,Montréal Canadiens,NHL,2024-07-01,2025-06-17
 Justin Braun,Philadelphia Flyers,NHL,2019-06-18,2023-06-26
 Justin Braun,New York Rangers,NHL,2021-10-12,2022-06-26,he was with NYR from March to July but this is a casualty of the simplified trade code
 Justin Braun,San Jose Sharks,NHL,2010-10-07,2019-06-17
+David Pastrnak,Boston Bruins,NHL,2014-07-15,2026-06-30
+David Pastrnak,Providence Bruins,AHL,2014-07-15,2016-06-12
+Chris Tanev,Vancouver Canucks,NHL,2010-10-07,2020-10-09
+Chris Tanev,Calgary Flames,NHL,2020-10-10,2024-02-28
+Chris Tanev,Dallas Stars,NHL,2024-02-29,2024-06-28
+Chris Tanev,Toronto Maple Leafs,NHL,2024-06-29,2026-06-30
+Chris Tanev,Canada,wc,2016-06-01,2016-06-28
+Yanni Gourde,Tampa Bay Lightning,NHL,2015-10-07,2021-07-21
+Yanni Gourde,Seattle Kraken,NHL,2021-07-22,2025-03-04
+Yanni Gourde,Tampa Bay Lightning,NHL,2025-03-05,2026-06-30
+Jordan Eberle,All Star Game,nhl-asg,2012-02-01,2012-02-28
+Jordan Eberle,All Star Game,nhl-asg,2022-02-01,2022-02-28
+Jordan Eberle,Edmonton Oilers,NHL,2010-10-07,2017-06-21
+Jordan Eberle,New York Islanders,NHL,2017-06-22,2021-07-21
+Jordan Eberle,Seattle Kraken,NHL,2021-07-22,2026-06-30
+Vasily Podkolzin,Vancouver Canucks,NHL,2021-10-12,2024-08-17
+Vasily Podkolzin,Edmonton Oilers,NHL,2024-08-18,2026-06-30

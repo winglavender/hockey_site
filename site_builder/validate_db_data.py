@@ -4,7 +4,6 @@ import sys
 import csv
 import yaml
 pd.set_option('display.max_columns', 500)
-sys.path.insert(1, '../hockey_db')
 from sqlalchemy import create_engine, text as sql_text
 
 # data_dir = ""
