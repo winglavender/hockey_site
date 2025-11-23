@@ -31,7 +31,7 @@ Jani Hakanpää,Anaheim Ducks,NHL,2019-07-03,2021-04-11
 Jani Hakanpää,Carolina Hurricanes,NHL,2021-04-12,2021-07-28
 Jani Hakanpää,Dallas Stars,NHL,2021-07-29,2024-09-10
 Jani Hakanpää,Toronto Marlies,AHL,2024-09-11,2025-06-17
-Jani Hakanpää,Kärpät,Finland,2015-10-07,2019-07-02,WARNING start date might be either 2015-10-07 or 2015-07-02
+Jani Hakanpää,Kärpät,Liiga,2015-10-07,2019-07-02,WARNING start date might be either 2015-10-07 or 2015-07-02
 Duncan Keith,Chicago Blackhawks,NHL,2005-10-05,2021-07-11
 Duncan Keith,Edmonton Oilers,NHL,2021-07-12,2022-07-11
 Warren Foegele,Carolina Hurricanes,NHL,2017-10-04,2021-07-27
@@ -79,7 +79,8 @@ Brandon Tanev,Providence College,H-East,2013-01-19,2016-03-29
 Alex Barré-Boulet,Tampa Bay Lightning,NHL,2021-01-13,2024-06-30
 Alex Barré-Boulet,Seattle Kraken,NHL,2021-10-12,2022-06-26,he was only with SEA for 10 days but this is a casualty of the simplified trade code
 Alex Barré-Boulet,Syracuse Crunch,AHL,2018-10-03,2024-06-30
-Alex Barré-Boulet,Montréal Canadiens,NHL,2024-07-01,2025-06-17
+Alex Barré-Boulet,Montréal Canadiens,NHL,2024-07-01,2025-07-03
+Alex Barré-Boulet,Colorado Eagles,AHL,2025-07-04,2026-06-30
 Justin Braun,Philadelphia Flyers,NHL,2019-06-18,2023-06-26
 Justin Braun,New York Rangers,NHL,2021-10-12,2022-06-26,he was with NYR from March to July but this is a casualty of the simplified trade code
 Justin Braun,San Jose Sharks,NHL,2010-10-07,2019-06-17

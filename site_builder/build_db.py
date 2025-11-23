@@ -6,6 +6,14 @@ import numpy as np
 from pathlib import Path
 root_dir = str(Path.cwd())#.parents[0])
 
+parent_dir = '../nhl-api-py'
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+from nhlpy import NHLClient
+from nhlpy.http_client import (
+    ResourceNotFoundException
+)
+client = NHLClient()
 
 if os.getenv('PYANYWHERE'):
     root_dir = os.path.join(root_dir, 'hockey_site')
@@ -30,54 +38,48 @@ scrape_start_year = 1990 # TODO 1917 someday
 import time
 import csv
 import json
-import concurrent.futures
 import pandas as pd
-from datetime import date
 from datetime import timedelta
 from datetime import datetime
-from os.path import exists
 MAX_THREADS = 30
-import requests
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
 from sqlalchemy import create_engine, text as sql_text
 from unidecode import unidecode
 # for font-accurate string comparisons
 from PIL import ImageFont
 font = ImageFont.load_default()
 
-def scrape_page(url):
-    """
-    Scrape a given url
+# def scrape_page(url):
+#     """
+#     Scrape a given url
 
-    :param url: url for page
-    :return: response object
-    """
-    response = requests.Session()
-    retries = Retry(total=10, backoff_factor=.1)
-    response.mount('http://', HTTPAdapter(max_retries=retries))
+#     :param url: url for page
+#     :return: response object
+#     """
+#     response = requests.Session()
+#     retries = Retry(total=10, backoff_factor=.1)
+#     response.mount('http://', HTTPAdapter(max_retries=retries))
 
-    page = requests.get(url, timeout=500)
-    page_string = str(page)
-    if page_string != '<Response [200]>':
-        print(url, page_string)
-    while page_string == '<Response [403]>':
-        print("Just got a 403 Error within the page. Time to sleep, then try again.")
-        time.sleep(10)
-        page = requests.get(url, timeout = 500) 
-        page_string = str(page)
-        print("Let's try again")
+#     page = requests.get(url, timeout=500)
+#     page_string = str(page)
+#     if page_string != '<Response [200]>':
+#         print(url, page_string)
+#     while page_string == '<Response [403]>':
+#         print("Just got a 403 Error within the page. Time to sleep, then try again.")
+#         time.sleep(10)
+#         page = requests.get(url, timeout = 500) 
+#         page_string = str(page)
+#         print("Let's try again")
 
-    if page_string != '<Response [200]>':
-        print(url, page_string)
-    if (str(page_string) == '<Response [404]>'):
-        print(f"ERROR: {page_string} on url {url}")
+#     if page_string != '<Response [200]>':
+#         print(url, page_string)
+#     if (str(page_string) == '<Response [404]>'):
+#         print(f"ERROR: {page_string} on url {url}")
     
-    try:
-        page = page.json()
-    except:
-        page = None
-    return url, page
+#     try:
+#         page = page.json()
+#     except:
+#         page = None
+#     return url, page
 
 from site_builder.season_calculator import SeasonCalculator
 from site_builder.normalize_name import normalize_name
@@ -99,7 +101,7 @@ seasons_to_scrape = []
 nhl_seasons_to_scrape = []
 end_year_final = int(today_season.split('-')[1])
 
-# set up nhl player scrape seasons (all seasons from 1990-91 to present)
+# set up nhl player scrape seasons (all seasons from 1990-91 to present) -- TODO can I remember why I need to scrape all years for player data from NHL site?? rather than using the current season the way I do for games
 for start_year in range(scrape_start_year, end_year_final): 
     end_year = start_year+1
     nhl_seasons_to_scrape.append(f"{start_year}-{end_year}")
@@ -157,29 +159,34 @@ def get_game_urls(seasons_to_scrape):
     return game_urls, teams_info, teams_by_season
 
 def get_all_game_urls_for_season(season_id, team_info):
-    urls = set()
+    game_ids = set()
     for _, row in team_info.iterrows():
-        _, games_json = scrape_page(f"https://api-web.nhle.com/v1/club-schedule-season/{row['triCode']}/{season_id}")
-        if not games_json:
+        # _, games_json = scrape_page(f"https://api-web.nhle.com/v1/club-schedule-season/{row['triCode']}/{season_id}")
+        try:
+            games_json = client.schedule.team_season_schedule(team_abbr=row['triCode'], season=season_id)
+            for game in games_json["games"]:
+                # urls.add(f"https://api-web.nhle.com/v1/gamecenter/{game['id']}/boxscore")
+                game_ids.add(game['id'])
+        except ResourceNotFoundException: 
+        # if not games_json:
             print(f"No game data found for {row['triCode']} {season_id}")
-            continue
-        for game in games_json["games"]:
-            urls.add(f"https://api-web.nhle.com/v1/gamecenter/{game['id']}/boxscore")
-    return urls
+    return game_ids
 
 def get_all_teams_info():
-    url="https://api.nhle.com/stats/rest/en/team"
-    _, teams_json = scrape_page(url)
-    teams_info = pd.DataFrame.from_records(teams_json["data"])
+    # url="https://api.nhle.com/stats/rest/en/team"
+    # _, teams_json = scrape_page(url)
+    # teams_info = pd.DataFrame.from_records(teams_json["data"])
+    teams_info = pd.DataFrame.from_records(client.teams.franchises_new())
     teams_info.drop(teams_info[teams_info['rawTricode'] == "NHL"].index, inplace = True)
     # make teams_by_season dict
     teams_by_season = {} # season -> list of teams that were active
     for _, team in teams_info.iterrows():
-        _, season_json = scrape_page(f"https://api-web.nhle.com/v1/roster-season/{team['rawTricode']}")
-        if not season_json:
+        # _, season_json = scrape_page(f"https://api-web.nhle.com/v1/roster-season/{team['rawTricode']}")
+        seasons_list = client.teams.team_seasons(team['rawTricode'])
+        if not seasons_list:
             print(f"No season data found for {team['triCode']}")
             continue
-        for season in season_json:
+        for season in seasons_list:
             if season not in teams_by_season:
                 teams_by_season[season] = []
             teams_by_season[season].append(team['rawTricode'])
@@ -187,6 +194,7 @@ def get_all_teams_info():
     
 # This function copies the old data to the new database and removes potentially redundant data from the seasons we're about to scrape
 def copy_db(seasons_to_scrape, prev_engine, engine):
+    print(f"Copying previous db, dropping data from {seasons_to_scrape}")
     # NHL site data
     games_df = pd.read_sql(sql=sql_text("select * from games"), con=prev_engine.connect())
     games_to_drop_df = games_df[games_df['seasonName'].isin(seasons_to_scrape)]
@@ -222,29 +230,28 @@ def get_team_name_from_id(team_json, teams_info):
             return team_json["commonName"]["default"] # this will crash the script, that's fine
         
     
-def scrape_game_pages(game_urls, teams_info, engine):
+def scrape_game_pages(game_ids, teams_info, engine):
     all_stats_list = ["toi", "assists", "points", "goals", "shots", "hits", "powerPlayGoals", "powerPlayPoints",
                     "pim", "faceOffWinningPctg", "faceoffs", "shortHandedGoals",
                     "shPoints", "blockedShots", "plusMinus", "powerPlayToi", "shorthandedToi",
                     "evenStrengthShotsAgainst", "powerPlayShotsAgainst", "shorthandedShotsAgainst", "saveShotsAgainst",
                     "evenStrengthGoalsAgainst", "powerPlayGoalsAgainst", "shorthandedGoalsAgainst", "goalsAgainst"]
     # scrape games
-    print(f"num game ids: {len(game_urls)}")
+    print(f"num game ids: {len(game_ids)}")
     games_info = []
     game_player_data = []
     scratch_data = []
     player_ids = set()
     player_urls = set()
-    threads = min(MAX_THREADS, len(game_urls))
-    with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
-        results = executor.map(scrape_page, game_urls)
-        for game_url, game_json in results:
-            if not game_json:
-                print(f"No game data found for {game_url}")
-                continue
-            game_id = int(game_url.split("/")[5])
-            if not game_json:
-                continue  # check if scrape of this page failed
+    # threads = min(MAX_THREADS, len(game_urls))
+    # with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
+    for game_id in game_ids:
+        # results = executor.map(scrape_page, game_urls)
+        try:
+            game_json = client.game_center.boxscore(game_id=game_id)
+            # game_id = int(game_url.split("/")[5])
+            # if not game_json:
+                # continue  # check if scrape of this page failed
             # check if game has been played yet
             if "score" not in game_json["homeTeam"]:
                 continue
@@ -252,7 +259,8 @@ def scrape_game_pages(game_urls, teams_info, engine):
                 winningTeam = "awayTeam"
             else:
                 winningTeam = "homeTeam"
-            games_info.append([game_id, game_url, game_json['gameDate'], game_json['gameType'], game_json['season'], season_id_to_name(game_json['season']), get_team_name_from_id(game_json['awayTeam'], teams_info), get_team_name_from_id(game_json['homeTeam'], teams_info), game_json['awayTeam']['score'], game_json['homeTeam']['score'], game_json['venue']['default'], winningTeam])
+            # games_info.append([game_id, game_url, game_json['gameDate'], game_json['gameType'], game_json['season'], season_id_to_name(game_json['season']), get_team_name_from_id(game_json['awayTeam'], teams_info), get_team_name_from_id(game_json['homeTeam'], teams_info), game_json['awayTeam']['score'], game_json['homeTeam']['score'], game_json['venue']['default'], winningTeam])
+            games_info.append([game_id, game_json['gameDate'], game_json['gameType'], game_json['season'], season_id_to_name(game_json['season']), get_team_name_from_id(game_json['awayTeam'], teams_info), get_team_name_from_id(game_json['homeTeam'], teams_info), game_json['awayTeam']['score'], game_json['homeTeam']['score'], game_json['venue']['default'], winningTeam])
             # process game roster
             for team in ["homeTeam", "awayTeam"]:
                 if "gameInfo" in game_json["summary"] and "scratches" in game_json["summary"]["gameInfo"][team]:
@@ -265,7 +273,7 @@ def scrape_game_pages(game_urls, teams_info, engine):
                             continue # assume this is a dummy id, we're just going to ignore this player
                         game_player_data_list = [game_id, player["playerId"], team]
                         player_ids.add(player["playerId"])
-                        player_urls.add(f"https://api-web.nhle.com/v1/player/{player['playerId']}/landing")
+                        # player_urls.add(f"https://api-web.nhle.com/v1/player/{player['playerId']}/landing")
                         # get player stats
                         for stat_name in all_stats_list:
                             if stat_name in player:
@@ -277,15 +285,23 @@ def scrape_game_pages(game_urls, teams_info, engine):
                         else:
                             game_player_data_list.extend(["-", "-", "-"])
                         game_player_data.append(game_player_data_list) 
+        except ResourceNotFoundException: 
+            print(f"No game data found for {game_id}")
+        # for game_url, game_json in results:
+            # if not game_json:
+                # print(f"No game data found for {game_url}")
+                # continue
+            
     # write to database    
-    games_df = pd.DataFrame(games_info, columns=['gameId', 'gameUrl', 'gameDate', 'gameType', 'seasonId', 'seasonName', 'awayTeam', 'homeTeam', 'awayScore', 'homeScore', 'venueName', 'winningTeam'])
+    games_df = pd.DataFrame(games_info, columns=['gameId', 'gameDate', 'gameType', 'seasonId', 'seasonName', 'awayTeam', 'homeTeam', 'awayScore', 'homeScore', 'venueName', 'winningTeam'])
     games_df.to_sql(name="games", if_exists='append', index=False, con=engine) 
     scratches_df = pd.DataFrame(scratch_data, columns=["gameId", "playerId"])
     scratches_df.to_sql(name="scratches", if_exists='append', index=False, con=engine)
     columns_list = ["gameId", "playerId", "team"] + all_stats_list + ["shotsAgainst", "saves", "savePercentage"]# skater_stats_names + goalie_stats_names
     game_player_df = pd.DataFrame(game_player_data, columns=columns_list)
     game_player_df.to_sql(name="game_player", if_exists='append', index=False, con=engine)
-    return player_urls
+    return player_ids
+    # return player_urls
 
 def computeShotsSaves(goalieStats):
     tmp = goalieStats["saveShotsAgainst"].split("/")
@@ -318,9 +334,9 @@ def season_id_to_name(season_id):
     return season_name
 
 # get all players team-season terms from NHL site
-def scrape_nhl_skaters(engine, teams_by_season, player_urls_by_game):#, old_players_df=None):
+def scrape_nhl_skaters(engine, teams_by_season, player_ids_by_game):#, old_players_df=None):
     # get all players on NHL rosters for all specified seasons
-    roster_player_urls = set()
+    roster_player_ids = set()
     team_season_roster_urls = []
     for season_to_scrape in nhl_seasons_to_scrape:
         season_id = int(season_to_scrape.replace("-", ""))
@@ -329,36 +345,42 @@ def scrape_nhl_skaters(engine, teams_by_season, player_urls_by_game):#, old_play
             continue
         teams_to_scrape = teams_by_season[season_id]
         for team_tricode in teams_to_scrape:
-            team_season_roster_urls.append(f"https://api-web.nhle.com/v1/roster/{team_tricode}/{season_id}")
-    threads = min(MAX_THREADS, len(team_season_roster_urls))
-    with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
-        results = executor.map(scrape_page, team_season_roster_urls)
-        for roster_url, roster_json in results:
-            if not roster_json:
-                print(f"No roster data found for {roster_url}")
-                continue
-            for player in roster_json['forwards']:
-                roster_player_urls.add(f"https://api-web.nhle.com/v1/player/{player['id']}/landing")
-            for player in roster_json['defensemen']:
-                roster_player_urls.add(f"https://api-web.nhle.com/v1/player/{player['id']}/landing")
-            for player in roster_json['goalies']:
-                roster_player_urls.add(f"https://api-web.nhle.com/v1/player/{player['id']}/landing")
+            # team_season_roster_urls.append(f"https://api-web.nhle.com/v1/roster/{team_tricode}/{season_id}")
+            team_season_roster_urls.append((team_tricode, season_id))
+    # threads = min(MAX_THREADS, len(team_season_roster_urls))
+    for (team_tricode, season_id) in team_season_roster_urls:
+        try:
+            roster_json = client.teams.team_roster(team_abbr=team_tricode, season=season_id)
+            for player in roster_json['forwards'] + roster_json['defensemen'] + roster_json['goalies']:
+                roster_player_ids.add(player['id'])
+            #     roster_player_ids.add(f"https://api-web.nhle.com/v1/player/{player['id']}/landing")
+            # for player in roster_json['defensemen']:
+            #     roster_player_urls.add(f"https://api-web.nhle.com/v1/player/{player['id']}/landing")
+            # for player in roster_json['goalies']:
+            #     roster_player_urls.add(f"https://api-web.nhle.com/v1/player/{player['id']}/landing")
+        except ResourceNotFoundException:
+            print(f"No roster data found for {team_tricode} {season_id}")
+    # with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
+    #     results = executor.map(scrape_page, team_season_roster_urls)
+    #     for roster_url, roster_json in results:
+    #         if not roster_json:
+    #             print(f"No roster data found for {roster_url}")
+    #             continue
+    #         for player in roster_json['forwards']:
+    #             roster_player_urls.add(f"https://api-web.nhle.com/v1/player/{player['id']}/landing")
+    #         for player in roster_json['defensemen']:
+    #             roster_player_urls.add(f"https://api-web.nhle.com/v1/player/{player['id']}/landing")
+    #         for player in roster_json['goalies']:
+    #             roster_player_urls.add(f"https://api-web.nhle.com/v1/player/{player['id']}/landing")
     # now get all team terms for those players
-    player_urls = roster_player_urls.union(player_urls_by_game)
-    player_urls = list(player_urls)
-    print('https://api-web.nhle.com/v1/player/8484779/landing' in player_urls)
+    player_ids = list(roster_player_ids.union(player_ids_by_game))
+    # player_ids = list(player_ids)
+    # print('https://api-web.nhle.com/v1/player/8484779/landing' in player_urls)
     player_terms = []
-    threads = min(MAX_THREADS, len(player_urls))
-    with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
-        results = executor.map(scrape_page, player_urls)
-        for player_url, player_json in results:
-            if not player_json:
-                print(f"No player data found for {player_url}")
-                continue
-            player_id = player_url.split("/")[5]
+    for player_id in player_ids:
+        try:
+            player_json = client.stats.player_career_stats(player_id=player_id)
             for term in player_json['seasonTotals']:
-                if player_url=='https://api-web.nhle.com/v1/player/8484779/landing':
-                    print(term)
                 if 'gamesPlayed' in term:
                     games_played = term['gamesPlayed']
                 else:
@@ -366,22 +388,37 @@ def scrape_nhl_skaters(engine, teams_by_season, player_urls_by_game):#, old_play
                 if term['gameTypeId'] != 2:
                     continue # skip playoffs 
                 player_terms.append((player_id, f"{player_json['firstName']['default']} {player_json['lastName']['default']}", term['season'], term['leagueAbbrev'], term['teamName']['default'], games_played))
+        except ResourceNotFoundException:
+            print(f"No player data found for {player_id}")
+    # threads = min(MAX_THREADS, len(player_urls))
+    # with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
+    #     results = executor.map(scrape_page, player_urls)
+    #     for player_url, player_json in results:
+    #         if not player_json:
+    #             print(f"No player data found for {player_url}")
+    #             continue
+    #         player_id = player_url.split("/")[5]
+    #         for term in player_json['seasonTotals']:
+    #             if player_url=='https://api-web.nhle.com/v1/player/8484779/landing':
+    #                 print(term)
+    #             if 'gamesPlayed' in term:
+    #                 games_played = term['gamesPlayed']
+    #             else:
+    #                 games_played = -1
+    #             if term['gameTypeId'] != 2:
+    #                 continue # skip playoffs 
+    #             player_terms.append((player_id, f"{player_json['firstName']['default']} {player_json['lastName']['default']}", term['season'], term['leagueAbbrev'], term['teamName']['default'], games_played))
     player_terms_df = pd.DataFrame(player_terms, columns=['playerId', 'playerName', 'season', 'league', 'team', 'games_played']) 
     player_terms_df['season'] = player_terms_df['season'].apply(season_id_to_name)
-    # if old_players_df is not None:
-    #     player_terms_df = pd.concat([player_terms_df, old_players_df], axis='rows')
-    #     player_terms_df.sort_values(by=['games_played'], inplace=True)
-    #     # current season will appear with varying numbers of games played as the season progresses, so we can't use games_played to drop duplicates
-    #     player_terms_df.drop_duplicates(subset=['playerId', 'season', 'league', 'team'], keep='last', inplace=True) 
-    #     # player_terms_df = player_terms_df.drop_duplicates() 
     player_terms_df.to_sql(name="players_nhl", index=False, con=engine)
 
 def scrape_ep(engine, old_ep_raw_intl=None): 
     leagues = ["wc", "wjc-20", "wjc-18", "whc-17"]
     postseasons = pd.read_csv(os.path.join(data_dir, "ep_raw_postseasons.csv"))
     # get ASG data
-    asg_data = scraper.get_asg()
-    asg_data = asg_data.drop(['index'], axis=1, errors='ignore')
+    # asg_data = scraper.get_asg()
+    # asg_data = asg_data.drop(['index'], axis=1, errors='ignore')
+    asg_data = pd.read_csv(os.path.join(data_dir, "ep_raw_asg.csv"))
     # remove positions/whitespace from ep names
     asg_data['player'] = asg_data['player'].str.replace(r"\(.*\)", "", regex=True)
     asg_data['player'] = asg_data['player'].str.strip()    
@@ -392,7 +429,7 @@ def scrape_ep(engine, old_ep_raw_intl=None):
     skaters['player'] = skaters['player'].str.strip()
      # scrape transfer data and save to raw db
     transfers = scraper.get_transfers(earliest_transfer_date)#, max_page=2)
-    transfers.date = pd.to_datetime(transfers.date)
+    transfers.date = pd.to_datetime(transfers.date).dt.date
     transfers['player'] = transfers['player'].str.replace(r"\(.*\)", "", regex=True)
     transfers['player'] = transfers['player'].str.strip()
     # combine previous and new skater data
@@ -410,19 +447,29 @@ def process_player_terms(player_terms, transfers, postseasons, test_id=None):
     all_rows = []
     all_playoffs = []
     all_unused_transfers = []
+    # print("here")
+    # print(player_terms.dtypes)
     # build player timelines using NHL site data
     for player_id in player_terms['playerId'].unique():
         if test_id and player_id != test_id:
             continue
         player_rows = player_terms.loc[player_terms['playerId'] == player_id]
+        # print(player_rows)
         career_rows, playoffs_rows, unused_transfers = build_player_timeline_new(player_rows, transfers, postseasons)
         all_unused_transfers.extend(unused_transfers)
         all_rows.extend(career_rows)
         all_playoffs.extend(playoffs_rows)
         if test_id:
+            print("player rows")
             print(player_rows)
+            print("career rows")
             print(career_rows)
+            print("playoffs rows")
             print(playoffs_rows)
+            print("transfers")
+            print(transfers)
+            print("unused transfers")
+            print(unused_transfers)
             return
     # postprocessing players
     processed_players = pd.DataFrame(all_rows, columns=['team', 'league', 'start_date', 'end_date', 'playerId'])
@@ -436,14 +483,15 @@ def process_player_terms(player_terms, transfers, postseasons, test_id=None):
     processed_playoffs = pd.DataFrame(all_playoffs, columns=['link', 'year', 'tooltip_str', 'color'])
     out = processed_playoffs.apply(lambda x: get_js_date_values_playoffs(x.year), axis=1, result_type='expand')   
     processed_playoffs[['start_year_js', 'start_month_js', 'start_day_js', 'end_year_js', 'end_month_js', 'end_day_js']] = out
-    processed_players.to_sql('skaters', engine, if_exists='replace', index=False)
-    processed_playoffs.to_sql('player_playoffs', engine, if_exists='replace', index=False)
-    # create teammate intersection table
-    teammates = build_teammates_df(processed_players)
-    teammates.to_sql('teammates', engine, if_exists='replace', index=False)
-    # create unused transfers table for fixing by hand
-    all_unused_transfers = pd.DataFrame(all_unused_transfers, columns=['date', 'from_team', 'to_team', 'link', 'player', 'playerId', 'playerName'])
-    all_unused_transfers.to_sql('unused_transfers', engine, index=False)
+    if test_id is None:
+        processed_players.to_sql('skaters', engine, if_exists='replace', index=False)
+        processed_playoffs.to_sql('player_playoffs', engine, if_exists='replace', index=False)
+        # create teammate intersection table
+        teammates = build_teammates_df(processed_players)
+        teammates.to_sql('teammates', engine, if_exists='replace', index=False)
+        # create unused transfers table for fixing by hand
+        all_unused_transfers = pd.DataFrame(all_unused_transfers, columns=['date', 'from_team', 'to_team', 'link', 'player', 'playerId', 'playerName'])
+        all_unused_transfers.to_sql('unused_transfers', engine, index=False)
 
 def get_player_term_tooltip_str(team_display_str, years_str):
     return f"{team_display_str}<br>{years_str}"
@@ -525,7 +573,7 @@ def convert_tournament_dates(tournament, start_date, end_date):
     season_years_str = f"{start_date.year}-{end_date.year}" # TODO move
     # catch delayed season start exceptions
     if season_years_str == "2013-2013":
-        season_years = (2012,2013)
+        season_years = (2012, 2013)
     elif season_years_str == "2021-2021":
         season_years = (2020, 2021)
     if tournament in tournament_leagues:
@@ -610,7 +658,7 @@ def build_player_timeline_new(rows, transfers, postseasons):
                     season_start, season_end, _ = season_calc.get_season_dates(season)
                     # adjust for tournaments
                     tournament_start_date, tournament_end_date = convert_tournament_dates(league_option, season_start, season_end)
-                    player_timeline.append([team, league_option, tournament_start_date, tournament_end_date, player_id])
+                    player_timeline.append([team, league_option, tournament_start_date, tournament_end_date, player_id, season, season])
             continue
         adjacent_team_rows = id_adjacent_team_rows(team_rows)
         # for a list of adjacent seasons on a roster, we will add at least 1 tenure row to the player timeline
@@ -918,7 +966,6 @@ def get_id_from_ep_url(ep_url):
 def build_name_db(engine): 
     normalized_names = pd.DataFrame(columns=['norm_name', 'canon_name'])
     nhl_db_players = pd.read_sql_query(sql=sql_text("select * from players_nhl"), con=engine.connect()) # TODO eventually this should be an operation in the database?
-    nhl_db_players['playerId'] = nhl_db_players['playerId'].astype(int)
     # initialize canon names with NHL names
     name_links = nhl_db_players[['playerId', 'playerName']]
     name_links['playerId'] = name_links['playerId'].astype(int)
@@ -1013,6 +1060,7 @@ def get_string_width(input_string):
 def preprocessing(engine):
     # TODO temp read data
     nhl_players_df = pd.read_sql_query(sql=sql_text("select * from players_nhl"), con=engine.connect())
+    nhl_players_df['playerId'] = nhl_players_df['playerId'].astype(int)
     # fix NHL data errors
     with open(os.path.join(data_dir, "nhl_errors.txt")) as in_file: 
         reader = csv.DictReader(in_file)
@@ -1095,6 +1143,7 @@ def preprocessing(engine):
     # all "join links" should happen after the name db is constructed
     transfers_df = pd.read_sql_query(sql=sql_text("select * from ep_clean_transfers join links using (link)"), con=engine.connect(), parse_dates=['date'])
     transfers_df = transfers_df[transfers_df['playerId'] != ''] # drop transfer terms for players we don't have matching NHL site playerIds for
+    transfers_df['playerId'] = transfers_df['playerId'].astype(int)
     # normalization of transfer team names
     for source_team_list in team_mapping:
         target_team = team_mapping[source_team_list]
@@ -1108,18 +1157,21 @@ def preprocessing(engine):
     asg_df = pd.read_sql(sql=sql_text('select * from ep_clean_asg join links using (link)'), con=engine.connect())
     asg_df = asg_df[asg_df['playerId'] != ''] # drop ASG terms for players we don't have matching NHL site playerIds for
     asg_df = asg_df.drop(['index', 'level_0'], axis=1, errors='ignore')
+    asg_df['playerId'] = asg_df['playerId'].astype(int)
     worlds_df = pd.read_sql(sql=sql_text('select * from ep_clean_intl join links using (link)'), con=engine.connect())
     worlds_df = worlds_df[worlds_df['playerId'] != ''] # drop Worlds terms for players we don't have matching NHL site playerIds for
+    worlds_df['playerId'] = worlds_df['playerId'].astype(int)
     players_df = pd.concat([worlds_df, nhl_players_df, asg_df], axis=0, ignore_index=True) # add intl roster data to skaters table
+    players_df['playerId'] = players_df['playerId'].astype(int)
     # drop superfluous Worlds and M-Cup rows
     players_df = players_df[~players_df['league'].isin(nhl_leagues_to_drop)]
     # now drop non-national teams that appear more than once in a season
     players_natl = players_df.copy()
     players_natl = players_natl.loc[players_natl['team'].apply(is_national_team)]
-    print(players_natl)
+    # print(players_natl)
     players_not_natl = players_df.copy()
     players_not_natl = players_not_natl.loc[~players_not_natl['team'].apply(is_national_team)]
-    print(players_not_natl)
+    # print(players_not_natl)
     players_not_natl = players_not_natl.drop_duplicates(subset=['playerId', 'playerName', 'season', 'team']) # to drop semi-redundant playoff rows (e.g. Connor McDavid Marlboros, but also the same row where Marlboros are in league "Other")
     players_df = pd.concat([players_natl, players_not_natl])
     # players_df = players_df.drop_duplicates(subset=['playerId', 'playerName', 'season', 'team']) # to drop semi-redundant playoff rows (e.g. Connor McDavid Marlboros, but also the same row where Marlboros are in league "Other")
@@ -1176,18 +1228,18 @@ if __name__ == "__main__":
             old_ep_raw_intl = copy_db(seasons_to_scrape, prev_engine, engine) # have to keep old_players_df around to drop duplicates before I write to db again, because I can't filter using any date
         else:
             old_ep_raw_intl = None
+        # scrape EP website for transfers & international tournament roster data
+        scrape_ep(engine, old_ep_raw_intl)
         # scrape NHL website game data
         game_urls, teams_info, teams_by_season = get_game_urls(seasons_to_scrape)
         # scrape player stats for all games, write to db
-        player_urls_by_game = scrape_game_pages(game_urls, teams_info, engine)
+        player_ids_by_game = scrape_game_pages(game_urls, teams_info, engine)
         # scrape NHL website roster data
-        scrape_nhl_skaters(engine, teams_by_season, player_urls_by_game)#, seasons_to_scrape)# old_players_df)
+        scrape_nhl_skaters(engine, teams_by_season, player_ids_by_game)#, seasons_to_scrape)# old_players_df)
         end = time.time()
         print(f"elapsed time: {timedelta(seconds=end - start)}")
-        if sys.argv[1] == "--scrape-games-only":
-            sys.exit(0)
-        # scrape EP website for transfers & roster data
-        scrape_ep(engine, old_ep_raw_intl)
+        # if sys.argv[1] == "--scrape-games-only":
+            # sys.exit(0)
         end = time.time()
         print(f"elapsed time: {timedelta(seconds=end - start)}")
     if sys.argv[1] == '--process':
@@ -1206,7 +1258,7 @@ if __name__ == "__main__":
         print(f"elapsed time: {timedelta(seconds=end - start)}")
 
     elif sys.argv[1] == '--test':
-        playerId=sys.argv[2]
+        playerId=int(sys.argv[2]) # claude giroux 8473512
         # players_df = pd.read_sql_query(sql=sql_text("select * from players_nhl"), con=engine.connect())
         # players_df = players_df[~players_df['league'].isin(nhl_leagues_to_drop)]
         # players_df = players_df.drop_duplicates(subset=['playerId', 'playerName', 'season', 'team']) # to drop semi-redundant playoff rows (e.g. Connor McDavid Marlboros, but also the same row where Marlboros are in league "Other")

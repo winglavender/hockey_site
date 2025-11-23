@@ -29,13 +29,13 @@ with open('data/skaters_test.txt','r') as in_file:
             if row['notes']:
                 print(f"WARNING: {row['notes']}")
             print()
-            print(f"{row['player']}, {row['team']} ({row['league']}) {row['start_date']} to {row['end_date']}")
+            print(f"validation file: {row['player']}, {row['team']} ({row['league']}) {row['start_date']} to {row['end_date']}")
             if len(match) > 0:
                 print(match)
             if len (partial_match) > 0:
                 print("partial match")
                 for row in partial_match.itertuples():
-                    print(f"{row.playerName}, {row.team} ({row.league}) {row.start_date.strftime('%Y-%m-%d')} to {row.end_date.strftime('%Y-%m-%d')}")
+                    print(f"db row: {row.playerName}, {row.team} ({row.league}) {row.start_date.strftime('%Y-%m-%d')} to {row.end_date.strftime('%Y-%m-%d')}")
             print("------------------\n\n")
             num_failed += 1
         else:
