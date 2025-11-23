@@ -7,8 +7,7 @@ from sqlalchemy import create_engine, text as sql_text
 from site_builder.normalize_name import normalize_name
 import sys
 
-
-from site_builder.build_db import get_js_date_values, get_years_str, get_player_term_tooltip_str, get_tournament_leagues
+from site_builder.utils import get_js_date_values, get_years_str, get_player_term_tooltip_str, get_tournament_leagues
 from site_builder.season_calculator import SeasonCalculator
 class teammates_db():
 
