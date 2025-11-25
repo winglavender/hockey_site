@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session
-from sqlalchemy import create_engine, text as sql_text
+from sqlalchemy import create_engine
 from flask_sqlalchemy import SQLAlchemy
 from teammates_db import teammates_db
 import os
@@ -91,7 +91,6 @@ def one_player_career():
         end = time.time()
         print(f"get id elapsed time: {end-start_page}")
         session["task"] = "one_player_career"
-        # if num_results == 1:
         if len(output) == 1:
             # output is unique player link
             data_asg, longest_name_asg, longest_name_no_asg, data_no_asg, data_length_asg, data_length_no_asg = db.get_overlapping_player_terms(output.iloc[0]['playerId'])
@@ -148,8 +147,6 @@ def one_player_team_games():
         db = teammates_db(config, engine)
         session["task"] = "one_player_team_games"
         session["team"] = team
-        # num_results, target
-        # output = db.get_player_id(player)
         output = db.get_links_from_name(player)
         if len(output) == 1:
             # we have a unique player id
@@ -362,8 +359,6 @@ def options_result_1():
         elif session["task"] == "two_players_shared_teammates":
             team_overlaps_sort_date, team_overlaps_sort_date_no_asg, teammates_asg, len_teammates_asg, teammates_no_asg, len_teammates_no_asg = db.get_two_players_shared_teammates(session["player1_id"], session["player1"], session["player2_id"], session["player2"])
             return render_template('two_players_shared_teammates.html', data=teammates_asg, data_no_asg=teammates_no_asg, team_data=team_overlaps_sort_date, data_len_asg=len_teammates_asg, team_data_no_asg=team_overlaps_sort_date_no_asg, data_len_no_asg=len_teammates_no_asg,  playername1=session["player1"], playername2=session["player2"])
-            # team_data, _, team_data_no_asg, _, _ = db.get_overlapping_player_terms(session["player1_id"], session["player2_id"])
-            # return render_template('two_players_shared_teammates.html', data=data, data_no_asg=data_no_asg, team_data=team_data, team_data_no_asg=team_data_no_asg, playername1=session["player1"], playername2=session["player2"])
         elif session["task"] == "two_players_games":
             data = db.get_two_player_games(session["player1_id"], session["player2_id"])
             return render_template(f'two_players_games.html', data=data, playername1=session.get("player1"), playername2=session.get("player2"), latest_date=latest_date)
@@ -390,9 +385,6 @@ def options_result_2():
         elif session["task"] == "two_players_shared_teammates":
             team_overlaps_sort_date, team_overlaps_sort_date_no_asg, teammates_asg, len_teammates_asg, teammates_no_asg, len_teammates_no_asg = db.get_two_players_shared_teammates(session["player1_id"], session["player1"], session["player2_id"], session["player2"])
             return render_template('two_players_shared_teammates.html', data=teammates_asg, data_no_asg=teammates_no_asg, team_data=team_overlaps_sort_date, data_len_asg=len_teammates_asg, team_data_no_asg=team_overlaps_sort_date_no_asg, data_len_no_asg=len_teammates_no_asg,  playername1=session["player1"], playername2=session["player2"])
-            # data, data_no_asg = db.get_two_players_shared_teammates(session["player1_id"], session["player2_id"])
-            # team_data, _, team_data_no_asg, _, _ = db.get_overlapping_player_terms(session["player1_id"], session["player2_id"])
-            # return render_template('two_players_shared_teammates.html', data=data, data_no_asg=data_no_asg, team_data=team_data, team_data_no_asg=team_data_no_asg, playername1=session["player1"], playername2=session["player2"])
         elif session["task"] == "two_players_games":
             data = db.get_two_player_games(session["player1_id"], session["player2_id"])
             return render_template(f'two_players_games.html', data=data, playername1=session.get("player1"),

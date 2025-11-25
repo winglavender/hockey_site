@@ -3,10 +3,6 @@ import yaml
 import os
 from pathlib import Path
 import pandas as pd
-import sys
-
-# input arguments
-# config_file = sys.argv[1] 
 
 # connect to sqlite database
 with open(f'../hockey_site/config.yaml', 'r') as f:
@@ -26,7 +22,6 @@ if not os.path.exists(output_dir):
 # read tables to pandas and pickle them
 table_names = ['ep_raw_asg', 'ep_raw_intl', 'ep_raw_postseasons', 'ep_raw_transfers', 'game_player', 'games', 'links',
                'norm_names', 'player_names', 'player_playoffs', 'players_nhl', 'scratches', 'skaters', 'teammates']
-# table_names = ['teammates']
 for table_name in table_names:
     print(f"reading {table_name}")
     q = f"select * from {table_name}"

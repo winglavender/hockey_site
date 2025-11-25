@@ -1,14 +1,13 @@
 import pandas as pd
 import time
 import os.path
-from datetime import date
-import numpy as np
-from sqlalchemy import create_engine, text as sql_text
-from site_builder.normalize_name import normalize_name
-import sys
 
-from site_builder.utils import get_js_date_values, get_years_str, get_player_term_tooltip_str, get_tournament_leagues
+from datetime import date
+from sqlalchemy import text as sql_text
+from site_builder.utils import get_js_date_values, get_years_str, get_player_term_tooltip_str, get_tournament_leagues, normalize_name
 from site_builder.season_calculator import SeasonCalculator
+
+
 class teammates_db():
 
     def __init__(self, config, db):
@@ -22,7 +21,8 @@ class teammates_db():
         self.season_calc = SeasonCalculator(date.today(), os.path.join(config['data_dir'], 'nhl_season_dates.txt')) # TODO do we need today's date for season calculator?
         self.game_columns = ['gameId', 'gameUrl', 'gameDate', 'gameType', 'seasonId', 'seasonName', 'awayTeam', 'homeTeam', 'awayScore', 'homeScore', 'venueName', 'winningTeam']
         self.game_player_columns = ['playerId', 'team', 'toi', 'assists', 'points', 'goals', 'shots', 'hits', 'powerPlayGoals', 'powerPlayPoints', 'pim', 'faceOffWinningPctg', 'faceoffs', 'shortHandedGoals', 'shPoints', 'blockedShots', 'plusMinus', 'powerPlayToi', 'shorthandedToi', 'evenStrengthShotsAgainst', 'powerPlayShotsAgainst', 'shorthandedShotsAgainst', 'saveShotsAgainst', 'evenStrengthGoalsAgainst', 'powerPlayGoalsAgainst', 'shorthandedGoalsAgainst', 'goalsAgainst', 'shotsAgainst', 'saves', 'savePercentage']
-        self.team_names = {'Mighty Ducks of Anaheim': 'ANA', 'Anaheim Ducks': 'ANA', 'Arizona Coyotes': 'ARI', 'Atlanta Thrashers': 'ATL', 'Boston Bruins': 'BOS', 'Buffalo Sabres': 'BUF', 'Carolina Hurricanes': 'CAR', 'Columbus Blue Jackets': 'CBJ', 'Calgary Flames': 'CGY', 'Chicago Blackhawks': 'CHI', 'Colorado Avalanche': 'COL', 'Dallas Stars': 'DAL', 'Detroit Red Wings': 'DET', 'Edmonton Oilers': 'EDM', 'Florida Panthers': 'FLA', 'Los Angeles Kings': 'LAK', 'Minnesota Wild': 'MIN', 'Montreal Canadiens': 'MTL', 'Montréal Canadiens': 'MTL', 'New Jersey Devils': 'NJD', 'Nashville Predators': 'NSH', 'New York Islanders': 'NYI', 'New York Rangers': 'NYR', 'Ottawa Senators': 'OTT', 'Philadelphia Flyers': 'PHI', 'Phoenix Coyotes': 'PHX', 'Pittsburgh Penguins': 'PIT', 'Seattle Kraken': 'SEA', 'San Jose Sharks': 'SJS', 'St. Louis Blues': 'STL', 'Tampa Bay Lightning': 'TBL', 'Toronto Maple Leafs': 'TOR', 'Vancouver Canucks': 'VAN', 'Vegas Golden Knights': 'VGK', 'Winnipeg Jets': 'WPG', 'Washington Capitals': 'WSH'}
+        # TODO the team names should be in a data file
+        self.team_names = {'Mighty Ducks of Anaheim': 'ANA', 'Anaheim Ducks': 'ANA', 'Arizona Coyotes': 'ARI', 'Atlanta Thrashers': 'ATL', 'Boston Bruins': 'BOS', 'Buffalo Sabres': 'BUF', 'Carolina Hurricanes': 'CAR', 'Columbus Blue Jackets': 'CBJ', 'Calgary Flames': 'CGY', 'Chicago Blackhawks': 'CHI', 'Colorado Avalanche': 'COL', 'Dallas Stars': 'DAL', 'Detroit Red Wings': 'DET', 'Edmonton Oilers': 'EDM', 'Florida Panthers': 'FLA', 'Los Angeles Kings': 'LAK', 'Minnesota Wild': 'MIN', 'Montreal Canadiens': 'MTL', 'Montréal Canadiens': 'MTL', 'New Jersey Devils': 'NJD', 'Nashville Predators': 'NSH', 'New York Islanders': 'NYI', 'New York Rangers': 'NYR', 'Ottawa Senators': 'OTT', 'Philadelphia Flyers': 'PHI', 'Phoenix Coyotes': 'PHX', 'Pittsburgh Penguins': 'PIT', 'Seattle Kraken': 'SEA', 'San Jose Sharks': 'SJS', 'St. Louis Blues': 'STL', 'Tampa Bay Lightning': 'TBL', 'Toronto Maple Leafs': 'TOR', 'Vancouver Canucks': 'VAN', 'Vegas Golden Knights': 'VGK', 'Winnipeg Jets': 'WPG', 'Washington Capitals': 'WSH', 'Utah Hockey Team': 'UTA', 'Utah Mammoths': 'UTA'}
 
     def get_team_name_abbrev(self, team_name_full):
         if team_name_full in self.team_names:
@@ -287,7 +287,6 @@ class teammates_db():
         rows = rows.merge(tenure_rows, how='left', on='playerId')
         rows['playerName'] = rows['playerName'] + " (" + rows['tenure_sum'].astype(str) + " y)"
         # sort output by tenure time
-        # rows.sort_values(by=['tenure_sum', 'playerName'], inplace=True, ascending=False)
         rows.sort_values(by=['orig_start_date', 'playerName'], inplace=True, ascending=True)
         return rows.to_dict('records')
         

@@ -1,3 +1,5 @@
+import re
+from unidecode import unidecode
 
 def get_player_term_tooltip_str(team_display_str, years_str):
     return f"{team_display_str}<br>{years_str}"
@@ -30,3 +32,13 @@ def get_years_str(league, start_date, end_date):
         elif start_date == pd.to_datetime("2021-01-13"):
             years_str = "2020" + years_str[4:] 
     return years_str
+
+def normalize_name(name):
+    name = name.lower()
+    name = re.sub(r'\([^()]*\)', '', name)
+    name = name.strip()
+    name = unidecode(name) 
+    name = name.replace('"', "") # remove quotes that will break the query
+    name = name.replace("-", " ") # handle hyphenated names
+    name = name.replace(".", "") # remove periods from "J.T. Brown" but we don't want to remove all punctuation e.g. "O'Connor"
+    return name

@@ -7,7 +7,6 @@ class SeasonCalculator:
         self.seasons = []
         self.season_dates = {}
         self.year_to_season = {}
-        # self.config = config
         self.today = today
         self.read_season_dates(season_dates_file)  # all use cases require season dates
 
@@ -28,7 +27,6 @@ class SeasonCalculator:
 
         # read from file of season dates: name, start date, end date
         season_dates = []
-        # with open(self.config['root_dir'] + '/hockey_db_data/nhl_season_dates.txt') as in_file:
         with open(season_dates_file) as in_file:
             for line in in_file:
                 season_dates.append(line.strip().split(","))

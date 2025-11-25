@@ -6,7 +6,6 @@ import yaml
 pd.set_option('display.max_columns', 500)
 from sqlalchemy import create_engine, text as sql_text
 
-# data_dir = ""
 with open('config.yaml', 'r') as f:
     config = yaml.safe_load(f)
 config['filename_date'] = config['current_date'].replace("-", "")

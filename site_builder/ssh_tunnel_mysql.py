@@ -1,21 +1,15 @@
 # this script takes all the pickled dataframes and writes them to the remote (pythonanywhere) mysql database using SSH tunneling
 # the dataframe pkl location is defined by the config file at 
 
-from sqlalchemy import create_engine, text as sql_text
+from sqlalchemy import create_engine
 import yaml
 import os
 from pathlib import Path
 import pandas as pd
 import sys
-import argparse
 import sshtunnel
 import time
 import glob
-
-# parser = argparse.ArgumentParser() # TODO
-# parser.add_argument("path")
-# parser.add_argument('--to_live_website', action=argparse.BooleanOptionalAction)
-# args = parser.parse_args()
 
 data_dir = "/Users/alice/Library/Mobile Documents/com~apple~CloudDocs/Projects/hockey_db_data"
 with open(f'../hockey_site/config.yaml', 'r') as f:
