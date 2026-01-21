@@ -18,7 +18,8 @@ Evander Kane,Dynamo Minsk,KHL,2012-09-28,2013-06-24,dates for lockout team are w
 Evander Kane,Buffalo Sabres,NHL,2015-10-07,2018-02-25
 Evander Kane,San Jose Sharks,NHL,2018-02-26,2021-07-07
 Evander Kane,San Jose Barracuda,AHL,2021-10-12,2022-01-07
-Brett Kulak,Edmonton Oilers,NHL,2022-03-21,2026-06-30
+Brett Kulak,Edmonton Oilers,NHL,2022-03-21,2025-12-11
+Brett Kulak,Pittsburgh Penguins,NHL,2025-12-12,2026-06-30
 Brett Kulak,Calgary Flames,NHL,2014-10-08,2018-09-30
 Brett Kulak,Montréal Canadiens,NHL,2018-10-01,2022-03-20
 Brett Kulak,Laval Rocket,AHL,2018-10-01,2019-06-12
@@ -42,7 +43,7 @@ Derek Ryan,Calgary Flames,NHL,2018-07-01,2021-07-27
 Derek Ryan,Edmonton Oilers,NHL,2021-07-28,2025-09-04
 Derek Ryan,Örebro HK,Sweden,2014-10-08,2015-06-15
 Matthew Tkachuk,Calgary Flames,NHL,2016-07-07,2022-07-22
-Matthew Tkachuk,Florida Panthers,NHL,2022-07-23,2025-06-17
+Matthew Tkachuk,Florida Panthers,NHL,2022-07-23,2026-06-30
 Matthew Tkachuk,London Knights,OHL,2015-10-07,2016-07-06
 Jakub Voracek,Columbus Blue Jackets,NHL,2008-10-04,2011-06-22
 Jakub Voracek,Columbus Blue Jackets,NHL,2021-07-24,2023-03-01,fix with verified_trades.csv (not rostered on ARI in 22-23)

@@ -1,5 +1,6 @@
 import re
 from unidecode import unidecode
+import pandas as pd 
 
 def get_player_term_tooltip_str(team_display_str, years_str):
     return f"{team_display_str}<br>{years_str}"

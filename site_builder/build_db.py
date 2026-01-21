@@ -156,9 +156,9 @@ def copy_db(seasons_to_scrape, prev_engine, engine):
     scratches_df = scratches_df[~scratches_df['gameId'].isin(games_to_drop_df['gameId'])]
     game_player_df = game_player_df[~game_player_df['gameId'].isin(games_to_drop_df['gameId'])]
     # copy to new db
-    games_df.to_sql(name="games", con=engine, index=False)
-    scratches_df.to_sql(name="scratches", con=engine, index=False)
-    game_player_df.to_sql(name="game_player", con=engine, index=False)
+    games_df.to_sql(name="games", con=engine, index=False, if_exists='replace')
+    scratches_df.to_sql(name="scratches", con=engine, index=False, if_exists='replace')
+    game_player_df.to_sql(name="game_player", con=engine, index=False, if_exists='replace')
     return ep_raw_intl_df    
 
 def get_team_name_from_id(team_json, teams_info):
@@ -265,6 +265,13 @@ def season_id_to_name(season_id):
 
 # get all players team-season terms from NHL site
 def scrape_nhl_skaters(engine, teams_by_season, player_ids_by_game):#, old_players_df=None):
+    # check if we already have this table
+    df = pd.read_sql(sql=sql_text("SELECT count(*) as table_exists FROM sqlite_master WHERE type='table' AND name='players_nhl'"), con=engine.connect())
+    if df.iloc[0]['table_exists'] == 1:
+        players = pd.read_sql(sql=sql_text('select * from players_nhl'), con=engine.connect())
+        if len(players) > 0:
+            print("Skipping NHL player scrape because players table already exists")
+            return
     # get all players on NHL rosters for all specified seasons
     roster_player_ids = set()
     team_season_roster_urls = []
@@ -304,6 +311,13 @@ def scrape_nhl_skaters(engine, teams_by_season, player_ids_by_game):#, old_playe
     player_terms_df.to_sql(name="players_nhl", index=False, con=engine)
 
 def scrape_ep(engine, old_ep_raw_intl=None): 
+    # check if we already have EP tables
+    df = pd.read_sql(sql=sql_text("SELECT count(*) as table_exists FROM sqlite_master WHERE type='table' AND name='ep_raw_transfers'"), con=engine.connect())
+    if df.iloc[0]['table_exists'] == 1:
+        ep_transfers = pd.read_sql(sql=sql_text('select * from ep_raw_transfers'), con=engine.connect())
+        if len(ep_transfers) > 0:
+            print("EP raw transfers table already exists (size > 0) so we're skipping all EP scraped tables (ep_raw_transfers, ep_raw_intl, ep_raw_asg, ep_raw_postseasons)")
+            return
     leagues = ["wc", "wjc-20", "wjc-18", "whc-17"]
     postseasons = pd.read_csv(os.path.join(data_dir, "ep_raw_postseasons.csv"))
     # get ASG data
@@ -950,10 +964,7 @@ if __name__ == "__main__":
         scrape_nhl_skaters(engine, teams_by_season, player_ids_by_game)#, seasons_to_scrape)# old_players_df)
         end = time.time()
         print(f"elapsed time: {timedelta(seconds=end - start)}")
-        # if sys.argv[1] == "--scrape-games-only":
-            # sys.exit(0)
-        end = time.time()
-        print(f"elapsed time: {timedelta(seconds=end - start)}")
+
     if sys.argv[1] == '--process':
         print("Processing db")
         players_df, nhl_players_df, transfers_df, asg_df, worlds_df, postseasons = preprocessing(engine)

@@ -11,7 +11,9 @@ import sshtunnel
 import time
 import glob
 
-data_dir = "/Users/alice/Library/Mobile Documents/com~apple~CloudDocs/Projects/hockey_db_data"
+root_dir = str(Path.cwd())
+data_dir = os.path.join(Path(root_dir).parents[0], 'hockey_db_data')
+
 with open(f'../hockey_site/config.yaml', 'r') as f:
     config = yaml.safe_load(f)
 root_dir = str(Path.cwd())
@@ -37,7 +39,7 @@ with sshtunnel.SSHTunnelForwarder(
     ssh_username=ssh_username, ssh_password=ssh_password,
     remote_bind_address=(remote_bind_address, 3306), allow_agent=False
 ) as tunnel:
-
+    
     # connect to mysql database
     if len(sys.argv) == 2 and sys.argv[1] == "to_real_site":
         mysql_username = pwd_config['real_username'] 
